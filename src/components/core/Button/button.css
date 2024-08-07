@@ -1,0 +1,41 @@
+.neesilo-button {
+  @apply whitespace-nowrap flex font-medium text-sm items-center h-fit disabled:cursor-not-allowed hover:outline-none hover:outline-0 focus:outline-none transition-all duration-300 ease-out !important;
+}
+
+.neesilo-button--block {
+  @apply w-full !important;
+}
+
+.neesilo-button--40 {
+  @apply gap-2 p-2.5 rounded-[0.625rem] !important;
+}
+
+.neesilo-button--36 {
+  @apply gap-2 p-2 rounded-lg !important;
+}
+
+.neesilo-button--32 {
+  @apply gap-1.5 p-1.5 rounded-lg !important;
+}
+
+.neesilo-button--primary-filled {
+  @apply bg-emerald-500 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.spinner {
+  animation-name: spin;
+  animation-duration: 800ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
