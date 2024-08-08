@@ -28,10 +28,37 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const PrimaryFilled: Story = {
-  render: (args) => <div className="w-[50dvw] flex justify-center"><Button {...args}>Primary 🤯</Button></div>,
+  render: (args) => <div className="w-[15dvw] flex justify-center"><Button {...args}>Primary 🤯</Button></div>,
   args: {
     theme: "primary",
     variant: "filled",
+    size: "40"
+  },
+};
+
+export const PrimaryStroke: Story = {
+  render: (args) => <div className="w-[15dvw] flex justify-center"><Button {...args}>Primary 🤯</Button></div>,
+  args: {
+    theme: "primary",
+    variant: "stroke",
+    size: "40"
+  },
+};
+
+export const PrimaryLighter: Story = {
+  render: (args) => <div className="w-[15dvw] flex justify-center"><Button {...args}>Primary 🤯</Button></div>,
+  args: {
+    theme: "primary",
+    variant: "lighter",
+    size: "40"
+  },
+};
+
+export const PrimaryGhost: Story = {
+  render: (args) => <div className="w-[15dvw] flex justify-center"><Button {...args}>Primary 🤯</Button></div>,
+  args: {
+    theme: "primary",
+    variant: "ghost",
     size: "40"
   },
 };

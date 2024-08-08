@@ -1,5 +1,5 @@
 .neesilo-button {
-  @apply whitespace-nowrap flex font-medium text-sm items-center h-fit disabled:cursor-not-allowed hover:outline-none hover:outline-0 focus:outline-none transition-all duration-500 ease-out !important;
+  @apply whitespace-nowrap flex font-medium text-sm items-center justify-center h-fit disabled:cursor-not-allowed hover:outline-none hover:outline-0 focus:outline-none transition-all duration-500 ease-out !important;
 }
 
 .neesilo-button--block {
