@@ -1,0 +1,72 @@
+@import "../../../forms.css";
+
+@layer base {
+  .neesilo-otp-input {
+    font-family: "Krub", sans-serif !important;
+  }
+}
+
+.neesilo-input--label {
+  @apply text-gray-900 font-medium text-sm !important;
+}
+
+.neesilo-input--error {
+  @apply text-error-500 font-normal text-sm !important;
+}
+
+.neesilo-input--help {
+  @apply text-gray-500 font-normal text-xs !important;
+}
+
+.neesilo-input {
+  @apply rounded-md text-sm w-full block py-2.5 bg-white hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
+}
+
+.neesilo-input--border {
+  @apply border border-gray-200 hover:border-gray-100 focus:border-gray-900 transition-all duration-500 ease-out !important;
+}
+
+.neesilo-input--border-error {
+  @apply border border-error-500 transition-all duration-500 ease-out !important;
+}
+
+.toggle-password-icon {
+  @apply absolute bottom-3 flex items-center right-0 pr-4;
+}
+
+.password-icon {
+  @apply h-4 w-4 text-gray-400 !important;
+}
+
+.neesilo-input--inner {
+  @apply relative w-full h-fit;
+}
+
+.neesilo-input--outer {
+  @apply grid gap-2 content-start w-full h-fit relative;
+}
+
+.neesilo-otp-input {
+  @apply rounded-md w-full lg:w-20 lg:h-20 text-3xl font-semibold text-center py-5 px-5 transition-all duration-300 ease-out !important;
+}
+
+.neesilo-search-input {
+  @apply rounded-md w-full text-base block py-[0.4379rem] pl-8 transition-all duration-300 ease-out !important;
+}
+
+.PhoneInputInput {
+  @apply rounded-md rounded-l-none w-full flex p-2.5 transition-all duration-300 ease-out !important;
+}
+
+.PhoneInputCountry {
+  @apply border-y border-l border-y-gray-200 rounded-md rounded-r-none border-l-gray-200 mr-0 pl-4 !important;
+}
+
+.PhoneInput {
+  @apply flex items-center gap-0 !important;
+}
+
+.PhoneInputCountryIcon--border {
+  background-color: none !important;
+  box-shadow: none !important;
+}
