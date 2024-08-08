@@ -1,5 +1,5 @@
 .neesilo-button {
-  @apply whitespace-nowrap flex font-medium text-sm items-center h-fit disabled:cursor-not-allowed hover:outline-none hover:outline-0 focus:outline-none transition-all duration-300 ease-out !important;
+  @apply whitespace-nowrap flex font-medium text-sm items-center h-fit disabled:cursor-not-allowed hover:outline-none hover:outline-0 focus:outline-none transition-all duration-500 ease-out !important;
 }
 
 .neesilo-button--block {
@@ -19,8 +19,60 @@
 }
 
 .neesilo-button--primary-filled {
-  @apply bg-emerald-500 !important;
+  @apply bg-primary-500 hover:bg-primary-800 border border-primary-500 hover:border-primary-800 focus:ring-2 focus:ring-offset-2 focus:ring-[#EBF1FF] disabled:bg-gray-100 text-white disabled:text-gray-300 !important;
   box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--primary-stroke {
+  @apply bg-white hover:bg-primary-50 border border-primary-500 hover:border-primary-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#EBF1FF] focus:bg-white focus:border-primary-500 disabled:bg-gray-100 text-primary-500 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--primary-lighter {
+  @apply bg-primary-50 hover:bg-white border border-primary-50 hover:border-primary-500 focus:ring-2 focus:ring-offset-2 focus:ring-[#EBF1FF] focus:bg-white focus:border-primary-500 disabled:bg-gray-100 text-primary-500 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--primary-ghost {
+  @apply bg-transparent hover:bg-primary-50 border border-transparent hover:border-primary-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#EBF1FF] focus:bg-white focus:border-primary-500 disabled:bg-transparent text-primary-500 disabled:text-gray-300 !important;
+}
+
+.neesilo-button--neutral-filled {
+  @apply bg-gray-700 hover:bg-gray-900 border border-gray-700 hover:border-gray-900 focus:ring-2 focus:ring-offset-2 focus:ring-[#E4E5E7] disabled:bg-gray-100 text-white disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--neutral-stroke {
+  @apply bg-white hover:bg-gray-100 border border-gray-200 hover:border-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#E4E5E7] focus:bg-white focus:border-gray-900 disabled:bg-gray-100 text-gray-500 hover:text-gray-900 focus:text-gray-900 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--neutral-lighter {
+  @apply bg-gray-100 hover:bg-white border border-gray-100 hover:border-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-[#E4E5E7] focus:bg-white focus:border-gray-900 disabled:bg-gray-100 text-gray-500 hover:text-gray-900 focus:text-gray-900 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--neutral-ghost {
+  @apply bg-transparent hover:bg-gray-100 border border-transparent hover:border-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#E4E5E7] focus:bg-white focus:border-gray-900 disabled:bg-transparent text-gray-500 hover:text-gray-900 focus:text-gray-900 disabled:text-gray-300 !important;
+}
+
+.neesilo-button--error-filled {
+  @apply bg-error-500 hover:bg-error-700 border border-error-500 hover:border-error-700 focus:ring-2 focus:ring-offset-2 focus:ring-[#FFECEB] disabled:bg-gray-100 text-white disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--error-stroke {
+  @apply bg-white hover:bg-error-50 border border-error-500 hover:border-error-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#FFECEB] focus:bg-white focus:border-error-500 disabled:bg-gray-100 text-error-500 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--error-lighter {
+  @apply bg-error-50 hover:bg-white border border-error-50 hover:border-error-500 focus:ring-2 focus:ring-offset-2 focus:ring-[#FFECEB] focus:bg-white focus:border-error-500 disabled:bg-gray-100 text-error-500 disabled:text-gray-300 !important;
+  box-shadow: 0px 1px 2px 0px rgba(55, 93, 251, 0.08) !important;
+}
+
+.neesilo-button--error-ghost {
+  @apply bg-transparent hover:bg-error-50 border border-transparent hover:border-error-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#FFECEB] focus:bg-white focus:border-error-500 disabled:bg-transparent text-error-500 disabled:text-gray-300 !important;
 }
 
 .spinner {
