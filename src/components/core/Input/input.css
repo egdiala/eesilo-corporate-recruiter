@@ -14,12 +14,48 @@
   @apply text-error-500 font-normal text-sm !important;
 }
 
+.neesilo-input--40 {
+  @apply py-2.5 px-3 rounded-[0.625rem] !important;
+}
+
+.neesilo-input--36 {
+  @apply py-2 px-2.5 rounded-lg !important;
+}
+
+.neesilo-input--32 {
+  @apply py-1.5 px-2 rounded-lg !important;
+}
+
+.neesilo-input--40-left {
+  @apply py-2.5 pl-9 pr-3 !important;
+}
+
+.neesilo-input--36-left {
+  @apply py-2 pl-9 pr-2.5 !important;
+}
+
+.neesilo-input--32-left {
+  @apply py-1.5 pl-9 pr-2 !important;
+}
+
+.neesilo-input--40-right {
+  @apply py-2.5 pr-9 pl-3 !important;
+}
+
+.neesilo-input--36-right {
+  @apply py-2 pr-9 pl-2.5 !important;
+}
+
+.neesilo-input--32-right {
+  @apply py-1.5 pr-9 pl-2 !important;
+}
+
 .neesilo-input--help {
   @apply text-gray-500 font-normal text-xs !important;
 }
 
 .neesilo-input {
-  @apply rounded-md text-sm w-full block py-2.5 bg-white hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
+  @apply rounded-md text-sm w-full block bg-white hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
 }
 
 .neesilo-input--border {
@@ -39,7 +75,7 @@
 }
 
 .neesilo-input--inner {
-  @apply relative w-full h-fit;
+  @apply relative flex w-full h-fit;
 }
 
 .neesilo-input--outer {

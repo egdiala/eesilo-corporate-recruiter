@@ -27,6 +27,7 @@ export const WithLabel: Story = {
   },
   args: {
     type: "text",
+    size: "32",
     name: "first_name",
     label: "First Name",
     placeholder: "Enter your first name",
@@ -44,6 +45,7 @@ export const WithoutLabel: Story = {
   },
   args: {
     type: "text",
+    size: "32",
     name: "first_name",
     placeholder: "Enter your first name",
   },
@@ -59,6 +61,7 @@ export const WithError: Story = {
   },
   args: {
     type: "text",
+    size: "32",
     name: "email",
     label: "Email Address",
     value: "egwuchukwu.diala@zeno.",
@@ -77,6 +80,7 @@ export const ErrorWithoutLabel: Story = {
   },
   args: {
     type: "email",
+    size: "32",
     name: "email",
     value: "egdiala@zeno.",
     error: "Please enter a valid email",
@@ -94,6 +98,7 @@ export const WithLeftIcon: Story = {
   },
   args: {
     type: "text",
+    size: "32",
     name: "first_name",
     label: "Spotify Username",
     iconLeft: "logos:spotify-icon",
@@ -111,6 +116,7 @@ export const WithRightIcon: Story = {
   },
   args: {
     type: "text",
+    size: "32",
     name: "first_name",
     label: "First Name",
     iconRight: "logos:amplication-icon",

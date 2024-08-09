@@ -6,7 +6,7 @@ import type { IconifyIcon } from "@iconify/types";
 import { Description, Field, Input, Label } from "@headlessui/react"
 import "./input.css";
 
-interface InputProps extends React.AllHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<React.AllHTMLAttributes<HTMLInputElement>, "size"> {
   /**
    * Label for input element
    */
@@ -15,6 +15,10 @@ interface InputProps extends React.AllHTMLAttributes<HTMLInputElement> {
    * Error message
    */
   error?: string | boolean;
+  /**
+   * Error message
+   */
+  size?: "40" | "36" | "32";
   /**
    * Helper text
    */
@@ -52,7 +56,7 @@ interface InputProps extends React.AllHTMLAttributes<HTMLInputElement> {
 /**
  * Input component for entering user data
  */
-export const InputField: React.FC<InputProps> = ({ label, error, optional, required, iconLeft, iconRight, className, help, disabled, passive, ...props }) => {
+export const InputField: React.FC<InputProps> = ({ label, error, optional, required, iconLeft, iconRight, className, help, disabled, passive, size, ...props }) => {
     return (
         <Field disabled={disabled} className="neesilo-input--outer">
             <RenderIf condition={!!label}>
@@ -72,16 +76,16 @@ export const InputField: React.FC<InputProps> = ({ label, error, optional, requi
                 <RenderIf condition={!!iconLeft}>
                 <Icon
                     icon={iconLeft as string | IconifyIcon}
-                    className="size-5 left-3 text-gray-400 peer-hover:text-gray-500 peer-focus:text-gray-500 peer-disabled:text-gray-300 mt-[13px] inset-x-0 absolute z-10"
+                    className="size-5 left-2.5 text-gray-400 peer-hover:text-gray-500 peer-focus:text-gray-500 peer-disabled:text-gray-300 mr-auto my-auto inset-0 absolute z-10"
                 />
                 </RenderIf>
                 <Input as={Fragment}>
-                    {() => <input className={cn("neesilo-input peer", iconLeft ? "pl-10" : "pl-2", iconRight ? "pr-10" : "pr-2", error ? "neesilo-input--border-error" : "neesilo-input--border", className)} {...props} /> }
+                    {() => <input className={cn("neesilo-input peer", `neesilo-input--${size}`, iconLeft && `neesilo-input--${size}-left`, iconRight && `neesilo-input--${size}-right`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)} {...props} /> }
                 </Input>
                 <RenderIf condition={!!iconRight}>
                 <Icon
                     icon={iconRight as string | IconifyIcon}
-                    className="size-5 right-3 text-grey-dark-3 peer-focus:text-green-1 -mt-[2.1rem] absolute z-10"
+                    className="size-5 right-2.5 text-gray-400 peer-disabled:text-gray-300 ml-auto my-auto inset-0 absolute z-10"
                 />
                 </RenderIf>
             </div>
