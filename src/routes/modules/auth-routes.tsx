@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import { LoginPage } from "@/pages/auth"
+import { AuthWelcomePage, LoginPage, SignUpPage } from "@/pages/auth"
 
 const AuthRoutes = () => {
     return (
         <Routes>
             <Route path="login" element={<LoginPage />} />
+            <Route path="sign-up" element={<SignUpPage />} />
+            <Route path="welcome" element={<AuthWelcomePage />} />
         </Routes>
     );
 };

@@ -83,7 +83,7 @@
 }
 
 .neesilo-otp-input {
-  @apply rounded-md w-full lg:w-20 lg:h-20 text-3xl font-semibold text-center py-5 px-5 transition-all duration-300 ease-out !important;
+  @apply hover:bg-gray-100 rounded-[0.625rem] text-gray-900 placeholder:text-gray-400 caret-gray-900 disabled:bg-gray-100 disabled:text-gray-300 w-full lg:w-20 lg:h-16 text-2xl font-medium text-center py-5 px-5 transition-all duration-500 ease-out !important;
 }
 
 .neesilo-search-input {
