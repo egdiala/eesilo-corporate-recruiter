@@ -1,0 +1,89 @@
+import React, { Fragment, useState } from "react"
+import logo from "@/assets/logo.svg"
+import { Icon } from "@iconify/react"
+import { useNavigate } from "react-router-dom"
+import { Button, InputField } from "@/components/core"
+import { PasswordStrength } from "@/components/shared"
+import { AnimatePresence, motion } from "framer-motion"
+import { routeVariants } from "@/constants/animateVariants"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+
+export const ForgotPasswordPage: React.FC = () => {
+    const navigate = useNavigate()
+    const [step, setStep] = useState("forgot-password")
+    
+    const { register, values } = useFormikWrapper({
+        initialValues: {
+            password: ""
+        },
+        onSubmit: () => {
+
+        }
+    })
+    return (
+        <Fragment>
+            <AnimatePresence mode="popLayout">
+                {
+                    step === "forgot-password" && (
+                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                        <img src={logo} alt="neesilo_logo" className="mx-auto" />
+                        <div className="grid gap-2">
+                            <h1 className="font-semibold text-xl text-gray-900 text-center">Forgot Password?</h1>
+                            <p className="font-medium text-base text-gray-500 text-center">Please input your registered mail to reset your password</p>
+                        </div>
+                        <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" />
+                        <Button type="button" theme="primary" variant="filled" size="40" onClick={() => setStep("reset-password")} block>Continue</Button>
+                    </motion.div>
+                    )
+                }
+            </AnimatePresence>
+            <AnimatePresence mode="popLayout">
+                {
+                    step === "reset-password" && (
+                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                        <img src={logo} alt="neesilo_logo" className="mx-auto" />
+                        <div className="grid gap-2">
+                            <h1 className="font-semibold text-xl text-gray-900 text-center">Reset Password?</h1>
+                            <p className="font-medium text-base text-gray-500 text-center">Secure your account by creating a strong password.</p>
+                        </div>
+                        <div className="grid gap-5">
+                            <div className="grid gap-2">
+                                <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("password")} />
+                                <PasswordStrength value={values.password} />
+                            </div>
+                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password again" iconRight="ri:key-line" />
+                        </div>
+                        <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => setStep("success")}>Done</Button>
+                    </motion.div>
+                    )
+                }
+            </AnimatePresence>
+            <AnimatePresence mode="popLayout">
+                {
+                    step === "success" && (
+                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 w-full md:max-w-96">
+                        <div className="grid p-6 place-content-center mx-auto">
+                            <img src={logo} alt="neesilo_logo" />
+                        </div>
+                        <div className="grid w-full">
+                            <div className="flex flex-col gap-4 items-center p-5 border-x border-t border-x-gray-200 border-t-gray-200 rounded-t-2xl">
+                                <div className="size-10 grid place-content-center rounded-[0.625rem] bg-success-50">
+                                    <Icon icon="ri:checkbox-circle-fill" className="text-success-500 size-6" />
+                                </div>
+                                <div className="grid gap-1">
+                                    <h1 className="font-medium text-base text-gray-900 text-center">Password reset successful</h1>
+                                    <p className="text-sm text-gray-500 text-center">You have successfully reset your password, you’d be redirected to login or you can click the button</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center py-4 px-5 border border-gray-200 rounded-b-2xl">
+                                <Button theme="primary" variant="filled" size="36" onClick={() => navigate("/auth/login")} block>Back to login</Button>
+                            </div>
+                        </div>
+                    </motion.div>
+                    )
+                }
+            </AnimatePresence>
+        </Fragment>
+
+    )
+}

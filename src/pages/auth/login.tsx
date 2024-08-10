@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react"
 import logo from "@/assets/logo.svg"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import { getItem, removeItem } from "@/utils/localStorage"
 import { routeVariants } from "@/constants/animateVariants"
@@ -65,7 +65,7 @@ export const LoginPage: React.FC = () => {
                             <div className="grid gap-1">
                                 <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" />
                                 <div className="flex items-center justify-end py-0.5">
-                                    <span className="font-medium text-xs text-primary-500">Forgot Password</span>
+                                    <Link to="/auth/forgot-password" className="font-medium text-xs text-primary-500">Forgot Password</Link>
                                 </div>
                             </div>
                         </div>
