@@ -11,12 +11,12 @@ import { Button, CheckBox, InputField } from "@/components/core"
 
 export const SignUpPage: React.FC = () => {
     const navigate = useNavigate()
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState("create-account")
 
     useEffect(() => {
-        if (step === 2) {
+        if (step === "confirm-email") {
             setTimeout(() => {
-                setStep(3)
+                setStep("create-password")
             }, 3000);
         }
     }, [step])
@@ -38,7 +38,7 @@ export const SignUpPage: React.FC = () => {
         <Fragment>
         <AnimatePresence mode="popLayout">
             {
-                step === 1 && (
+                step === "create-account" && (
                     <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <div className="grid p-6 place-content-center mx-auto">
                             <img src={logo} alt="neesilo_logo" />
@@ -54,7 +54,7 @@ export const SignUpPage: React.FC = () => {
                             label={<div className="text-sm text-gray-900">I agree to Neesilo Terms & Conditions</div>}
                         />
                         <div className="grid gap-4">
-                            <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => setStep(2)}>Create Account</Button>
+                            <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => setStep("confirm-email")}>Create Account</Button>
                             <Button type="button" theme="primary" variant="ghost" size="40" onClick={() => navigate("/auth/login")} block>Login</Button>
                         </div>
                     </motion.div>
@@ -63,7 +63,7 @@ export const SignUpPage: React.FC = () => {
         </AnimatePresence>
         <AnimatePresence mode="popLayout">
             {
-                step === 2 && (
+                step === "confirm-email" && (
                     <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid w-full max-w-md">
                         <div className="grid p-6 place-content-center mx-auto">
                             <img src={logo} alt="neesilo_logo" />
@@ -83,7 +83,7 @@ export const SignUpPage: React.FC = () => {
         </AnimatePresence>
         <AnimatePresence mode="popLayout">
             {
-                step === 3 && (
+                step === "create-password" && (
                     <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <div className="grid p-6 place-content-center mx-auto">
                             <img src={logo} alt="neesilo_logo" />
