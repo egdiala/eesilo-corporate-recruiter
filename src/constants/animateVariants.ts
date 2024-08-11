@@ -22,3 +22,16 @@ export const pageVariants = {
     },
   },
 };
+
+export const tabVariants = {
+  initial: {
+    opacity: 0,
+  },
+  final: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
