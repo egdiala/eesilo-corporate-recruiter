@@ -11,20 +11,20 @@ export const OrganizationInformation: React.FC = () => {
                 <p className="text-base text-gray-400">Provide basic information about your organization.</p>
             </div>
             <hr />
-            <InputField label="Organization’s Name" placeholder="Organisation name" size="40" required />
+            <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" required />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="Telephone Number" placeholder="(555) 000-0000" size="40" required />
-                <InputField label="Country" placeholder="Country" size="40" required />
+                <InputField label="Telephone Number" placeholder="(555) 000-0000" size="40" type="text" required />
+                <InputField label="Country" placeholder="Country" size="40" type="text" required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="State" placeholder="Select state" size="40" required />
-                <InputField label="City" placeholder="Select city" size="40" required />
+                <InputField label="State" placeholder="Select state" size="40" type="text" required />
+                <InputField label="City" placeholder="Select city" size="40" type="text" required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="Address" placeholder="Address" size="40" required />
-                <InputField label="Zip code" placeholder="Zip code" size="40" required />
+                <InputField label="Address" placeholder="Address" size="40" type="text" required />
+                <InputField label="Zip code" placeholder="Zip code" size="40" type="text" required />
             </div>
-            <InputField label="Company Website" placeholder="Website" size="40" required />
+            <InputField label="Company Website" placeholder="Website" size="40" type="text" required />
             <Button theme="primary" variant="filled" size="40">Save and continue</Button>
         </motion.div>
     )

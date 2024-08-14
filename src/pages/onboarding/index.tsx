@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react"
 import logo from "@/assets/logo.svg"
 import { Button } from "@/components/core"
 import { AnimatePresence } from "framer-motion"
-import { OrganizationInformation } from "@/components/pages/onboarding"
+import { ContactPerson, OrganizationInformation, StaffsAndAccessControl, Verification } from "@/components/pages/onboarding"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
 
 
@@ -59,13 +59,13 @@ export const OnboardingPage: React.FC = () => {
                         <OrganizationInformation />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        Content 2
+                        <ContactPerson />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        Content 3
+                        <StaffsAndAccessControl />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        Content 4
+                        <Verification />
                     </TabPanel>
                 </TabPanels>
             </TabGroup>

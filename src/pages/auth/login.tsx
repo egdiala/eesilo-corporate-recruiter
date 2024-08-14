@@ -46,6 +46,7 @@ export const LoginPage: React.FC = () => {
 
     const proceed = () => {
         removeItem("newPass")
+        setCountdown(30)
         setStep("2fa")
     }
 
