@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, InputField } from "@/components/core";
+import { Button, InputField, SelectInput } from "@/components/core";
 import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
 
@@ -14,11 +14,11 @@ export const OrganizationInformation: React.FC = () => {
             <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" required />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField label="Telephone Number" placeholder="(555) 000-0000" size="40" type="text" required />
-                <InputField label="Country" placeholder="Country" size="40" type="text" required />
+                <SelectInput label="Country" placeholder="Country" size="40" options={[]} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField label="State" placeholder="Select state" size="40" type="text" required />
-                <InputField label="City" placeholder="Select city" size="40" type="text" required />
+                <SelectInput label="State" placeholder="Select state" size="40" type="text" options={[]} required />
+                <SelectInput label="City" placeholder="Select city" size="40" type="text" options={[]} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField label="Address" placeholder="Address" size="40" type="text" required />

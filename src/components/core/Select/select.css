@@ -1,0 +1,13 @@
+@import "../../../forms.css";
+
+.neesilo-input--label {
+  @apply text-gray-900 font-medium text-sm !important;
+}
+
+.neesilo-input--error {
+  @apply text-error-500 font-normal text-sm !important;
+}
+
+.neesilo-input {
+  @apply rounded-md text-sm w-full block bg-white hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
+}
