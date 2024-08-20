@@ -4,10 +4,13 @@ import { Button } from "@/components/core"
 import { AnimatePresence } from "framer-motion"
 import { ContactPerson, OrganizationInformation, StaffsAndAccessControl, Verification } from "@/components/pages/onboarding"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
+import { useSearchParams } from "react-router-dom"
 
 
 export const OnboardingPage: React.FC = () => {
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const stages = ["bio_data", "contact_person", "staff_access", "eid_number"];
+    const [searchParams] = useSearchParams()
+    const [selectedIndex, setSelectedIndex] = useState(stages.indexOf(searchParams.get("step") as string))
     const tabs = useMemo(() => {
         return [
             {

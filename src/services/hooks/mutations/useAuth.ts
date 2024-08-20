@@ -4,6 +4,7 @@ import { axiosInit } from "@/services/axiosInit";
 import { errorToast, successToast } from "@/utils/createToast";
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
 import { confirmRegistrationLink, forgotPassword, login, register, setPassword } from "@/services/apis/auth";
+import { User } from "@/types/auth";
 
 
 function onLoginSuccess(responseData: any) {
@@ -14,13 +15,13 @@ function onLoginSuccess(responseData: any) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export const useLogin = (fn?: (v: any) => void) => {
+export const useLogin = (fn?: (v: User) => void) => {
   return useMutation({
     mutationFn: login,
     onSuccess: (response: any) => {
       onLoginSuccess(response?.data)
       successToast({ param: null, msg: "Logged in successfully" })
-      fn?.(response?.data?.twofactor);
+      fn?.(response?.data);
     },
     onError: (err: any) => {
         errorToast({ param: err, variant: "light" })

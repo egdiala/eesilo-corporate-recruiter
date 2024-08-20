@@ -16,9 +16,14 @@ export const LoginPage: React.FC = () => {
     const [otp, setOtp] = useState<string>("")
     const [countdown, setCountdown] = useState<number>(30)
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
-    const { mutate: login, isPending } = useLogin((twofactor) => {
-        if (twofactor.is_enabled === 0) {
+    const { mutate: login, isPending } = useLogin((data) => {
+        if (data?.twofactor.is_enabled === 0) {
             navigate("/")
+        }
+        if (Object.values(data?.onboarding_stage).some((item) => item === false)) {
+            const stages = ["bio_data", "contact_person", "staff_access", "eid_number"];
+            const firstIncompleteStage = stages.find(stage => !data?.onboarding_stage[stage as keyof typeof data.onboarding_stage]);
+            navigate(`/onboarding?step=${firstIncompleteStage}`)
         } else {
             proceed()
         }
