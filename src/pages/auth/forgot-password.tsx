@@ -7,17 +7,39 @@ import { PasswordStrength } from "@/components/shared"
 import { AnimatePresence, motion } from "framer-motion"
 import { routeVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { changePasswordSchema, forgotPasswordSchema } from "@/validations/auth"
+import { useConfirmRegistrationLink, useForgotPassword, useSetPassword } from "@/services/hooks/mutations"
 
 export const ForgotPasswordPage: React.FC = () => {
     const navigate = useNavigate()
+    const [link, setLink] = useState("")
     const [step, setStep] = useState("forgot-password")
+    const { mutate: setPassword, isPending: isSettingPassword } = useSetPassword(() => setStep("success"))
+    const { mutate: confirmLink, isPending: isConfirming } = useConfirmRegistrationLink(() => setStep("reset-password"))
+    const { mutate: sendResetLink, isPending: isSending } = useForgotPassword((value) => {
+        const link = value?.split("?l=")?.at(1) as string
+        setLink(link)
+        confirmLink({ link })
+    })
     
-    const { register, values } = useFormikWrapper({
+    const forgotPasswordForm = useFormikWrapper({
         initialValues: {
-            password: ""
+            email: ""
         },
+        validationSchema: forgotPasswordSchema,
         onSubmit: () => {
-
+            sendResetLink(forgotPasswordForm.values)
+        }
+    })
+    
+    const { register, values, isValid, handleSubmit } = useFormikWrapper({
+        initialValues: {
+            password: "",
+            confirm_password: ""
+        },
+        validationSchema: changePasswordSchema,
+        onSubmit: () => {
+            setPassword({ link, password: values.password })
         }
     })
     return (
@@ -25,22 +47,22 @@ export const ForgotPasswordPage: React.FC = () => {
             <AnimatePresence mode="popLayout">
                 {
                     step === "forgot-password" && (
-                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                    <motion.form onSubmit={forgotPasswordForm.handleSubmit} initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <img src={logo} alt="neesilo_logo" className="mx-auto" />
                         <div className="grid gap-2">
                             <h1 className="font-semibold text-xl text-gray-900 text-center">Forgot Password?</h1>
                             <p className="font-medium text-base text-gray-500 text-center">Please input your registered mail to reset your password</p>
                         </div>
-                        <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" />
-                        <Button type="button" theme="primary" variant="filled" size="40" onClick={() => setStep("reset-password")} block>Continue</Button>
-                    </motion.div>
+                        <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" {...forgotPasswordForm.register("email")} />
+                        <Button type="submit" theme="primary" variant="filled" size="40" loading={isSending || isConfirming} disabled={isSending || isConfirming || !forgotPasswordForm.isValid} block>Continue</Button>
+                    </motion.form>
                     )
                 }
             </AnimatePresence>
             <AnimatePresence mode="popLayout">
                 {
                     step === "reset-password" && (
-                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                    <motion.form onSubmit={handleSubmit} initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <img src={logo} alt="neesilo_logo" className="mx-auto" />
                         <div className="grid gap-2">
                             <h1 className="font-semibold text-xl text-gray-900 text-center">Reset Password?</h1>
@@ -51,10 +73,10 @@ export const ForgotPasswordPage: React.FC = () => {
                                 <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("password")} />
                                 <PasswordStrength value={values.password} />
                             </div>
-                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password again" iconRight="ri:key-line" />
+                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password again" iconRight="ri:key-line" {...register("confirm_password")} />
                         </div>
-                        <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => setStep("success")}>Done</Button>
-                    </motion.div>
+                        <Button type="submit" theme="primary" variant="filled" size="40" loading={isSettingPassword} disabled={isSettingPassword || !isValid} block>Done</Button>
+                    </motion.form>
                     )
                 }
             </AnimatePresence>

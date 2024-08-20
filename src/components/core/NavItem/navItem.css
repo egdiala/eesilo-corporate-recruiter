@@ -1,0 +1,7 @@
+.neesilo-module-list-item {
+  @apply flex w-full items-center text-white hover:bg-[#F1F5F9] gap-4 font-medium text-base p-3 rounded cursor-pointer bg-transparent transition-all duration-500 ease-out !important;
+}
+
+.neesilo-module-list-item--active {
+  @apply text-white bg-primary-500 hover:bg-primary-500 transition-all duration-500 ease-out !important;
+}
