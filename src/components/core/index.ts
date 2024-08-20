@@ -1,5 +1,7 @@
+export * from "./Avatar"
 export * from "./Button"
 export * from "./CheckBox"
 export * from "./Input"
 export * from "./RenderIf"
 export * from "./Select"
+export * from "./Toast"

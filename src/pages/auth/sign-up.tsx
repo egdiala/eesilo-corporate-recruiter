@@ -1,32 +1,48 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment, useState } from "react"
 import logo from "@/assets/logo.svg"
 import { Icon } from "@iconify/react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
 import { PasswordStrength } from "@/components/shared"
 import { AnimatePresence, motion } from "framer-motion"
+import { useConfirmRegistrationLink, useRegister, useSetPassword } from "@/services/hooks/mutations"
 import { routeVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, CheckBox, InputField } from "@/components/core"
+import { changePasswordSchema, registerSchema } from "@/validations/auth"
 
 export const SignUpPage: React.FC = () => {
     const navigate = useNavigate()
-    const [step, setStep] = useState("create-account")
-
-    useEffect(() => {
-        if (step === "confirm-email") {
-            setTimeout(() => {
-                setStep("create-password")
-            }, 3000);
-        }
-    }, [step])
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [link, setLink] = useState("")
+    const [step, setStep] = useState(searchParams.get("step") || "create-account")
+    const { mutate, isPending } = useRegister((v) => {
+        setLink(v.split("?l=")?.at(1) as string)
+        setSearchParams({ step: "confirm-email" })
+        setStep("confirm-email")
+    })
+    const { mutate: confirmLink, isPending: isConfirming } = useConfirmRegistrationLink(() => setStep("create-password"))
+    const { mutate: setPassword, isPending: isSettingPassword } = useSetPassword(() => backToLogin())
     
-    const { register, values } = useFormikWrapper({
+    const registerForm = useFormikWrapper({
         initialValues: {
-            password: ""
+            email: "",
+            terms: false
         },
+        validationSchema: registerSchema,
         onSubmit: () => {
-
+            mutate({ email: registerForm.values.email })
+        }
+    })
+    
+    const { register, values, isValid, handleSubmit } = useFormikWrapper({
+        initialValues: {
+            password: "",
+            confirm_password: ""
+        },
+        validationSchema: changePasswordSchema,
+        onSubmit: () => {
+            setPassword({ link, password: values.password })
         }
     })
 
@@ -39,7 +55,7 @@ export const SignUpPage: React.FC = () => {
         <AnimatePresence mode="popLayout">
             {
                 step === "create-account" && (
-                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                    <motion.form onSubmit={registerForm.handleSubmit} initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <div className="grid p-6 place-content-center mx-auto">
                             <img src={logo} alt="neesilo_logo" />
                         </div>
@@ -48,16 +64,18 @@ export const SignUpPage: React.FC = () => {
                             <p className="font-medium text-base text-gray-500 text-center">Please provide a valid email address to get started with Neesilo</p>
                         </div>
                         <div className="grid gap-4">
-                            <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" />
+                            <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" {...registerForm.register("email")} />
                         </div>
                         <CheckBox
                             label={<div className="text-sm text-gray-900">I agree to Neesilo Terms & Conditions</div>}
+                            checked={registerForm.values.terms}
+                            onChange={(v) => registerForm.setFieldValue("terms", v, true)}
                         />
                         <div className="grid gap-4">
-                            <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => setStep("confirm-email")}>Create Account</Button>
+                            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !registerForm.isValid} block>Create Account</Button>
                             <Button type="button" theme="primary" variant="ghost" size="40" onClick={() => navigate("/auth/login")} block>Login</Button>
                         </div>
-                    </motion.div>
+                    </motion.form>
                 )
             }
         </AnimatePresence>
@@ -74,7 +92,7 @@ export const SignUpPage: React.FC = () => {
                             </div>
                             <div className="grid gap-1">
                                 <h1 className="font-medium text-base text-gray-900 text-center">Confirmation email sent</h1>
-                                <p className="text-sm text-gray-500 text-center">A confirmation link has been sen to your email address. Click on the link to proceed.</p>
+                                <p className="text-sm text-gray-500 text-center">A confirmation link has been sen to your email address. Click on the <button type="button" onClick={() => confirmLink({link})} disabled={isConfirming}>link</button> to proceed.</p>
                             </div>
                         </div>
                     </motion.div>
@@ -84,7 +102,7 @@ export const SignUpPage: React.FC = () => {
         <AnimatePresence mode="popLayout">
             {
                 step === "create-password" && (
-                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
+                    <motion.form onSubmit={handleSubmit} initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-6 p-4 w-full md:max-w-96">
                         <div className="grid p-6 place-content-center mx-auto">
                             <img src={logo} alt="neesilo_logo" />
                         </div>
@@ -97,10 +115,10 @@ export const SignUpPage: React.FC = () => {
                                 <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("password")} />
                                 <PasswordStrength value={values.password} />
                             </div>
-                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" />
+                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("confirm_password")} />
                         </div>
-                        <Button type="button" theme="primary" variant="filled" size="40" block onClick={() => backToLogin()}>Create Password</Button>
-                    </motion.div>
+                        <Button type="submit" theme="primary" variant="filled" size="40" loading={isSettingPassword} disabled={isSettingPassword || !isValid} block>Create Password</Button>
+                    </motion.form>
                 )
             }
         </AnimatePresence>
