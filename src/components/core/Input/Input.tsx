@@ -16,7 +16,7 @@ interface InputProps extends Omit<React.AllHTMLAttributes<HTMLInputElement>, "si
    */
   error?: string | boolean;
   /**
-   * Error message
+   * Size of input
    */
   size?: "40" | "36" | "32";
   /**

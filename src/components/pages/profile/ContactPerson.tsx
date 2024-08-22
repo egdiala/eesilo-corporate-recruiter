@@ -16,9 +16,14 @@ export const ContactPerson: React.FC = () => {
         <Fragment>
             <RenderIf condition={editMode}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
-                    <div className="grid gap-2">
-                        <h2 className="font-medium text-lg text-gray-900">Edit Contact Person</h2>
-                        <p className="text-base text-gray-400">Provide basic information about your organization.</p>
+                    <div className="flex items-start">
+                        <div className="flex-1 grid gap-2">
+                            <h2 className="font-medium text-lg text-gray-900">Edit Contact Person</h2>
+                            <p className="text-base text-gray-400">Provide basic information about your organization.</p>
+                        </div>
+                        <Button type="button" theme="error" variant="lighter" size="36" onClick={() => setEditMode(false)}>
+                            Dismiss
+                        </Button>
                     </div>
                     <hr />
                     <InputField label="Name of Contact Person" placeholder="Name" size="40" type="text" required />

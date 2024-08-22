@@ -91,11 +91,21 @@
 }
 
 .PhoneInputInput {
-  @apply rounded-md rounded-l-none w-full flex p-2.5 transition-all duration-300 ease-out !important;
+  @apply rounded-r-md text-sm w-full block bg-white hover:bg-gray-100 text-gray-900 placeholder:text-gray-400 caret-gray-900 focus:outline-none focus:outline-0 transition-all duration-500 ease-out !important;
+  @apply border border-gray-200 hover:border-gray-100 focus:border-gray-900 transition-all duration-500 ease-out !important;
+  @apply py-2.5 px-3 !important;
 }
 
 .PhoneInputCountry {
-  @apply border-y border-l border-y-gray-200 rounded-md rounded-r-none border-l-gray-200 mr-0 pl-4 !important;
+  @apply border-y border-l border-y-gray-200 hover:border-y-gray-100 focus:border-y-gray-900 hover:border-l-gray-100 focus:border-l-gray-900 rounded-md rounded-r-none border-l-gray-200 mr-0 pl-4 !important;
+}
+
+.PhoneInputCountryIcon {
+  @apply size-5 rounded-full overflow-hidden !important;
+}
+
+.PhoneInputCountryIconImg {
+  @apply object-cover !important;
 }
 
 .PhoneInput {

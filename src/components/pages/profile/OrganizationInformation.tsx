@@ -28,7 +28,6 @@ export const OrganizationInformation: React.FC = () => {
                         <Button type="button" theme="error" variant="lighter" size="36" onClick={() => setEditMode(false)}>
                             Dismiss
                         </Button>
-
                     </div>
                     <hr />
                     <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" required />

@@ -1,15 +1,18 @@
 import React, { useMemo, useState } from "react"
 import logo from "@/assets/logo.svg"
+import { Icon } from "@iconify/react"
 import { Button } from "@/components/core"
 import { AnimatePresence } from "framer-motion"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { Dialog, DialogPanel, DialogTitle, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
 import { ContactPerson, OrganizationInformation, StaffsAndAccessControl, Verification } from "@/components/pages/onboarding"
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
-import { useSearchParams } from "react-router-dom"
 
 
 export const OnboardingPage: React.FC = () => {
-    const stages = ["bio_data", "contact_person", "staff_access", "eid_number"];
+    const navigate = useNavigate()
     const [searchParams] = useSearchParams()
+    const [isOpen, setIsOpen] = useState(false)
+    const stages = ["bio_data", "contact_person", "staff_access", "eid_number"];
     const [selectedIndex, setSelectedIndex] = useState(stages.indexOf(searchParams.get("step") as string))
     const tabs = useMemo(() => {
         return [
@@ -43,7 +46,7 @@ export const OnboardingPage: React.FC = () => {
                         <h1 className="font-medium text-lg text-gray-900">Setup your profile</h1>
                         <p className="font-medium text-base text-gray-500">Get started by setting up your profile. It’s quick and easy!</p>
                     </div>
-                    <Button theme="primary" variant="stroke" size="40" onClick={() => setSelectedIndex((prev) => prev < 3 ? prev + 1 : 0)}>Skip for now</Button>
+                    <Button type="button" theme="primary" variant="stroke" size="40" onClick={() => setIsOpen(true)}>Skip for now</Button>
                 </div>
             </header>
             <TabGroup as="section" className="flex flex-col md:flex-row py-[1.125rem] md:py-12 px-[1.125rem] md:px-12 gap-10" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -52,26 +55,51 @@ export const OnboardingPage: React.FC = () => {
                     <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
                     {
                         tabs.map((tab) =>
-                            <Tab key={tab.id} className="flex whitespace-nowrap rounded-lg p-2 text-sm font-medium text-gray-500 focus:outline-none data-[selected]:bg-primary-500 data-[selected]:text-white data-[hover]:bg-gray-100 data-[hover]:text-gray-900 data-[focus]:outline-0 transition duration-500 ease-out">{tab.label}</Tab>
+                            <Tab key={tab.id} onClick={(e) => { e.preventDefault() }} className="flex whitespace-nowrap rounded-lg p-2 text-sm font-medium text-gray-500 focus:outline-none data-[selected]:bg-primary-500 data-[selected]:text-white data-[hover]:bg-gray-100 data-[hover]:text-gray-900 data-[focus]:outline-0 transition duration-500 ease-out">{tab.label}</Tab>
                         )
                     }
                     </div>
                 </TabList>
                 <TabPanels className="max-w-xl w-full flex-1">
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        <OrganizationInformation />
+                        <OrganizationInformation next={() => setSelectedIndex(1)} />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        <ContactPerson />
+                        <ContactPerson next={() => setSelectedIndex(2)} />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        <StaffsAndAccessControl />
+                        <StaffsAndAccessControl next={() => setSelectedIndex(3)} />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
                         <Verification />
                     </TabPanel>
                 </TabPanels>
             </TabGroup>
+            <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
+                    <div className="flex min-h-full items-end md:items-center justify-center p-4">
+                        <DialogPanel transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                            <div className="flex flex-col items-center gap-4 p-5">
+                                <div className="grid place-content-center bg-success-50 rounded-[0.625rem] p-2">
+                                    <Icon icon="ri:checkbox-circle-fill" className="text-success-500 size-6" />
+                                </div>
+                                <div className="grid gap-1 text-center">
+                                    <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
+                                        Skip profile setup
+                                    </DialogTitle>
+                                    <p className="text-sm text-gray-500">
+                                        You can always update your profile in the PROFILE section of your account.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
+                                <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={() => setIsOpen(false)}>Dismiss</Button>
+                                <Button type="button" theme="primary" variant="filled" size="36" block onClick={() => navigate("/")}>Yes, Skip to Dashboard</Button>
+                            </div>
+                        </DialogPanel>
+                    </div>
+                </div>
+            </Dialog>
         </div>
     )
 }

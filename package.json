@@ -21,6 +21,7 @@
     "framer-motion": "^11.2.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-phone-number-input": "^3.4.5",
     "react-router-dom": "^6.20.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.3.0",
