@@ -71,7 +71,7 @@ const ArrowDownIcon = () => {
 /**
  * Phone input component for entering user phone number
  */
-export const PhoneInput: React.FC<PhoneInputProps> = ({ label, optional, required, error, international = false, countryCallingCodeEditable = false, placeholder = "Enter phone number", ...props }) => {
+export const PhoneInput: React.FC<PhoneInputProps> = ({ label, optional, required, error, international = false, countryCallingCodeEditable = false, placeholder = "Enter phone number", onChange, value, ...props }) => {
   useEffect(() => {
     const phoneInputCountrySelectArrow = document.querySelector(
       ".PhoneInputCountrySelectArrow"
@@ -107,6 +107,8 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({ label, optional, require
         defaultCountry="US"
         international={international}
         countryCallingCodeEditable={countryCallingCodeEditable}
+        onChange={onChange} 
+        value={value}
         {...props}
       />
       <RenderIf condition={!!error}>
