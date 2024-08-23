@@ -3,8 +3,13 @@ import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
 import { Button, InputField, RenderIf, SelectInput } from "@/components/core"
+import { User } from "@/types/auth"
 
-export const OrganizationInformation: React.FC = () => {
+interface OrganizationInformationProps {
+    account: User;
+}
+
+export const OrganizationInformation: React.FC<OrganizationInformationProps> = () => {
     const [editMode, setEditMode] = useState(false)
     const information = [
         { label: "Organisations name", value: "Samuel" },

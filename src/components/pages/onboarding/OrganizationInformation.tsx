@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
 import { useFormikWrapper } from "@/hooks/useFormikWrapper";
-import { Button, InputField, PhoneInput, SelectInput } from "@/components/core";
+import { formatPhoneNumber } from "react-phone-number-input";
+import { onboardOrganizationInfoSchema } from "@/validations/onboarding";
 import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
+import { Button, InputField, PhoneInput, SelectInput } from "@/components/core";
+import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
 
 interface OrganizationInformationProps {
     next: () => void;
@@ -13,7 +15,7 @@ interface OrganizationInformationProps {
 export const OrganizationInformation: React.FC<OrganizationInformationProps> = ({ next }) => {
     const { mutate, isPending } = useUpdateAccount("Organization information added successfully", () => next())
     
-    const { errors, handleSubmit, register, setFieldValue, values } = useFormikWrapper({
+    const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
             name: "",
             phone_number: "",
@@ -24,6 +26,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             address: "",
             zip_code: ""
         },
+        validationSchema: onboardOrganizationInfoSchema,
         onSubmit: () => {
             const { name, phone_number, website } = values
             const address_data = {
@@ -34,7 +37,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 address: values.address,
                 zip_code: values.zip_code
             }
-            mutate({ address_data, name, phone_number, website, phone_prefix: selectedCountry?.phonecode })
+            mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
         },
     })
 
@@ -70,7 +73,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             <hr />
             <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number?.toString()} initialValueFormat="national" required />
+                <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} countryCallingCodeEditable={true} required />
                 <SelectInput label="Country" placeholder="Country" size="40" options={fetchedCountries ?? []} disabled={fetchingCountries} {...register("country")} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,7 +85,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
             </div>
             <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
-            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending}>Save and continue</Button>
+            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid}>Save and continue</Button>
         </motion.form>
     )
 }

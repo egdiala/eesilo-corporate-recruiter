@@ -3,8 +3,13 @@ import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
 import { Button, InputField, RenderIf } from "@/components/core"
+import { User } from "@/types/auth"
 
-export const ContactPerson: React.FC = () => {
+interface ContactPersonProps {
+    account: User;
+}
+
+export const ContactPerson: React.FC<ContactPersonProps> = () => {
     const [editMode, setEditMode] = useState(false)
     const information = [
         { label: "Name", value: "Samuel John" },

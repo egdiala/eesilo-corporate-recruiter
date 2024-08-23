@@ -6,3 +6,8 @@ export const updateAccount = async (data: UpdateAccountParams) => {
   const res = await axiosUserInstance.put(GET_ACCOUNT_API, data);
   return res.data;
 };
+
+export const getAccount = async () => {
+  const res = await axiosUserInstance.get(GET_ACCOUNT_API);
+  return res.data;
+};

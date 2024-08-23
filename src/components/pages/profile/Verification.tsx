@@ -2,8 +2,13 @@ import React from "react"
 import { motion } from "framer-motion"
 import topStatus from "@/assets/top_status.svg"
 import { tabVariants } from "@/constants/animateVariants"
+import { User } from "@/types/auth";
 
-export const Verification: React.FC = () => {
+interface VerificationProps {
+    account: User;
+}
+
+export const Verification: React.FC<VerificationProps> = () => {
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col bg-gray-25 rounded-2xl p-5 gap-3">
             <div className="flex items-start">

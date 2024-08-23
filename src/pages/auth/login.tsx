@@ -21,9 +21,7 @@ export const LoginPage: React.FC = () => {
             navigate("/")
         }
         if (Object.values(data?.onboarding_stage).some((item) => item === false)) {
-            const stages = ["bio_data", "contact_person", "staff_access", "eid_number"];
-            const firstIncompleteStage = stages.find(stage => !data?.onboarding_stage[stage as keyof typeof data.onboarding_stage]);
-            navigate(`/onboarding?step=${firstIncompleteStage}`)
+            navigate("/onboarding")
         } else {
             proceed()
         }
