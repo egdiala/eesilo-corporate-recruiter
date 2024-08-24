@@ -79,13 +79,13 @@ export const OnboardingPage: React.FC = () => {
                         </TabList>
                         <TabPanels className="max-w-xl w-full flex-1">
                             <TabPanel as={AnimatePresence} mode="popLayout">
-                                <OrganizationInformation next={() => setSelectedIndex(1)} />
+                                <OrganizationInformation />
                             </TabPanel>
                             <TabPanel as={AnimatePresence} mode="popLayout">
-                                <ContactPerson next={() => setSelectedIndex(2)} />
+                                <ContactPerson />
                             </TabPanel>
                             <TabPanel as={AnimatePresence} mode="popLayout">
-                                <StaffsAndAccessControl next={() => setSelectedIndex(3)} />
+                                <StaffsAndAccessControl />
                             </TabPanel>
                             <TabPanel as={AnimatePresence} mode="popLayout">
                                 <Verification />

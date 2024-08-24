@@ -2,10 +2,10 @@ import React from "react"
 import { motion } from "framer-motion"
 import topStatus from "@/assets/top_status.svg"
 import { tabVariants } from "@/constants/animateVariants"
-import { User } from "@/types/auth";
+import { FetchedAccount } from "@/types/account";
 
 interface VerificationProps {
-    account: User;
+    account: FetchedAccount;
 }
 
 export const Verification: React.FC<VerificationProps> = () => {

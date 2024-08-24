@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAccount } from "@/services/apis/account";
 import { GET_ACCOUNT } from "@/constants/queryKeys";
-import { User } from "@/types/auth";
+import type { FetchedAccount } from "@/types/account";
 
 export const useGetAccount = () => {
     return useQuery({
         queryKey: [GET_ACCOUNT],
         queryFn: getAccount,
         refetchOnWindowFocus: true,
-        select: (res) => res?.data as User,
+        select: (res) => res?.data as FetchedAccount,
         retry: false,
     });
 };

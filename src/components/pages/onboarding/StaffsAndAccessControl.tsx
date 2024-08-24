@@ -3,14 +3,9 @@ import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { Button, InputField, SelectInput } from "@/components/core";
 import { tabVariants } from "@/constants/animateVariants";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
-interface StaffsAndAccessControlProps {
-    next: () => void;
-}
-
-
-export const StaffsAndAccessControl: React.FC<StaffsAndAccessControlProps> = ({ next }) => {
+export const StaffsAndAccessControl: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
@@ -25,7 +20,7 @@ export const StaffsAndAccessControl: React.FC<StaffsAndAccessControlProps> = ({ 
                     <p className="text-sm text-gray-500 text-center">Grant a new user access control over your account</p>
                 </div>
             </button>
-            <Button theme="primary" variant="filled" size="40" onClick={() => next()}>Save and continue</Button>
+            <Button theme="primary" variant="filled" size="40">Save and continue</Button>
             <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">

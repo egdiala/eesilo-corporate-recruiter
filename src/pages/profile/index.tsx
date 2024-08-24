@@ -56,7 +56,7 @@ export const ProfilePage: React.FC = () => {
                 </motion.div>
             </RenderIf>
             <RenderIf condition={isFetching}>
-                <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-green-1" /></div>
+                <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>
     )

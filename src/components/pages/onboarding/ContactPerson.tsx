@@ -3,16 +3,13 @@ import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
 import { useFormikWrapper } from "@/hooks/useFormikWrapper";
 import { Button, InputField, PhoneInput } from "@/components/core";
+import { onboardContactPersonSchema } from "@/validations/onboarding";
 import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
-import { onboardOrganizationInfoSchema } from "@/validations/onboarding";
 import { formatPhoneNumber, parsePhoneNumber } from "react-phone-number-input";
 
-interface ContactPersonProps {
-    next: () => void;
-}
 
-export const ContactPerson: React.FC<ContactPersonProps> = ({ next }) => {
-    const { mutate, isPending } = useUpdateAccount("Contact person info added successfully", () => next())
+export const ContactPerson: React.FC = () => {
+    const { mutate, isPending } = useUpdateAccount("Contact person info added successfully")
     
     const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
@@ -21,7 +18,7 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ next }) => {
             phone_number: "",
             email: "",
         },
-        validationSchema: onboardOrganizationInfoSchema,
+        validationSchema: onboardContactPersonSchema,
         onSubmit: () => {
             const formattedPhoneNumber = formatPhoneNumber(values.phone_number).split(" ").join("")
             const parsedPhoneNumber = parsePhoneNumber(values.phone_number)

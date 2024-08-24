@@ -8,10 +8,12 @@ import blankImg from "@/assets/company_recruiter.png"
 import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
+import { getAdminData } from "@/utils/authUtil"
 
 
 export const Sidebar: React.FC = () => {
     const navigate = useNavigate()
+    const admin = getAdminData()
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
         removeItem(APP_USERDATA_STORAGE_KEY)
@@ -44,7 +46,7 @@ export const Sidebar: React.FC = () => {
                     <Link to="/profile" className="flex items-center gap-2 p-3">
                         <img src={blankImg} className="size-10 rounded-full object-cover" alt="user" />
                         <div className="flex-1 grid gap-1">
-                            <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">First Medicals</h3>
+                            <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">{admin?.name}</h3>
                             <span className="font-medium text-xs text-gray-300 line-clamp-1 capitalize">Company</span>
                         </div>
                     </Link>

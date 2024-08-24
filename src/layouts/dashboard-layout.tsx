@@ -1,10 +1,21 @@
-import { type PropsWithChildren } from "react"
+import { useEffect, type PropsWithChildren } from "react"
 import { Navigate } from "react-router-dom"
 import { isAuthenticated } from "@/utils/authUtil"
 import { Header, Sidebar } from "@/components/shared"
+import { useGetAccount } from "@/services/hooks/queries";
+import { setItem } from "@/utils/localStorage";
+import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
     const isLoggedIn = isAuthenticated();
+
+    const { data: account, isSuccess } = useGetAccount()
+
+    useEffect(() => {
+        if (isSuccess) {
+            setItem(APP_USERDATA_STORAGE_KEY, JSON.stringify(account));
+        }
+    },[account, isSuccess])
 
     if (!isLoggedIn) {
         localStorage.clear();

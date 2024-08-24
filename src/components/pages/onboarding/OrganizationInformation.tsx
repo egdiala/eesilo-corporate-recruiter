@@ -8,12 +8,8 @@ import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
 import { Button, InputField, PhoneInput, SelectInput } from "@/components/core";
 import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
 
-interface OrganizationInformationProps {
-    next: () => void;
-}
-
-export const OrganizationInformation: React.FC<OrganizationInformationProps> = ({ next }) => {
-    const { mutate, isPending } = useUpdateAccount("Organization information added successfully", () => next())
+export const OrganizationInformation: React.FC = () => {
+    const { mutate, isPending } = useUpdateAccount("Organization information added successfully")
     
     const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {

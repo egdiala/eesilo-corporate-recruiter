@@ -1,9 +1,14 @@
+import { User } from "./auth";
+
 export interface UpdateAccountParams {
     name?: string;
     phone_number?: string;
     phone_prefix?: string;
     website?: string;
-    ein_id?: string;
+    ein_id?: string | {
+        value: string
+        status: number;
+    };
     twofactor?: {
         is_enabled?: "1" | "2";
         channel?: "email" | "phone";
@@ -23,4 +28,8 @@ export interface UpdateAccountParams {
         job_title?: string;
         phone_number?: string;
     }
+}
+
+export interface FetchedAccount extends User, Omit<UpdateAccountParams, "ein_id" | "phone_prefix" | "twofactor" | "website"> {
+
 }

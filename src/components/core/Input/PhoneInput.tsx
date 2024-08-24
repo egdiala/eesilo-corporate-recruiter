@@ -104,7 +104,6 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({ label, optional, require
       <PI
         placeholder={placeholder}
         countrySelectProps={{ unicodeFlags: false }}
-        defaultCountry="US"
         international={international}
         countryCallingCodeEditable={countryCallingCodeEditable}
         onChange={onChange} 
