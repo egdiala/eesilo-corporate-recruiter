@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { AuthRoutes, DashboardRoutes } from "./modules"
+import { AuthRoutes, DashboardRoutes, JobRoutes } from "./modules"
 import AuthLayout from "@/layouts/auth-layout"
 import BlankLayout from "@/layouts/blank-layout"
 import DashboardLayout from "@/layouts/dashboard-layout"
@@ -19,6 +19,7 @@ const Router = () => {
                 <Route path="auth/*" element={<AuthLayout><LocationProvider><AuthRoutes /></LocationProvider></AuthLayout>} />
                 <Route path="onboarding" element={<BlankLayout><LocationProvider><OnboardingPage /></LocationProvider></BlankLayout>} />
                 <Route path="/*" element={<DashboardLayout><LocationProvider><DashboardRoutes /></LocationProvider></DashboardLayout>} />
+                <Route path="jobs/*" element={<DashboardLayout><LocationProvider><JobRoutes /></LocationProvider></DashboardLayout>} />
             </Routes>
         </BrowserRouter>
     );

@@ -8,5 +8,8 @@ export const FORGOT_PASSWORD_API = "business/auths/forgot-password"
 // Account
 export const GET_ACCOUNT_API = "business/accounts"
 
+// Jobs
+export const GET_JOBS_API = "business/jobs"
+
 // Country
 export const COUNTRY_API = "countries"

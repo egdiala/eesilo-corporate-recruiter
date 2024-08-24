@@ -5,3 +5,6 @@ export const GET_CITIES_BY_STATE_AND_COUNTRY = "get-cities-by-state-and-country"
 
 // Account
 export const GET_ACCOUNT = "get-account"
+
+// Jobs
+export const GET_JOBS = "get-jobs"
