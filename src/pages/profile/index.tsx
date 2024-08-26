@@ -1,11 +1,11 @@
 import React, { Fragment, useMemo, useState } from "react"
+import { RenderIf } from "@/components/core"
 import { AnimatePresence, motion } from "framer-motion"
 import { useGetAccount } from "@/services/hooks/queries"
+import { Loader } from "@/components/core/Button/Loader"
 import { pageVariants } from "@/constants/animateVariants"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
 import { OrganizationInformation, ContactPerson, Verification } from "@/components/pages/profile"
-import { RenderIf } from "@/components/core"
-import { Loader } from "@/components/core/Button/Loader"
 
 export const ProfilePage: React.FC = () => {
     const { data: account, isFetching } = useGetAccount()

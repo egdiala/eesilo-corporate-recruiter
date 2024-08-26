@@ -1,7 +1,7 @@
 import React from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { JobCard } from "@/components/pages/jobs"
 import { useGetJobs } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
@@ -35,7 +35,7 @@ export const JobsPage: React.FC = () => {
                         <div className="grid grid-cols-2 gap-5">
                             {
                                 jobs?.map((item) =>
-                                    <JobCard key={item?.job_id} job={item!} />
+                                    <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
                                 )
                             }
                         </div>

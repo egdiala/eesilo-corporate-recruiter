@@ -1,9 +1,11 @@
 import { useEffect, type PropsWithChildren } from "react"
+import { motion } from "framer-motion";
 import { Navigate } from "react-router-dom"
+import { setItem } from "@/utils/localStorage";
 import { isAuthenticated } from "@/utils/authUtil"
 import { Header, Sidebar } from "@/components/shared"
 import { useGetAccount } from "@/services/hooks/queries";
-import { setItem } from "@/utils/localStorage";
+import { pageVariants } from "@/constants/animateVariants";
 import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
@@ -23,7 +25,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
     }
 
     return (
-        <div className="relative bg-gray-50 isolate flex min-h-dvh w-full overflow-hidden">
+        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="relative bg-gray-50 isolate flex min-h-dvh w-full overflow-hidden">
             <Sidebar />
             <div className="relative h-full flex-1">
                 <Header />
@@ -31,7 +33,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     {children}
                 </main>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

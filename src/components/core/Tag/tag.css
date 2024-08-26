@@ -1,0 +1,11 @@
+.neesilo-tag {
+  @apply flex items-center gap-1 w-fit rounded-md font-medium text-sm disabled:bg-gray-100 disabled:text-gray-300 py-1.5 px-2 !important;
+}
+
+.neesilo-tag--stroke {
+  @apply bg-white border border-gray-200 text-gray-500 hover:bg-gray-100 hover:border-gray-100 focus:bg-primary-25 focus:border-primary-200 focus:text-gray-900 transition-all duration-500 ease-out !important;
+}
+
+.neesilo-tag--gray {
+  @apply bg-gray-100 border border-gray-100 text-gray-500 hover:bg-white hover:border-gray-200 focus:bg-primary-25 focus:border-primary-200 focus:text-gray-900 transition-all duration-500 ease-out !important;
+}

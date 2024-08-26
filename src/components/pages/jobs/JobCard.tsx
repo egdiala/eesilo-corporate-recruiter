@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { ElementType, Fragment } from "react";
 import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { RenderIf } from "@/components/core";
@@ -7,17 +7,21 @@ import type { FetchedJob } from "@/types/jobs";
 
 interface JobCardProps {
     job: FetchedJob
+    as?: ElementType | "div"
+    [x: string]: unknown
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job }) => {
+export const JobCard: React.FC<JobCardProps> = ({ as, job, ...props }) => {
     const statuses = [
         { label: "Total Invited", value: job?.total_invited, icon: "ri:user-received-2-line", iconColor: "text-blue-500" },
         { label: "Accepted", value: job?.total_accepted, icon: "ri:user-follow-line", iconColor: "text-success-500" },
         { label: "Pending", value: job?.total_pending, icon: "ri:user-add-line", iconColor: "text-gray-500" },
         { label: "Declined", value: job?.total_declined, icon: "ri:user-forbid-line", iconColor: "text-error-500" },
     ]
+
+    const Component = as === undefined ? "div" : as;
     return (
-        <div className="grid gap-5 bg-gray-25 border border-blue-25 p-5 rounded-xl">
+        <Component className="grid gap-5 bg-gray-25 border border-blue-25 p-5 rounded-xl" {...props}>
             <div className="grid gap-2.5">
                 <h1 className="font-semibold text-base text-gray-900">{job?.title}</h1>
                 <p className="font-normal text-sm text-gray-600 line-clamp-2">{job?.description}</p>
@@ -39,6 +43,6 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
                     )
                 }
             </div>
-        </div>
+        </Component>
     )
 }
