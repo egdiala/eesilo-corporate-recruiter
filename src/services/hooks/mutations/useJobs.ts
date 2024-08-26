@@ -6,8 +6,7 @@ import { createJob } from "@/services/apis/jobs";
 export const useCreateJob = (msg?: string, fn?: () => void) => {
     return useMutation({
         mutationFn: createJob,
-        onSuccess: (response) => {
-            console.log(response)
+        onSuccess: () => {
             successToast({ param: {}, msg, size: "36" })
             fn?.()
         },

@@ -34,8 +34,8 @@ export const JobsPage: React.FC = () => {
                     <RenderIf condition={!isFetching}>
                         <div className="grid grid-cols-2 gap-5">
                             {
-                                jobs?.map((_, item) =>
-                                    <JobCard key={item} />
+                                jobs?.map((item) =>
+                                    <JobCard key={item?.job_id} job={item!} />
                                 )
                             }
                         </div>

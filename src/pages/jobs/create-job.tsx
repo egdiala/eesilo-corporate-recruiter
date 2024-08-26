@@ -1,15 +1,17 @@
 import React, { Fragment, useMemo } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 import { createJobSchema } from "@/validations/job"
+import { useCreateJob } from "@/services/hooks/mutations"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, InputField, SelectInput, TextArea } from "@/components/core"
 import { useGetCitiesByCountry, useGetCountries } from "@/services/hooks/queries"
-import { useCreateJob } from "@/services/hooks/mutations"
 
 export const CreateJobPage: React.FC = () => {
-    const { mutate: create, isPending } = useCreateJob()
+    const navigate = useNavigate()
+    const { mutate: create, isPending } = useCreateJob("Job created successfully", () => navigate("/jobs"))
     const { handleSubmit, isValid, register, values } = useFormikWrapper({
         initialValues: {
             title: "",
@@ -24,12 +26,12 @@ export const CreateJobPage: React.FC = () => {
         },
         validationSchema: createJobSchema,
         onSubmit: () => {
-            const { requirement, country, required_travel, required_relocation, ...rest } = values
+            const { requirement, required_travel, year_exp, required_relocation, ...rest } = values
+            const new_year_exp = year_exp.toString()
             const new_requirement = requirement.split(", ")
             const new_required_travel = required_travel === "yes" ? "1" : "0"
             const new_required_relocation = required_relocation === "yes" ? "1" : "0"
-            const new_country = country ? selectedCountry! : {}
-            create({ ...rest, requirement: new_requirement, required_travel: new_required_travel, required_relocation: new_required_relocation, country: new_country})
+            create({ ...rest, requirement: new_requirement, required_travel: new_required_travel, required_relocation: new_required_relocation, year_exp: new_year_exp })
         },
     })
 
@@ -56,7 +58,7 @@ export const CreateJobPage: React.FC = () => {
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
             <div className="flex flex-col gap-0 h-dvh overflow-y-scroll">
                 <div className="flex items-center gap-2.5 py-5 px-8 border-b border-b-gray-200 bg-white">
-                    <Button theme="neutral" variant="ghost" size="40">
+                    <Button type="button" theme="neutral" variant="ghost" size="40" onClick={() => navigate("/jobs")}>
                         <Icon icon="ri:arrow-left-s-line" className="size-5" />
                         Back
                     </Button>
