@@ -43,7 +43,7 @@ export const ContactPerson: React.FC = () => {
             <InputField label="Job Title" placeholder="Job title" size="40" type="text" {...register("job_title")} required />
             <PhoneInput label="Phone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
             <InputField label="Email" placeholder="Email" size="40" type="text" {...register("email")} required />
-            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid}>Save and continue</Button>
+            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid} block>Save and continue</Button>
         </motion.form>
     )
 }

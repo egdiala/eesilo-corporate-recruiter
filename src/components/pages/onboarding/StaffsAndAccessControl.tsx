@@ -20,7 +20,7 @@ export const StaffsAndAccessControl: React.FC = () => {
                     <p className="text-sm text-gray-500 text-center">Grant a new user access control over your account</p>
                 </div>
             </button>
-            <Button theme="primary" variant="filled" size="40">Save and continue</Button>
+            <Button theme="primary" variant="filled" size="40" block>Save and continue</Button>
             <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">

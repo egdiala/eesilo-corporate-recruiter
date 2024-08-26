@@ -5,7 +5,7 @@ import { tabVariants } from "@/constants/animateVariants"
 import { Button, InputField, PhoneInput, RenderIf, SelectInput } from "@/components/core"
 import { FetchedAccount } from "@/types/account"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { useUpdateAccount } from "@/services/hooks/mutations/useAccount"
+import { useUpdateAccount } from "@/services/hooks/mutations"
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
 import { formatPhoneNumber } from "react-phone-number-input"
 import { parsePhoneNumberFromString } from "libphonenumber-js";

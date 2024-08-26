@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { RenderIf } from "../RenderIf";
@@ -22,7 +22,7 @@ interface InputProps extends Omit<React.AllHTMLAttributes<HTMLInputElement>, "si
   /**
    * Helper text
    */
-  help?: string;
+  help?: string | ReactNode;
   /**
    * Optional input
    */
@@ -90,7 +90,7 @@ export const InputField: React.FC<InputProps> = ({ label, error, optional, requi
                 </RenderIf>
             </div>
             <RenderIf condition={!!help}>
-                <Description className="text-xs text-gray-500">{help}</Description>
+                <Description className="flex items-center gap-1 text-xs text-gray-500">{help}</Description>
             </RenderIf>
             <RenderIf condition={!!error}>
                 <span className="neesilo-input--error">{error}</span>

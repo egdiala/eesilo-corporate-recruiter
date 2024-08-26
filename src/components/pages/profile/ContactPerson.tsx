@@ -7,7 +7,7 @@ import { FetchedAccount } from "@/types/account"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { onboardContactPersonSchema } from "@/validations/onboarding"
 import { formatPhoneNumber, parsePhoneNumber } from "react-phone-number-input"
-import { useUpdateAccount } from "@/services/hooks/mutations/useAccount"
+import { useUpdateAccount } from "@/services/hooks/mutations"
 import { useGetCountries } from "@/services/hooks/queries"
 import parsePhoneNumberFromString from "libphonenumber-js"
 

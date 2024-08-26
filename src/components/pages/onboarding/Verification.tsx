@@ -12,7 +12,7 @@ export const Verification: React.FC = () => {
             </div>
             <hr />
             <InputField label="Employer Identification Number (EIN)" placeholder="03-0940998" size="40" type="text" required />
-            <Button theme="primary" variant="filled" size="40">Complete Registration</Button>
+            <Button theme="primary" variant="filled" size="40" block>Complete Registration</Button>
         </motion.div>
     )
 }

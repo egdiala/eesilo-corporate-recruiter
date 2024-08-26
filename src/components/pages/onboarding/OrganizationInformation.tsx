@@ -73,15 +73,15 @@ export const OrganizationInformation: React.FC = () => {
                 <SelectInput label="Country" placeholder="Country" size="40" options={fetchedCountries ?? []} disabled={fetchingCountries} {...register("country")} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <SelectInput label="State" placeholder="Select state" size="40" type="text" options={fetchedStates ?? []} disabled={fetchingStates || !values.country} {...register("state")} required />
-                <SelectInput label="City" placeholder="Select city" size="40" type="text" options={fetchedCities ?? []} disabled={fetchingCities || !values.state} {...register("city")} required />
+                <SelectInput label="State" placeholder="Select state" size="40" options={fetchedStates ?? []} disabled={fetchingStates || !values.country} {...register("state")} required />
+                <SelectInput label="City" placeholder="Select city" size="40" options={fetchedCities ?? []} disabled={fetchingCities || !values.state} {...register("city")} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField label="Address" placeholder="Address" size="40" type="text" {...register("address")} required />
                 <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
             </div>
             <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
-            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid}>Save and continue</Button>
+            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid} block>Save and continue</Button>
         </motion.form>
     )
 }

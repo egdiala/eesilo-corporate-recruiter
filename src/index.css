@@ -10,3 +10,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+body {
+  @apply overflow-hidden;
+}
+
+/* Hide arrows in Webkit-based browsers (Chrome, Safari) */
+.hide-number-input-arrows::-webkit-outer-spin-button,
+.hide-number-input-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows in Firefox */
+.hide-number-input-arrows {
+  -moz-appearance: textfield;
+}

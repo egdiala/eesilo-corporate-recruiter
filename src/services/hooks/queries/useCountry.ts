@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { GET_CITIES_BY_STATE_AND_COUNTRY, GET_COUNTRIES, GET_STATES_BY_COUNTRY } from "@/constants/queryKeys";
-import { getCitiesByStateAndCountry, getCountries, getStatesByCountry } from "@/services/apis/country";
+import { GET_CITIES_BY_COUNTRY, GET_CITIES_BY_STATE_AND_COUNTRY, GET_COUNTRIES, GET_STATES_BY_COUNTRY } from "@/constants/queryKeys";
+import { getCitiesByCountry, getCitiesByStateAndCountry, getCountries, getStatesByCountry } from "@/services/apis/country";
 import type { FetchedCitiesByStateAndCountry, FetchedCountries, FetchedStatesByCounty } from "@/types/country";
 
 export const useGetCountries = () => {
@@ -29,6 +29,17 @@ export const useGetCitiesByStateAndCountry = (payload: { country: string; state:
         enabled: !!payload.state,
         queryKey: [GET_CITIES_BY_STATE_AND_COUNTRY, payload],
         queryFn: () => getCitiesByStateAndCountry(payload),
+        refetchOnWindowFocus: false,
+        select: (res) => res as FetchedCitiesByStateAndCountry[],
+        retry: false,
+    });
+};
+
+export const useGetCitiesByCountry = (id: string) => {
+    return useQuery({
+        enabled: !!id,
+        queryKey: [GET_CITIES_BY_COUNTRY, id],
+        queryFn: () => getCitiesByCountry(id),
         refetchOnWindowFocus: false,
         select: (res) => res as FetchedCitiesByStateAndCountry[],
         retry: false,

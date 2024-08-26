@@ -15,3 +15,8 @@ export const getCitiesByStateAndCountry = async (payload: { country: string; sta
   const res = await axiosCountryInstance.get(`${COUNTRY_API}/${payload.country}/states/${payload.state}/cities`);
   return res.data;
 };
+
+export const getCitiesByCountry = async (id: string) => {
+  const res = await axiosCountryInstance.get(`${COUNTRY_API}/${id}/cities`);
+  return res.data;
+};

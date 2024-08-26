@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
             <Sidebar />
             <div className="relative h-full flex-1">
                 <Header />
-                <main className="px-8 pt-5 pb-10 flex-1 overflow-hidden">
+                <main className="flex-1 overflow-hidden">
                     {children}
                 </main>
             </div>
