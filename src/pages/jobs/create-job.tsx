@@ -56,7 +56,7 @@ export const CreateJobPage: React.FC = () => {
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
-            <div className="flex flex-col gap-0 h-dvh overflow-y-scroll">
+            <div className="flex flex-col gap-0 view-page-container overflow-hidden">
                 <div className="flex items-center gap-2.5 py-5 px-8 border-b border-b-gray-200 bg-white">
                     <Button type="button" theme="neutral" variant="ghost" size="40" onClick={() => navigate("/jobs")}>
                         <Icon icon="ri:arrow-left-s-line" className="size-5" />
@@ -64,7 +64,7 @@ export const CreateJobPage: React.FC = () => {
                     </Button>
                     <h1 className="text-lg text-gray-900">Create New Job Posting</h1>
                 </div>
-                <div className="flex-1 flex-col overflow-y-scroll min-h-screen h-dvh px:4 lg:px-8 pt-5 pb-10">
+                <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
                     <div className="bg-white rounded-2xl p-4 lg:p-8">
                         <form onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-[42.563rem] w-full">
                             <h2 className="font-medium text-xl text-gray-900">Create Job Post</h2>

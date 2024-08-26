@@ -9,10 +9,25 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --viewport-height: 100vh; /* Set a CSS variable for viewport height */
+  --header-height: 81px; /* Set a CSS variable for header height */
+  --sub-header-height: 83px; /* Set a CSS variable for header height */
 }
 
 body {
   @apply overflow-hidden;
+}
+
+.view-page-container {
+  height: calc(
+    var(--viewport-height) - var(--header-height)
+  ); /* Calculate dynamic height */
+}
+
+.view-subpage-container {
+  height: calc(
+    var(--viewport-height) - var(--header-height) - var(--sub-header-height)
+  ); /* Calculate dynamic height */
 }
 
 /* Hide arrows in Webkit-based browsers (Chrome, Safari) */
