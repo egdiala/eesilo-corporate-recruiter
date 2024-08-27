@@ -6,7 +6,7 @@ import { useGetJob } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import { useNavigate, useParams } from "react-router-dom"
 import { pageVariants } from "@/constants/animateVariants"
-import { JobInformation } from "@/components/pages/jobs"
+import { Hired, JobInformation } from "@/components/pages/jobs"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
 
 export const ViewJobPage: React.FC = () => {
@@ -62,6 +62,9 @@ export const ViewJobPage: React.FC = () => {
                                 <TabPanels className="flex-1">
                                     <TabPanel as={AnimatePresence} mode="popLayout">
                                         <JobInformation job={job!} />
+                                    </TabPanel>
+                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                        <Hired />
                                     </TabPanel>
                                 </TabPanels>
                             </TabGroup>

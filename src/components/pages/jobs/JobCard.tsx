@@ -32,9 +32,9 @@ export const JobCard: React.FC<JobCardProps> = ({ as, job, ...props }) => {
                     statuses.map((status, index) =>
                         <Fragment key={index}>
                             <div className="grid gap-3.5 flex-1">
-                                <div className="flex items-center gap-1.5">
+                                <div className="flex items-center gap-1.5 w-24">
                                     <Icon icon={status.icon} className={cn("size-5", status.iconColor)} />
-                                    <span className="font-normal text-xs text-gray-800">{status.label}</span>
+                                    <span className="font-normal text-xs text-gray-800 whitespace-nowrap">{status.label}</span>
                                 </div>
                                 <span className="font-medium text-base text-gray-800">{status.value}</span>
                             </div>

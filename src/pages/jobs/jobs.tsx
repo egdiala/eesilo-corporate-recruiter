@@ -1,16 +1,17 @@
-import React from "react"
+import React, { useState } from "react"
 import { Icon } from "@iconify/react"
-import { motion } from "framer-motion"
-import { Link, useNavigate } from "react-router-dom"
 import { JobCard } from "@/components/pages/jobs"
+import { Link, useNavigate } from "react-router-dom"
 import { useGetJobs } from "@/services/hooks/queries"
+import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
-import { pageVariants } from "@/constants/animateVariants"
 import { Button, InputField, RenderIf } from "@/components/core"
+import { pageVariants, routeVariants } from "@/constants/animateVariants"
 
 export const JobsPage: React.FC = () => {
     const navigate = useNavigate()
     const { data: jobs, isFetching } = useGetJobs()
+    const [gridView, setGridView] = useState(true)
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
@@ -22,8 +23,8 @@ export const JobsPage: React.FC = () => {
                             <div className="flex-1 max-w-80">
                                 <InputField placeholder="Search Jobs" type="text" size="40" iconRight="ri:search-2-line" />
                             </div>
-                            <Button theme="neutral" variant="stroke" size="40">
-                                <Icon icon="ri:list-unordered" className="size-5" />
+                            <Button type="button" theme="neutral" variant="stroke" size="40" onClick={() => setGridView(!gridView)}>
+                                <Icon icon={gridView ? "ri:list-unordered" : "ri:layout-grid-line"} className="size-5" />
                             </Button>
                             <Button type="button" theme="primary" variant="filled" size="40" onClick={() => navigate("create")}>
                                 <Icon icon="ri:briefcase-4-line" className="size-5" />
@@ -32,13 +33,19 @@ export const JobsPage: React.FC = () => {
                         </div>
                     </div>
                     <RenderIf condition={!isFetching}>
-                        <div className="grid grid-cols-2 gap-5">
+                        <AnimatePresence>
                             {
-                                jobs?.map((item) =>
-                                    <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
+                                gridView && (
+                                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
+                                        {
+                                            jobs?.map((item) =>
+                                                <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
+                                            )
+                                        }
+                                    </motion.div>
                                 )
                             }
-                        </div>
+                        </AnimatePresence>
                     </RenderIf>
                     <RenderIf condition={isFetching}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
