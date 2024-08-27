@@ -4,7 +4,7 @@ import { tabVariants } from "@/constants/animateVariants";
 import { Button, InputField } from "@/components/core";
 import { Icon } from "@iconify/react";
 
-export const Hired = () => {
+export const Hired: React.FC = () => {
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
