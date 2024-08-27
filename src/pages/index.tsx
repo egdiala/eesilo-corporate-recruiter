@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { TalentCard } from "@/components/pages/talent";
 import { JobCard } from "@/components/pages/jobs";
 import { dummyJobs } from "@/constants/data";
-import { RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
+import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 
 export const DashboardPage: React.FC = () => {
     const cards = [
@@ -46,6 +46,7 @@ export const DashboardPage: React.FC = () => {
                     }
                     </div>
                 </div>
+                <PerformanceStats />
                 <hr className="border-gray-200" />
                 <div className="grid gap-6">
                     <div className="flex items-center justify-between">
