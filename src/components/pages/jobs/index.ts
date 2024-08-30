@@ -1,3 +1,5 @@
 export * from "./Hired"
 export * from "./JobCard"
 export * from "./JobInformation"
+export * from "./SearchCandidates"
+export * from "./ShortlistedCandidates"

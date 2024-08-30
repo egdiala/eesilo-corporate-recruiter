@@ -9,12 +9,12 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 
 
-export const Hired: React.FC = () => {
+export const ShortlistedCandidates: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted({ offer_status: "1" })
+    const { data: candidates, isFetching } = useGetShortlisted({ invite_status: "0" })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const columns = [
@@ -62,11 +62,11 @@ export const Hired: React.FC = () => {
     return (
         <Fragment>
             <RenderIf condition={!isFetching}>
-                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
+                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
                     <div className="flex items-center justify-between">
-                        <h2 className="font-medium text-gray-900 text-base">Active Employees</h2>
+                        <h2 className="font-medium text-gray-900 text-base">Shortlisted</h2>
                         <div className="flex items-center gap-5 flex-1 max-w-96">
-                            <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" />
+                            <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" />
                             <Button theme="neutral" variant="stroke" size="36">
                                 <Icon icon="ri:filter-3-line" className="size-5" />
                             </Button>

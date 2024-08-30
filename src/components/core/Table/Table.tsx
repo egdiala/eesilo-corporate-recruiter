@@ -112,7 +112,7 @@ export const Table: React.FC<TableProps> = ({
                   return (
                     <th
                       key={header.id}
-                      className={`text-left px-3 py-2 last:text-right ${header.column.getCanSort() && "cursor-pointer select-none"}`}
+                      className={`text-left px-3 py-2 last:text-right ${header.column.getCanSort() ? "cursor-pointer select-none" : "cursor-default"}`}
                       onClick={header.column.getCanSort() ? header.column.getToggleSortingHandler() : () => { }}
                       title={
                         header.column.getCanSort()

@@ -3,18 +3,18 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
-import { Button, InputField, RenderIf, Table } from "@/components/core";
-import { useGetShortlisted } from "@/services/hooks/queries";
+import { Button, InputField, RenderIf, SelectInput, Table } from "@/components/core";
+import { useGetTalents } from "@/services/hooks/queries";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 
 
-export const Hired: React.FC = () => {
+export const SearchCandidates: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted({ offer_status: "1" })
+    const { data: candidates, isFetching } = useGetTalents({ })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const columns = [
@@ -27,20 +27,13 @@ export const Hired: React.FC = () => {
             accessorKey: "specialty",
         },
         {
-            header: () => "Note",
-            accessorKey: "note",
+            header: () => "Sub-Specialty",
+            accessorKey: "sub_specialty",
+            enableSorting: false
         },
         {
             header: () => "Qualification",
             accessorKey: "qualification",
-        },
-        {
-            header: () => "Priority",
-            accessorKey: "total_pending",
-        },
-        {
-            header: () => "Status",
-            accessorKey: "status",
         },
         {
             header: () => "Action",
@@ -62,15 +55,22 @@ export const Hired: React.FC = () => {
     return (
         <Fragment>
             <RenderIf condition={!isFetching}>
-                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
+                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
                     <div className="flex items-center justify-between">
-                        <h2 className="font-medium text-gray-900 text-base">Active Employees</h2>
+                        <h2 className="font-medium text-gray-900 text-base">Invite New Candidates</h2>
                         <div className="flex items-center gap-5 flex-1 max-w-96">
-                            <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" />
+                            <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" />
                             <Button theme="neutral" variant="stroke" size="36">
                                 <Icon icon="ri:filter-3-line" className="size-5" />
                             </Button>
                         </div>
+                    </div>
+                    <div className="grid grid-cols-5 gap-4">
+                        <SelectInput options={[]} />
+                        <SelectInput options={[]} />
+                        <SelectInput options={[]} />
+                        <SelectInput options={[]} />
+                        <SelectInput options={[]} />
                     </div>
                     <Table
                         columns={columns}
