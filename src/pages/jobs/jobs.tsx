@@ -68,7 +68,6 @@ export const JobsPage: React.FC = () => {
         getPaginationParams(location, setPage, () => {})
     }, [location, setPage])
 
-
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
             <div className="bg-white rounded-2xl lg:p-8">

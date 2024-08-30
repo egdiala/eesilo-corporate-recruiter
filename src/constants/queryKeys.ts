@@ -9,3 +9,7 @@ export const GET_ACCOUNT = "get-account"
 
 // Jobs
 export const GET_JOBS = "get-jobs"
+
+// Applicants
+export const GET_SHORTLISTED = "get-shortlisted"
+export const GET_TALENTS = "get-talents"

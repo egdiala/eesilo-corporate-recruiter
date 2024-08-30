@@ -124,7 +124,7 @@ export const Table: React.FC<TableProps> = ({
                           : undefined
                       }
                     >
-                      <div className="flex items-center gap-1 text-grey-dark-1 text-sm font-medium whitespace-nowrap">
+                      <div className="flex items-center gap-1 text-gray-600 text-sm font-normal whitespace-nowrap">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()

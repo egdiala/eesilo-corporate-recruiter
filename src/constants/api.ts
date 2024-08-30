@@ -11,5 +11,9 @@ export const GET_ACCOUNT_API = "business/accounts"
 // Jobs
 export const GET_JOBS_API = "business/accounts/job"
 
+// Applicants
+export const GET_TALENTS_API = "business/applicants"
+export const GET_SHORTLISTED_CANDIDATES_API = "business/applicants/shortlisted"
+
 // Country
 export const COUNTRY_API = "countries"
