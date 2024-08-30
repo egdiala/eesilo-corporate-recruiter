@@ -1,12 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
-import { Button, InputField, RenderIf, SelectInput, Table } from "@/components/core";
+import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
 import { useGetTalents } from "@/services/hooks/queries";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
+import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
+import { useDebounce } from "@/hooks/useDebounce";
 
 
 export const SearchCandidates: React.FC = () => {
@@ -14,21 +16,33 @@ export const SearchCandidates: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetTalents({ })
+    const { value: keyword, onChangeHandler } = useDebounce(500)
+    const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
+    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp })
+    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const columns = [
         {
             header: () => "Name",
-            accessorKey: "name",
+            accessorKey: "first_name",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedTalent
+                return (
+                    <div className="flex items-center gap-3">
+                        <Avatar size="40" image={""} alt={`${item?.first_name}_${item?.last_name}`} />
+                        <div className="whitespace-nowrap">{item?.first_name} {item?.last_name}</div>
+                    </div>
+                )
+            }
         },
         {
             header: () => "Specialty",
-            accessorKey: "specialty",
+            accessorKey: "specialty_data.title",
         },
         {
             header: () => "Sub-Specialty",
-            accessorKey: "sub_specialty",
+            accessorKey: "specialty_data.specialty_sub",
             enableSorting: false
         },
         {
@@ -38,7 +52,13 @@ export const SearchCandidates: React.FC = () => {
         {
             header: () => "Action",
             accessorKey: "status",
-            enableSorting: false
+            enableSorting: false,
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedTalent
+                return (
+                    <button type="button" className="font-normal text-xs text-warning-600 whitespace-nowrap" onClick={() => {item?.user_id}}>Add to Shortlist</button>
+                )
+            }
         },
     ];
 
@@ -53,40 +73,38 @@ export const SearchCandidates: React.FC = () => {
     }, [location, setPage])
 
     return (
-        <Fragment>
-            <RenderIf condition={!isFetching}>
-                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
-                    <div className="flex items-center justify-between">
-                        <h2 className="font-medium text-gray-900 text-base">Invite New Candidates</h2>
-                        <div className="flex items-center gap-5 flex-1 max-w-96">
-                            <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" />
-                            <Button theme="neutral" variant="stroke" size="36">
-                                <Icon icon="ri:filter-3-line" className="size-5" />
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-5 gap-4">
-                        <SelectInput options={[]} />
-                        <SelectInput options={[]} />
-                        <SelectInput options={[]} />
-                        <SelectInput options={[]} />
-                        <SelectInput options={[]} />
-                    </div>
-                    <Table
-                        columns={columns}
-                        data={candidates ?? []}
-                        page={page}
-                        perPage={itemsPerPage}
-                        totalCount={candidates?.length}
-                        onPageChange={handlePageChange}
-                        emptyStateText="No items to be found here."
-                        onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
-                    />
-                </motion.div>
+        <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
+            <div className="flex items-center justify-between">
+                <h2 className="font-medium text-gray-900 text-base">Invite New Candidates</h2>
+                <div className="flex items-center gap-5 flex-1 max-w-96">
+                    <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" onChange={onChangeHandler} />
+                    <Button theme="neutral" variant="stroke" size="36">
+                        <Icon icon="ri:filter-3-line" className="size-5" />
+                    </Button>
+                </div>
+            </div>
+            <div className="grid grid-cols-5 gap-4">
+                <InputField type="text" placeholder="Job Role" />
+                <InputField type="text" placeholder="Educational qualifications" />
+                <InputField type="text" placeholder="Skills" />
+                <InputField type="text" placeholder="Years of experience" onChange={handleYearExp} />
+                <InputField type="text" placeholder="Salary expectation" />
+            </div>
+            <RenderIf condition={!isFetching && !fetchingCount}>
+                <Table
+                    columns={columns}
+                    data={candidates ?? []}
+                    page={page}
+                    perPage={itemsPerPage}
+                    totalCount={count?.total}
+                    onPageChange={handlePageChange}
+                    emptyStateText="No candidates to be found here."
+                    onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                />
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isFetching || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
-        </Fragment>
+        </motion.div>
     )
 }

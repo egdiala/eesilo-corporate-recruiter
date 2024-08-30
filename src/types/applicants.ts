@@ -22,3 +22,33 @@ export type GetTalentsQuery = {
     item_per_page?: string;
     component?: "count";
 }
+
+export interface FetchedTalent {
+    specialty_keyword: string[];
+    relocation_data: {
+        ready_to_relocate: boolean;
+        ready_to_travel: boolean;
+    },
+    address_data: {
+        address: string;
+        city: string;
+        country: string;
+        country_code: string;
+        state: string;
+        zip_code: number;
+    },
+    first_name: string;
+    last_name: string;
+    specialty_data: {
+        industry: string;
+        specialty_main: string;
+        specialty_sub: string;
+        title: string;
+        year_exp: number;
+    };
+    user_id: string;
+}
+
+export interface FetchedTalentCount {
+    total: number;
+}

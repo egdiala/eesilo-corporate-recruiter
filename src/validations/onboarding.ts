@@ -3,7 +3,7 @@ import { EmailSchema } from "./auth";
 
 export const onboardOrganizationInfoSchema = Yup.object().shape({
     name: Yup.string().trim().required("Organization name is required"),
-    phone_number: Yup.string().trim().required("Telephone number name is required"),
+    phone_number: Yup.string().trim().required("Telephone number is required"),
     website: Yup.string().trim().required("Company website is required"),
     country: Yup.string().trim().required("Select a country"),
     state: Yup.string().trim().required("Select a state"),
@@ -15,6 +15,6 @@ export const onboardOrganizationInfoSchema = Yup.object().shape({
 export const onboardContactPersonSchema = Yup.object().shape({
     name: Yup.string().trim().required("Contact person name is required"),
     job_title: Yup.string().trim().required("Job title is required"),
-    phone_number: Yup.string().trim().required("Telephone number name is required"),
+    phone_number: Yup.string().trim().required("Telephone number is required"),
     email: EmailSchema,
 });

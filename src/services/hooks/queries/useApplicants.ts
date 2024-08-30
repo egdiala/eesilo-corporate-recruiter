@@ -12,11 +12,11 @@ export const useGetShortlisted = (query: GetShortlistedQuery) => {
     });
 };
 
-export const useGetTalents = (query: GetTalentsQuery) => {
+export const useGetTalents = <T>(query: GetTalentsQuery) => {
     return useQuery({
         queryKey: [GET_TALENTS, query],
         queryFn: () => getTalents(query),
-        select: (res) => res?.data as any,
+        select: (res) => res?.data as T,
         retry: false,
     });
 };
