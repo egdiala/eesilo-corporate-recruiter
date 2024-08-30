@@ -1,17 +1,73 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { JobCard } from "@/components/pages/jobs"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { useGetJobs } from "@/services/hooks/queries"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
-import { Button, InputField, RenderIf } from "@/components/core"
+import { Button, InputField, RenderIf, Table } from "@/components/core"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
+import { FetchedJob } from "@/types/jobs"
+import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams"
 
 export const JobsPage: React.FC = () => {
     const navigate = useNavigate()
+    const location = useLocation();
+    const [page, setPage] = useState(1)
+    const [itemsPerPage] = useState(10)
     const { data: jobs, isFetching } = useGetJobs()
     const [gridView, setGridView] = useState(true)
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const columns = [
+        {
+            header: () => "Job Title",
+            accessorKey: "title",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedJob
+                return (
+                    <div className="text-gray-800 text-sm whitespace-nowrap">{item?.title}</div>
+                )
+            }
+        },
+        {
+            header: () => "Description",
+            accessorKey: "description",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedJob
+                return (
+                    <div className="text-gray-800 text-sm line-clamp-1 w-96 md:w-auto">{item?.description}</div>
+                )
+            }
+        },
+        {
+            header: () => "Invited",
+            accessorKey: "total_invited",
+        },
+        {
+            header: () => "Accepted",
+            accessorKey: "total_accepted",
+        },
+        {
+            header: () => "Pending",
+            accessorKey: "total_pending",
+        },
+        {
+            header: () => "Declined",
+            accessorKey: "total_declined",
+        },
+    ];
+
+    const handlePageChange = (page: number) => {
+        // in a real page, this function would paginate the data from the backend
+        setPage(page)
+        setPaginationParams(page, itemsPerPage, searchParams, setSearchParams)
+    };
+
+    useEffect(() => {
+        getPaginationParams(location, setPage, () => {})
+    }, [location, setPage])
+
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
@@ -33,7 +89,7 @@ export const JobsPage: React.FC = () => {
                         </div>
                     </div>
                     <RenderIf condition={!isFetching}>
-                        <AnimatePresence>
+                        <AnimatePresence mode="popLayout">
                             {
                                 gridView && (
                                     <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
@@ -43,6 +99,22 @@ export const JobsPage: React.FC = () => {
                                             )
                                         }
                                     </motion.div>
+                                )
+                            }
+                        </AnimatePresence>
+                        <AnimatePresence mode="popLayout">
+                            {
+                                !gridView && (
+                                    <Table
+                                        columns={columns}
+                                        data={jobs ?? []}
+                                        page={page}
+                                        perPage={itemsPerPage}
+                                        totalCount={jobs?.length}
+                                        onPageChange={handlePageChange}
+                                        emptyStateText="No items to be found here."
+                                        onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                                    />
                                 )
                             }
                         </AnimatePresence>

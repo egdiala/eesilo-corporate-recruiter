@@ -75,13 +75,6 @@ export const Table: React.FC<TableProps> = ({
     onPageChange(page, (perPage as number));
   };
 
-  // Function to navigate to a specific page
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalCount!) {
-      handlePageChange(page);
-    }
-  };
-
   // Function to navigate to previous page
   const prev = () => {
     if ((page as number) > 1) {
@@ -105,22 +98,22 @@ export const Table: React.FC<TableProps> = ({
   }, [location.search]);
 
   return (
-    <div className="grid gap-8">
-      <div className="lg:w-full lg:left-auto lg:relative lg:right-auto left-0 right-0 overflow-x-scroll scrollbar-hide">
+    <div className="grid gap-6">
+      <div className="lg:w-full lg:left-auto lg:relative lg:right-auto rounded-t-xl left-0 right-0 overflow-x-scroll scrollbar-hide">
         <table className="table-auto w-full">
           {/* Table Head */}
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
-                className="bg-grey-dark-4 rounded-lg cursor-pointer"
+                className="bg-gray-200 rounded-t-xl cursor-pointer"
               >
-                {headerGroup.headers.map((header, index) => {
+                {headerGroup.headers.map((header) => {
                   return (
                     <th
                       key={header.id}
-                      className={`text-left px-2 py-2.5 last:text-right ${header.column.getCanSort() && "cursor-pointer select-none"}`}
-                      onClick={index === 0 ? header.column.getToggleSortingHandler() : () => { }}
+                      className={`text-left px-3 py-2 last:text-right ${header.column.getCanSort() && "cursor-pointer select-none"}`}
+                      onClick={header.column.getCanSort() ? header.column.getToggleSortingHandler() : () => { }}
                       title={
                         header.column.getCanSort()
                           ? header.column.getNextSortingOrder() === "asc"
@@ -137,7 +130,7 @@ export const Table: React.FC<TableProps> = ({
                           header.getContext()
                         )}
 
-                        <RenderIf condition={index === 0}>
+                        <RenderIf condition={header.column.getCanSort()}>
                           <Icon
                             icon="ph:caret-up-down-fill"
                             className="text-neutral-40"
@@ -165,13 +158,13 @@ export const Table: React.FC<TableProps> = ({
                     key={row.id}
                     data-testid={row.id}
                     onClick={() => onClick?.(row)}
-                    className={cn("hover:bg-green-4", !onClick ? "cursor-default" : "cursor-pointer", row?.getIsSelected() && "bg-green-4")}
+                    className={cn("transition duration-500 ease-out hover:bg-gray-50", !onClick ? "cursor-default" : "cursor-pointer", row?.getIsSelected() ? "font-medium" : "font-normal")}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <td
                           key={cell.id}
-                          className="text-left pl-2 pr-3 py-3.5 text-grey-dark-2 text-sm font-normal"
+                          className="text-left pl-3 pr-5 py-3.5 text-gray-800 text-sm border-b border-b-[#E1E4EA]"
                           onClick={(e) => {
                             if (
                               cell.column.id === "action" ||
@@ -209,7 +202,6 @@ export const Table: React.FC<TableProps> = ({
           totalPages={Math.ceil((totalCount as number) / (perPage as number))}
           prev={prev}
           next={next}
-          goToPage={(v) => goToPage(Number(v))}
         />
       </RenderIf>
     </div>

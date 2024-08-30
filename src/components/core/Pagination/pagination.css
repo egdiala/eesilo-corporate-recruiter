@@ -1,5 +1,5 @@
-.ego-pagination-container {
-  @apply flex flex-row items-center justify-between gap-2 w-full;
+.neesilo-pagination-container {
+  @apply flex items-center justify-between pt-3 px-5 pb-1;
 }
 
 /* .ego-pagination-arrow-button-inactive {

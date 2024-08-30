@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Icon } from "@iconify/react";
 import "./pagination.css";
+import { Button } from "../Button";
+import { cn } from "@/libs/cn";
 
 export interface PaginationProps {
   /**
@@ -21,10 +22,6 @@ export interface PaginationProps {
    */
   next: React.MouseEventHandler<HTMLButtonElement>;
   /**
-   * Go to specific page.
-   */
-  goToPage: (v: string | number) => void;
-  /**
    * Other unknown attributes
    */
   [x: string]: any;
@@ -37,52 +34,18 @@ export interface PaginationProps {
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage = 1,
   totalPages,
-  goToPage,
   prev,
   next,
   className,
 }) => {
 
   return (
-    <div
-      className={`ego-pagination-container ${className ?? "pt-4 px-4 pb-2.5"}`}
-    >
-      <div className="relative inline-block text-left">
-        <div className="text-sm text-grey-dark-3 inline-flex justify-center w-full focus:outline-none items-center gap-2">
-            Showing page 
-            <span className="text-grey-dark-1 font-normal">
-                {currentPage} of {totalPages}
-            </span>
+    <div className={cn("neesilo-pagination-container", className)}>
+        <Button type="button" theme="neutral" variant="stroke" size="40" onClick={prev} disabled={currentPage === 1}>Previous</Button>
+        <div className="text-sm text-[#2A2A2A] font-medium inline-flex justify-center w-full focus:outline-none items-center gap-2">
+            Page {currentPage} of {totalPages}
         </div>
-      </div>
-      <div className="flex items-center gap-2 justify-start">
-        <button
-          type="button"
-          onClick={prev}
-          disabled={currentPage === 1}
-          className={currentPage === 1 ? "ego-pagination-arrow-button-inactive" : "ego-pagination-arrow-button-active"}
-        >
-          <Icon
-            icon="heroicons:chevron-left-solid"
-            className="text-base"
-          />
-        </button>
-        <div className="relative flex flex-col items-center gap-2">
-          <input value={currentPage} type="text" inputMode="numeric" onChange={(e) => goToPage(e.target.value)} className="rounded-md text-base text-center border border-input-filled bg-grey-dark-4 focus:border-green-base focus:bg-light-green text-grey-dark-1 placeholder:text-grey-dark-3 focus:ring focus:ring-green-base/[0.24] disabled:bg-white disabled:border-grey-dark-3 disabled:text-grey-dark-3 caret-grey-dark-1 transition-all duration-300 ease-out px-2 max-w-11 w-full block h-7" />
-          <span className="absolute -bottom-4 text-grey-dark-3 text-[0.625rem]/3 whitespace-nowrap">Click to Edit</span>
-        </div>
-        <button
-          type="button"
-          onClick={next}
-          disabled={currentPage === totalPages}
-          className={currentPage === totalPages ? "ego-pagination-arrow-button-inactive" : "ego-pagination-arrow-button-active"}
-        >
-          <Icon
-            icon="heroicons:chevron-right-solid"
-            className="text-base"
-          />
-        </button>
-      </div>
+        <Button type="button" theme="neutral" variant="stroke" size="40" onClick={next} disabled={currentPage === totalPages}>Next</Button>
     </div>
   );
 };
