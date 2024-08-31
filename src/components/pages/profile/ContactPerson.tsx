@@ -21,13 +21,17 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
     const { data: countries } = useGetCountries()
 
     const phoneNumber = useMemo(() => {
-        const phone_number = account?.phone_number as string
-        const countryCallingCode = `${account?.phone_prefix as string}`
-        const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
+        if (account?.phone_number) {
+            const phone_number = account?.phone_number as string
+            const countryCallingCode = `${account?.phone_prefix as string}`
+            const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
 
-        const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
+            const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
 
-        return { parsedPhoneNumber, country }
+            return { parsedPhoneNumber, country }
+        } else {
+            return { parsedPhoneNumber: "", country: { iso2: "US" } }
+        }
     },[account?.phone_number, account?.phone_prefix, countries])
     
     const { errors, handleSubmit, isValid, dirty, register, setFieldValue, values, resetForm } = useFormikWrapper({
@@ -101,7 +105,7 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
                         information.map((info) =>
                             <div key={info.label} className="flex items-center justify-between py-3">
                                 <span className="text-gray-500 text-sm">{info.label}</span>
-                                <span className="text-gray-900 text-base font-medium">{info.value}</span>
+                                <span className="text-gray-900 text-base font-medium">{info.value || "-"}</span>
                             </div>
                         )
                     }

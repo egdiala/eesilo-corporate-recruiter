@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { useDebounce } from "@/hooks/useDebounce"
@@ -7,16 +7,21 @@ import { Loader } from "@/components/core/Button/Loader"
 import { useGetCitiesByCountry, useGetCountries, useGetJobs, useGetTalents } from "@/services/hooks/queries"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import type { FetchedTalent } from "@/types/applicants"
-import { Button, EmptyState, InputField, RenderIf, SelectInput } from "@/components/core"
+import { Button, ComboBox, EmptyState, InputField, RenderIf } from "@/components/core"
 import { Link } from "react-router-dom"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 
 export const TalentSearchPage: React.FC = () => {
+    const [query, setQuery] = useState({
+        job: "",
+        country: "",
+        city: ""
+    })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs()
     const { value: keyword, onChangeHandler } = useDebounce(500)
     const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
 
-    const { register, values } = useFormikWrapper({
+    const { values, setFieldValue } = useFormikWrapper({
         initialValues: {
             job_id: "",
             country: "",
@@ -29,23 +34,29 @@ export const TalentSearchPage: React.FC = () => {
     const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp, ...values })
     // const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp })
 
-    const fetchedJobs = useMemo(() => {
-        return jobs?.map((job) => ({ label: job?.title, value: job?.job_id }))
-    },[jobs])
+    const fetchedJobs = query.job === ""
+        ? jobs
+        : jobs?.filter((job) => {
+            return job.title.toLowerCase().includes(query.job.toLowerCase())
+            })
 
     const { data: countries, isFetching: fetchingCountries } = useGetCountries()
-    const fetchedCountries = useMemo(() => {
-        return countries?.map((country) => ({ label: country.name, value: country.name }))
-    }, [countries])
+    const fetchedCountries = query.country === ""
+        ? countries
+        : countries?.filter((country) => {
+            return country.name.toLowerCase().includes(query.country.toLowerCase())
+            })
 
     const selectedCountry = useMemo(() => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
     const { data: cities, isFetching: fetchingCities } = useGetCitiesByCountry(selectedCountry?.iso2 as string)
-    const fetchedCities = useMemo(() => {
-        return cities?.map((city) => ({ label: city.name, value: city.name }))?.sort((a,b) => a?.label > b?.label ? 1 : -1)
-    }, [cities])
+    const fetchedCities = query.city === ""
+        ? cities
+        : cities?.filter((city) => {
+            return city.name.toLowerCase().includes(query.city.toLowerCase())
+            })
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
@@ -67,13 +78,58 @@ export const TalentSearchPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
-                        <SelectInput label="Job Role" options={fetchedJobs ?? []} disabled={fetchingJobs} {...register("job_id")} />
-                        <SelectInput label="Country" options={fetchedCountries ?? []} disabled={fetchingCountries} {...register("country")} />
-                        <SelectInput label="City" options={fetchedCities ?? []} disabled={fetchingCities || !selectedCountry?.id} {...register("city")} />
-                        <InputField type="text" label="Educational qualifications" />
-                        <InputField type="text" label="Skills" />
-                        <InputField type="text" label="Years of experience" onChange={handleYearExp} />
-                        <InputField type="text" label="Salary expectation" />
+                        <ComboBox
+                            disabled={fetchingJobs}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                job: "",
+                            }))}
+                            options={fetchedJobs ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                job: value
+                            }))} 
+                            displayValue={(item) => item?.title}
+                            optionLabel={(option) => option?.title} 
+                            setSelected={(value) => setFieldValue("job_id", value?.job_id)}
+                            placeholder="Job Role"
+                        />
+                        <ComboBox
+                            disabled={fetchingCountries}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                country: "",
+                            }))}
+                            options={fetchedCountries ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                country: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("country", value?.name)}
+                            placeholder="Country"
+                        />
+                        <ComboBox
+                            disabled={fetchingCities}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                city: "",
+                            }))}
+                            options={fetchedCities ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                city: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("city", value?.name)}
+                            placeholder="City"
+                        />
+                        <InputField type="text" placeholder="Educational qualifications" />
+                        <InputField type="text" placeholder="Skills" />
+                        <InputField type="text" placeholder="Years of experience" onChange={handleYearExp} />
+                        <InputField type="text" placeholder="Salary expectation" />
                     </div>
                     <RenderIf condition={!isFetching}>
                         <RenderIf condition={candidates?.length! > 0}>

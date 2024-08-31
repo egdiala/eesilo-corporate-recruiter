@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
-import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
-import { useGetTalents } from "@/services/hooks/queries";
+import { Avatar, Button, ComboBox, InputField, RenderIf, Table } from "@/components/core";
+import { useGetJobs, useGetTalents } from "@/services/hooks/queries";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
@@ -20,12 +20,19 @@ export const SearchCandidates: React.FC = () => {
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
     })
+    const [query, setQuery] = useState({
+        job: "",
+        country: "",
+        city: ""
+    })
+    const [job_id, setJobId] = useState("")
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs()
     const [activeTalent, setActiveTalent] = useState<FetchedTalent | null>(null)
     const [searchParams, setSearchParams] = useSearchParams();
     const { value: keyword, onChangeHandler } = useDebounce(500)
     const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
-    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp })
-    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp })
+    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp, job_id })
+    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp, job_id })
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -33,6 +40,12 @@ export const SearchCandidates: React.FC = () => {
         openShortlistCandidate: !toggleModals.openShortlistCandidate,
       }))
     },[toggleModals.openShortlistCandidate])
+
+    const fetchedJobs = query.job === ""
+        ? jobs
+        : jobs?.filter((job) => {
+            return job.title.toLowerCase().includes(query.job.toLowerCase())
+            })
 
     const columns = [
         {
@@ -103,6 +116,22 @@ export const SearchCandidates: React.FC = () => {
                 </div>
             </div>
             <div className="grid grid-cols-5 gap-4">
+                <ComboBox
+                    disabled={fetchingJobs}
+                    onClose={() => setQuery((prev) => ({
+                        ...prev,
+                        job: "",
+                    }))}
+                    options={fetchedJobs ?? []} 
+                    onChange={(value) => setQuery((prev) => ({
+                        ...prev,
+                        job: value
+                    }))} 
+                    displayValue={(item) => item?.title}
+                    optionLabel={(option) => option?.title} 
+                    setSelected={(value) => setJobId(value?.job_id)}
+                    placeholder="Job Role"
+                />
                 <InputField type="text" placeholder="Job Role" />
                 <InputField type="text" placeholder="Educational qualifications" />
                 <InputField type="text" placeholder="Skills" />

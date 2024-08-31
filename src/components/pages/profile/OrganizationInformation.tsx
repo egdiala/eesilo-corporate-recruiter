@@ -1,14 +1,14 @@
 import React, { Fragment, useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
-import { tabVariants } from "@/constants/animateVariants"
-import { Button, InputField, PhoneInput, RenderIf, SelectInput } from "@/components/core"
 import { FetchedAccount } from "@/types/account"
+import { tabVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { useUpdateAccount } from "@/services/hooks/mutations"
-import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
 import { formatPhoneNumber } from "react-phone-number-input"
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { useUpdateAccount } from "@/services/hooks/mutations"
+import { parsePhoneNumberFromString } from "libphonenumber-js"
+import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
+import { Button, ComboBox, InputField, PhoneInput, RenderIf } from "@/components/core"
 import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
 
 interface OrganizationInformationProps {
@@ -17,17 +17,26 @@ interface OrganizationInformationProps {
 
 export const OrganizationInformation: React.FC<OrganizationInformationProps> = ({ account }) => {
     const { mutate, isPending } = useUpdateAccount("Organization information edited successfully")
+    const [query, setQuery] = useState({
+        country: "",
+        state: "",
+        city: ""
+    })
 
     const { data: countries, isFetching: fetchingCountries } = useGetCountries()
 
     const phoneNumber = useMemo(() => {
-        const phone_number = account?.phone_number as string
-        const countryCallingCode = `${account?.phone_prefix as string}`
-        const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
+        if (account?.phone_number) {
+            const phone_number = account?.phone_number as string
+            const countryCallingCode = `${account?.phone_prefix as string}`
+            const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
 
-        const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
+            const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
 
-        return { parsedPhoneNumber, country }
+            return { parsedPhoneNumber, country }
+        } else {
+            return { parsedPhoneNumber: "", country: { iso2: "US" } }
+        }
     },[account?.phone_number, account?.phone_prefix, countries])
     
     const { errors, handleSubmit, isValid, dirty, register, setFieldValue, values } = useFormikWrapper({
@@ -56,27 +65,33 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
         },
     })
-    const fetchedCountries = useMemo(() => {
-        return countries?.map((country) => ({ label: country.name, value: country.name }))
-    }, [countries])
+    const fetchedCountries = query.country === ""
+        ? countries
+        : countries?.filter((country) => {
+            return country.name.toLowerCase().includes(query.country.toLowerCase())
+            })
 
     const selectedCountry = useMemo(() => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
     const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
-    const fetchedStates = useMemo(() => {
-        return states?.map((state) => ({ label: state.name, value: state.name }))?.sort((a,b) => a?.label > b?.label ? 1 : -1)
-    }, [states])
+    const fetchedStates = query.state === ""
+        ? states
+        : states?.filter((state) => {
+            return state.name.toLowerCase().includes(query.state.toLowerCase())
+            })
 
     const selectedState = useMemo(() => {
         return states?.filter((item) => item?.name === values?.state)?.at(0)
     },[states, values?.state])
 
     const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
-    const fetchedCities = useMemo(() => {
-        return cities?.map((city) => ({ label: city.name, value: city.name }))?.sort((a,b) => a?.label > b?.label ? 1 : -1)
-    }, [cities])
+    const fetchedCities = query.city === ""
+        ? cities
+        : cities?.filter((city) => {
+            return city.name.toLowerCase().includes(query.city.toLowerCase())
+            })
 
     
     const [editMode, setEditMode] = useState(false)
@@ -109,11 +124,68 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                     <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" defaultCountry={phoneNumber?.country?.iso2} value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
-                        <SelectInput label="Country" placeholder="Country" size="40" options={fetchedCountries ?? []} disabled={fetchingCountries} {...register("country")} required />
+                        <ComboBox
+                            label="Country"
+                            disabled={fetchingCountries}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                country: "",
+                            }))}
+                            error={errors.country}
+                            options={fetchedCountries ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                country: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("country", value?.name)}
+                            placeholder="Country"
+                            size="40"
+                            required
+                        />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <SelectInput label="State" placeholder="Select state" size="40" type="text" options={fetchedStates ?? []} disabled={fetchingStates || !values.country} {...register("state")} required />
-                        <SelectInput label="City" placeholder="Select city" size="40" type="text" options={fetchedCities ?? []} disabled={fetchingCities || !values.state} {...register("city")} required />
+                        <ComboBox
+                            label="State"
+                            disabled={fetchingStates || !values.country}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                state: "",
+                            }))}
+                            error={errors.state}
+                            options={fetchedStates ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                state: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("state", value?.name)}
+                            placeholder="State"
+                            size="40"
+                            required
+                        />
+                        <ComboBox
+                            label="City"
+                            disabled={fetchingCities || !values.state}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                city: "",
+                            }))}
+                            error={errors.city}
+                            options={fetchedCities ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                city: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("city", value?.name)}
+                            placeholder="Select city"
+                            size="40"
+                            required
+                        />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <InputField label="Address" placeholder="Address" size="40" type="text" {...register("address")} required />

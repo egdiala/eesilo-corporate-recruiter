@@ -1,6 +1,7 @@
 export * from "./Avatar"
 export * from "./Button"
 export * from "./CheckBox"
+export * from "./ComboBox"
 export * from "./Input"
 export * from "./NavItem"
 export * from "./Pagination"

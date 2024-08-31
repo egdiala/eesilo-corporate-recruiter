@@ -8,7 +8,7 @@ export const useGetCountries = () => {
         queryKey: [GET_COUNTRIES],
         queryFn: getCountries,
         refetchOnWindowFocus: false,
-        select: (res) => res as FetchedCountries[],
+        select: (res: FetchedCountries[]) => res.sort((a,b) => a.name > b.name ? 1 : -1) as FetchedCountries[],
         retry: false,
     });
 };
@@ -19,7 +19,7 @@ export const useGetStatesByCountry = (id: string) => {
         queryKey: [GET_STATES_BY_COUNTRY, id],
         queryFn: () => getStatesByCountry(id),
         refetchOnWindowFocus: false,
-        select: (res) => res as FetchedStatesByCounty[],
+        select: (res: FetchedStatesByCounty[]) => res.sort((a,b) => a.name > b.name ? 1 : -1) as FetchedStatesByCounty[],
         retry: false,
     });
 };
@@ -30,7 +30,7 @@ export const useGetCitiesByStateAndCountry = (payload: { country: string; state:
         queryKey: [GET_CITIES_BY_STATE_AND_COUNTRY, payload],
         queryFn: () => getCitiesByStateAndCountry(payload),
         refetchOnWindowFocus: false,
-        select: (res) => res as FetchedCitiesByStateAndCountry[],
+        select: (res: FetchedCitiesByStateAndCountry[]) => res.sort((a,b) => a.name > b.name ? 1 : -1) as FetchedCitiesByStateAndCountry[],
         retry: false,
     });
 };
@@ -41,7 +41,7 @@ export const useGetCitiesByCountry = (id: string) => {
         queryKey: [GET_CITIES_BY_COUNTRY, id],
         queryFn: () => getCitiesByCountry(id),
         refetchOnWindowFocus: false,
-        select: (res) => res as FetchedCitiesByStateAndCountry[],
+        select: (res: FetchedCitiesByStateAndCountry[]) => res.sort((a,b) => a.name > b.name ? 1 : -1) as FetchedCitiesByStateAndCountry[],
         retry: false,
     });
 };
