@@ -137,6 +137,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                                 ...prev,
                                 country: value,
                             }))} 
+                            defaultValue={countries?.filter((country) => country.name.toLowerCase() == account?.address_data?.country?.toLowerCase())?.[0]}
                             displayValue={(item) => item?.name}
                             optionLabel={(option) => option?.name} 
                             setSelected={(value) => setFieldValue("country", value?.name)}
@@ -159,6 +160,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                                 ...prev,
                                 state: value,
                             }))} 
+                            defaultValue={states?.filter((state) => state.name.toLowerCase() == account?.address_data?.state?.toLowerCase())?.[0]}
                             displayValue={(item) => item?.name}
                             optionLabel={(option) => option?.name} 
                             setSelected={(value) => setFieldValue("state", value?.name)}
@@ -179,6 +181,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                                 ...prev,
                                 city: value,
                             }))} 
+                            defaultValue={cities?.filter((city) => city.name.toLowerCase() == account?.address_data?.city?.toLowerCase())?.[0]}
                             displayValue={(item) => item?.name}
                             optionLabel={(option) => option?.name} 
                             setSelected={(value) => setFieldValue("city", value?.name)}

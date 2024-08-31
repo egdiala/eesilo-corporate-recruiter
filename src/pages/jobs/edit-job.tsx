@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react"
+import React, { Fragment, useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { createJobSchema } from "@/validations/job"
@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useUpdateJob } from "@/services/hooks/mutations"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { Button, InputField, SelectInput, TextArea } from "@/components/core"
+import { Button, ComboBox, InputField, SelectInput, TextArea } from "@/components/core"
 import { useGetCitiesByCountry, useGetCountries, useGetJob } from "@/services/hooks/queries"
 
 export const EditJobPage: React.FC = () => {
@@ -15,7 +15,11 @@ export const EditJobPage: React.FC = () => {
     const { id: jobId } = useParams()
     const { data: job } = useGetJob(jobId as string)
     const { mutate: edit, isPending } = useUpdateJob("You have successfully edited a job post.", () => navigate(`/jobs/${jobId}/view`))
-    const { handleSubmit, isValid, register, values } = useFormikWrapper({
+    const [query, setQuery] = useState({
+        country: "",
+        city: ""
+    })
+    const { handleSubmit, isValid, errors, setFieldValue, register, values } = useFormikWrapper({
         initialValues: {
             title: job?.title || "",
             description: job?.description || "",
@@ -40,18 +44,22 @@ export const EditJobPage: React.FC = () => {
     })
 
     const { data: countries, isFetching: fetchingCountries } = useGetCountries()
-    const fetchedCountries = useMemo(() => {
-        return countries?.map((country) => ({ label: country.name, value: country.name }))
-    }, [countries])
+    const fetchedCountries = query.country === ""
+        ? countries
+        : countries?.filter((country) => {
+            return country.name.toLowerCase().includes(query.country.toLowerCase())
+            })
 
     const selectedCountry = useMemo(() => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
     const { data: cities, isFetching: fetchingCities } = useGetCitiesByCountry(selectedCountry?.iso2 as string)
-    const fetchedCities = useMemo(() => {
-        return cities?.map((city) => ({ label: city.name, value: city.name }))?.sort((a,b) => a?.label > b?.label ? 1 : -1)
-    }, [cities])
+    const fetchedCities = query.city === ""
+        ? cities
+        : cities?.filter((city) => {
+            return city.name.toLowerCase().includes(query.city.toLowerCase())
+            })
 
     const booleanOptions = [
         { label: "Yes", value: "1" },
@@ -78,8 +86,48 @@ export const EditJobPage: React.FC = () => {
                                 <InputField type="number" label="Years of Experience" placeholder="Enter number" className="hide-number-input-arrows" size="40" {...register("year_exp")} required />
                                 <SelectInput label="Requires Travel?" options={booleanOptions} {...register("required_travel")} required />
                                 <SelectInput label="Requires Relocation?" options={booleanOptions} {...register("required_relocation")} required />
-                                <SelectInput label="Country" options={fetchedCountries ?? []} disabled={fetchingCountries} {...register("country")} required />
-                                <SelectInput label="City" options={fetchedCities ?? []} disabled={fetchingCities || !values.country} {...register("city")} required />
+                                <ComboBox
+                                    label="Country"
+                                    disabled={fetchingCountries}
+                                    onClose={() => setQuery((prev) => ({
+                                        ...prev,
+                                        country: "",
+                                    }))}
+                                    error={errors.country}
+                                    options={fetchedCountries ?? []} 
+                                    onChange={(value) => setQuery((prev) => ({
+                                        ...prev,
+                                        country: value,
+                                    }))} 
+                                    defaultValue={countries?.filter((country) => country.name.toLowerCase() == job?.country?.toLowerCase())?.[0]}
+                                    displayValue={(item) => item?.name}
+                                    optionLabel={(option) => option?.name} 
+                                    setSelected={(value) => setFieldValue("country", value?.name)}
+                                    placeholder="Country"
+                                    size="40"
+                                    required
+                                />
+                                <ComboBox
+                                    label="City"
+                                    disabled={fetchingCities}
+                                    onClose={() => setQuery((prev) => ({
+                                        ...prev,
+                                        city: "",
+                                    }))}
+                                    error={errors.city}
+                                    options={fetchedCities ?? []} 
+                                    onChange={(value) => setQuery((prev) => ({
+                                        ...prev,
+                                        city: value,
+                                    }))} 
+                                    defaultValue={cities?.filter((city) => city.name.toLowerCase() == job?.city?.toLowerCase())?.[0]}
+                                    displayValue={(item) => item?.name}
+                                    optionLabel={(option) => option?.name} 
+                                    setSelected={(value) => setFieldValue("city", value?.name)}
+                                    placeholder="Select city"
+                                    size="40"
+                                    required
+                                />
                                 <InputField
                                     type="text"
                                     label="Annual Salary Expectation"
