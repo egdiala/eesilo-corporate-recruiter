@@ -3,7 +3,7 @@ import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { dummyJobs } from "@/constants/data";
+import { dummyJobs, dummyTalents } from "@/constants/data";
 import { RenderIf } from "@/components/core";
 import { JobCard } from "@/components/pages/jobs";
 import { TalentCard } from "@/components/pages/talent";
@@ -52,8 +52,8 @@ export const DashboardPage: React.FC = () => {
                             </div>
                             <div className="grid grid-cols-3 gap-5">
                             {
-                                Array.from({ length: 3 }).map((_, index) =>
-                                    <TalentCard key={index} />
+                                dummyTalents.map((item) =>
+                                    <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/employees/${item?.user_id}/view`} />
                                 )
                             }
                             </div>

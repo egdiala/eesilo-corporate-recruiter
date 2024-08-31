@@ -9,5 +9,6 @@ export const useGetDashboardStats = <T>(query: GetDashboardStatsQuery) => {
         queryFn: () => getDashboardStats(query),
         select: (res) => res?.data as T,
         retry: false,
+        refetchOnWindowFocus: false,
     });
 };

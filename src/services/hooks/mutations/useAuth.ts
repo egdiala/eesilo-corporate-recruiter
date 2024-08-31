@@ -24,6 +24,7 @@ export const useLogin = (fn?: (v: User) => void) => {
       fn?.(response?.data);
     },
     onError: (err: any) => {
+      console.log(err)
         errorToast({ param: err, variant: "light" })
     },
   });

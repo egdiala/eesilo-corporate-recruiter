@@ -14,7 +14,7 @@ export const Hired: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted({ offer_status: "1" })
+    const { data: candidates, isFetching } = useGetShortlisted<any[]>({ offer_status: "1" })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const columns = [

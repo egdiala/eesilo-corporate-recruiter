@@ -20,10 +20,12 @@ export const LoginPage: React.FC = () => {
         if (data?.twofactor.is_enabled === 0) {
             navigate("/")
         }
-        if (Object.values(data?.onboarding_stage).some((item) => item === false)) {
-            navigate("/onboarding")
-        } else {
-            proceed()
+        if (data?.onboarding_stage) {
+            if (Object.values(data?.onboarding_stage)?.some((item) => item === false)) {
+                navigate("/onboarding")
+            } else {
+                proceed()
+            }
         }
     })
 

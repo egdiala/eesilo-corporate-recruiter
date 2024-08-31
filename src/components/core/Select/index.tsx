@@ -76,12 +76,12 @@ export const SelectInput: React.FC<SelectInputProps> = ({ containerVariant, labe
             <div className="relative">
                 <Select
                     className={cn(
-                    "neesilo-input px-2 z-10",
-                     `neesilo-input--${size}`,
+                    "neesilo-select-input px-2 z-10",
+                    `neesilo-input--${size}`,
                     error ? "neesilo-input--border-error" : "neesilo-input--border",
                     )} {...props}
                 >
-                    <option defaultValue=""></option>
+                    <option defaultValue="" selected></option>
                     {
                         options.map((option, idx) =>
                             <option key={idx} value={option.value}>{option.label}</option>

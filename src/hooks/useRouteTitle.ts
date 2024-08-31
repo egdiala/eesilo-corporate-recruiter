@@ -7,7 +7,7 @@ export const useRouteTitle = () => {
     const pathname = location.pathname;
   
     const routeTitles = {
-        "/": `Welcome back, ${admin?.contact_person?.name as string}`,
+        "/": `Welcome back, ${admin?.contact_person?.name as string ?? "User"}`,
         "/jobs": "Jobs",
         "/talent": "Talent Search",
         "/employees": "Employees",

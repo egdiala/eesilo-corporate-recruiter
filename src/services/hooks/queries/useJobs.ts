@@ -9,6 +9,7 @@ export const useGetJobs = () => {
         queryFn: getJobs,
         select: (res) => res?.data as FetchedJob[],
         retry: false,
+        refetchOnWindowFocus: false,
     });
 };
 
@@ -19,5 +20,6 @@ export const useGetJob = (id: string) => {
         queryFn: () => getJob(id),
         select: (res) => res?.data as FetchedJob,
         retry: false,
+        refetchOnWindowFocus: false,
     });
 };

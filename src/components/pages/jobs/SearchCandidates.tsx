@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Loader } from "@/components/core/Button/Loader";
@@ -9,6 +9,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
 import { useDebounce } from "@/hooks/useDebounce";
+import { AddToShortlist } from "./AddToShortlist";
 
 
 export const SearchCandidates: React.FC = () => {
@@ -16,11 +17,22 @@ export const SearchCandidates: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
+    const [toggleModals, setToggleModals] = useState({
+        openShortlistCandidate: false,
+    })
+    const [activeTalent, setActiveTalent] = useState<FetchedTalent | null>(null)
+    const [searchParams, setSearchParams] = useSearchParams();
     const { value: keyword, onChangeHandler } = useDebounce(500)
     const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
     const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp })
     const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp })
-    const [searchParams, setSearchParams] = useSearchParams();
+
+    const toggleShortlistCandidate = useCallback(() => {
+      setToggleModals((prev) => ({
+        ...prev,
+        openShortlistCandidate: !toggleModals.openShortlistCandidate,
+      }))
+    },[toggleModals.openShortlistCandidate])
 
     const columns = [
         {
@@ -30,7 +42,7 @@ export const SearchCandidates: React.FC = () => {
                 const item = row?.original as FetchedTalent
                 return (
                     <div className="flex items-center gap-3">
-                        <Avatar size="40" image={""} alt={`${item?.first_name}_${item?.last_name}`} />
+                        <Avatar size="40" image="" alt={`${item?.first_name}_${item?.last_name}`} />
                         <div className="whitespace-nowrap">{item?.first_name} {item?.last_name}</div>
                     </div>
                 )
@@ -56,7 +68,14 @@ export const SearchCandidates: React.FC = () => {
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as FetchedTalent
                 return (
-                    <button type="button" className="font-normal text-xs text-warning-600 whitespace-nowrap" onClick={() => {item?.user_id}}>Add to Shortlist</button>
+                    <button
+                        type="button"
+                        className="font-normal text-xs text-warning-600 whitespace-nowrap"
+                        onClick={() => {
+                            setActiveTalent(item)
+                            toggleShortlistCandidate();
+                        }}
+                    >Add to Shortlist</button>
                 )
             }
         },
@@ -105,6 +124,7 @@ export const SearchCandidates: React.FC = () => {
             <RenderIf condition={isFetching || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
+            <AddToShortlist isOpen={toggleModals.openShortlistCandidate} onClose={toggleShortlistCandidate} talent={activeTalent!} />
         </motion.div>
     )
 }

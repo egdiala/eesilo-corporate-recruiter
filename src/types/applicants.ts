@@ -23,6 +23,22 @@ export type GetTalentsQuery = {
     component?: "count";
 }
 
+export interface RemoveShortlistedParams {
+    job_id: string;
+    user_id: string;
+}
+
+export interface ShortlistCandidateParams extends RemoveShortlistedParams {
+    invite_status: "0" | "1" | "2" | "3" | "4"; // 0=shortlist, 1=send invite, 2=send interview, 3=hire, 4=reject
+    priority?: "0" | "1" | "2" // Use only with invite_status 0. 0=low, 1=mid, 2=high
+    interview_data?: {
+        time: string;
+        date: Date | string;
+        meeting_link: string;
+        comment: string;
+    }
+}
+
 export interface FetchedTalent {
     specialty_keyword: string[];
     relocation_data: {
@@ -51,4 +67,24 @@ export interface FetchedTalent {
 
 export interface FetchedTalentCount {
     total: number;
+}
+
+export interface FetchedShortlistedCandidate {
+    business_id: string;
+    user_id: string;
+    job_id: string;
+    priority: number;
+    invite_status: number;
+    interview_status: number;
+    offer_status: number;
+    timestamp_data: {
+        shortlisted_at: Date | string;
+    },
+    createdAt: Date | string;
+    updatedAt: Date | string;
+    user_data: Array<Omit<FetchedTalent, "user_id"> & { _id: string; }>,
+    job_data: {
+        _id: string;
+        title: string;
+    }[]
 }

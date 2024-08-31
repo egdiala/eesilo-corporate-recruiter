@@ -7,7 +7,7 @@ export const useGetAccount = () => {
     return useQuery({
         queryKey: [GET_ACCOUNT],
         queryFn: getAccount,
-        refetchOnWindowFocus: true,
+        refetchOnWindowFocus: false,
         select: (res) => res?.data as FetchedAccount,
         retry: false,
     });

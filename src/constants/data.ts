@@ -112,3 +112,81 @@ export const dummyJobs = [
         "total_shortlisted": 0
     },
 ]
+
+export const dummyTalents = [
+    {
+        "specialty_keyword": [],
+        "relocation_data": {
+            "ready_to_relocate": false,
+            "ready_to_travel": false
+        },
+        "address_data": {
+            "address": "lekki lagos",
+            "city": "lagos",
+            "country": "nigeria",
+            "country_code": "ng",
+            "state": "lagos",
+            "zip_code": 101322
+        },
+        "first_name": "Stephen",
+        "last_name": "Diala",
+        "specialty_data": {
+            "industry": "Information Technology",
+            "specialty_main": "Frontend Engineer",
+            "specialty_sub": "Q.A Tester",
+            "title": "Software Engineer",
+            "year_exp": 6
+        },
+        "user_id": "66d1b1a1cb1760371947c40e"
+    },
+    {
+        "specialty_keyword": [],
+        "relocation_data": {
+            "ready_to_relocate": false,
+            "ready_to_travel": false
+        },
+        "address_data": {
+            "address": "lekki lagos",
+            "city": "lagos",
+            "country": "nigeria",
+            "country_code": "ng",
+            "state": "lagos",
+            "zip_code": 101322
+        },
+        "first_name": "Increase",
+        "last_name": "Nkanta",
+        "specialty_data": {
+            "industry": "Information Technology",
+            "specialty_main": "Backend Engineer",
+            "specialty_sub": "Q.A Tester",
+            "title": "Software Engineer",
+            "year_exp": 12
+        },
+        "user_id": "66d1b1a1cb1760371947c40e"
+    },
+    {
+        "specialty_keyword": [],
+        "relocation_data": {
+            "ready_to_relocate": false,
+            "ready_to_travel": false
+        },
+        "address_data": {
+            "address": "lekki lagos",
+            "city": "lagos",
+            "country": "nigeria",
+            "country_code": "ng",
+            "state": "lagos",
+            "zip_code": 101322
+        },
+        "first_name": "Happiness",
+        "last_name": "Angel",
+        "specialty_data": {
+            "industry": "Health",
+            "specialty_main": "Nursing",
+            "specialty_sub": "Caregiver",
+            "title": "Caregiver Nurse",
+            "year_exp": 5
+        },
+        "user_id": "66d1c38022bf17fdab9d32b1"
+    },
+]
