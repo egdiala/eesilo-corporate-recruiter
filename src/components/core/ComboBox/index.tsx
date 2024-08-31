@@ -96,7 +96,7 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, opt
                 portal={false}
                 transition
                 className={cn(
-                    "w-[var(--input-width)] rounded-b-lg border border-gray-200 z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:24rem]",
+                    "w-[var(--input-width)] rounded-b-lg shadow-lg z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:24rem]",
                     "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
                 )}
                 >
