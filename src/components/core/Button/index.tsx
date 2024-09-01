@@ -1,4 +1,4 @@
-import React, { useMemo, type ReactNode } from "react";
+import React, { forwardRef, useMemo, type ReactNode } from "react";
 import { cn } from "@/libs/cn";
 import { Loader } from "./Loader";
 import { RenderIf } from "../RenderIf";
@@ -35,7 +35,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     [x: string]: any;
 }
 
-export const Button: React.FC<ButtonProps> = ({ className, loading, block, theme, variant, size, children, ...props }) => {
+export const Button: React.FC<ButtonProps> = forwardRef(({ className, loading, block, theme, variant, size, children, ...props }, ref: React.LegacyRef<HTMLButtonElement>) => {
     const btnStyle = useMemo(() => {
         return `neesilo-button--${theme}-${variant}`
     }, [theme, variant])
@@ -47,7 +47,7 @@ export const Button: React.FC<ButtonProps> = ({ className, loading, block, theme
     const width = block && "neesilo-button--block";
 
     return (
-        <button className={cn("neesilo-button", btnStyle, width, btnSize, className)} {...props}>
+        <button className={cn("neesilo-button", btnStyle, width, btnSize, className)} ref={ref} {...props}>
             <RenderIf condition={!!loading}>
                 <div className="flex items-center justify-center">
                     <Loader className="spinner" />
@@ -58,4 +58,4 @@ export const Button: React.FC<ButtonProps> = ({ className, loading, block, theme
             </RenderIf>
         </button>
     )
-}
+})

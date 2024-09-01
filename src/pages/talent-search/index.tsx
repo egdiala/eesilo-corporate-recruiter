@@ -7,9 +7,10 @@ import { Loader } from "@/components/core/Button/Loader"
 import { useGetCitiesByCountry, useGetCountries, useGetJobs, useGetTalents } from "@/services/hooks/queries"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import type { FetchedTalent } from "@/types/applicants"
-import { Button, ComboBox, EmptyState, InputField, RenderIf } from "@/components/core"
+import { Button, CheckBox, ComboBox, EmptyState, InputField, RenderIf } from "@/components/core"
 import { Link } from "react-router-dom"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { Menu, MenuButton, MenuHeading, MenuItem, MenuItems, MenuSection } from "@headlessui/react"
 
 export const TalentSearchPage: React.FC = () => {
     const [query, setQuery] = useState({
@@ -57,7 +58,7 @@ export const TalentSearchPage: React.FC = () => {
         : cities?.filter((city) => {
             return city.name.toLowerCase().includes(query.city.toLowerCase())
             })
-
+const filters = ["Willing to Travel", "Willing to Relocate"]
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
             <div className="bg-white rounded-2xl lg:p-8">
@@ -72,9 +73,25 @@ export const TalentSearchPage: React.FC = () => {
                                 <Icon icon="ri:search-2-line" className="size-5" />
                                 Search
                             </Button>
-                            <Button type="button" theme="neutral" variant="stroke" size="40">
-                                <Icon icon="ri:filter-3-line" className="size-5" />
-                            </Button>
+                            <Menu>
+                                <MenuButton as={Button} type="button" theme="neutral" variant="stroke" size="40">
+                                    <Icon icon="ri:filter-3-line" className="size-5" />
+                                </MenuButton>
+                                <MenuItems as="div" transition className="w-48 shadow-lg origin-top-right rounded-lg bg-white px-3 py-4 transition duration-300 ease-out focus:outline-none data-[closed]:scale-75 data-[closed]:opacity-0" anchor="bottom end">
+                                    <MenuSection as="div" className="grid gap-2">
+                                        <MenuHeading className="text-[#868C98] font-medium text-xs uppercase py-1 px-2">Availability</MenuHeading>
+                                        <div className="grid gap-2">
+                                            {
+                                                filters.map((filter) =>
+                                                <MenuItem key={filter} as="div" className="flex items-center gap-2 text-gray-900 text-sm">
+                                                    <CheckBox label={filter} />
+                                                </MenuItem>
+                                                )
+                                            }
+                                        </div>
+                                    </MenuSection>
+                                </MenuItems>
+                            </Menu>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
