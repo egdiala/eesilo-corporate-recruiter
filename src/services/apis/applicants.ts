@@ -8,6 +8,11 @@ export const getTalents = async (query: GetTalentsQuery) => {
   return res.data;
 };
 
+export const getTalent = async (id: string) => {
+  const res = await axiosUserInstance.get(`${GET_TALENTS_API}/${id}`);
+  return res.data;
+};
+
 export const getShortlisted = async (query: GetShortlistedQuery) => {
   const res = await axiosUserInstance.get(`${GET_SHORTLISTED_CANDIDATES_API}${createQueryString(query)}`);
   return res.data;

@@ -153,7 +153,7 @@ const filters = ["Willing to Travel", "Willing to Relocate"]
                             <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-3 gap-5">
                                 {
                                     candidates?.map((item) =>
-                                        <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/employees/${item?.user_id}/view`} />
+                                        <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
                                     )
                                 }
                             </motion.div>

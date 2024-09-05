@@ -88,3 +88,41 @@ export interface FetchedShortlistedCandidate {
         title: string;
     }[]
 }
+
+export interface SingleTalent extends FetchedTalent {
+    education_data: {
+        _id: string;
+        user_id: string;
+        degree_name: string;
+        course_field: string;
+        school_name: string;
+        completion_year: number;
+        description: string;
+        createdAt: Date | string;
+        updatedAt: Date | string;
+        __v: number;
+    }[];
+    workexp_data: {
+        _id: string;
+        user_id: string;
+        job_title: string;
+        company: string;
+        date_data: {
+            start_date: Date | string;
+            end_date: Date | string;
+            currently_working: boolean;
+        },
+        address_data: {
+            country: string;
+            country_code: string;
+            state: string;
+            address: string;
+            city: string;
+            zip_code: number;
+        },
+        description: string;
+        createdAt: Date | string;
+        updatedAt: Date | string;
+        __v: number;
+    }[];
+}
