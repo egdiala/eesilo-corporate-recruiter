@@ -8,7 +8,7 @@ import { useGetTalent } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import type { SingleTalent } from "@/types/applicants"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
-import { TalentInformation } from "@/components/pages/talent"
+import { JobProgress, TalentInformation } from "@/components/pages/talent"
 
 export const ViewTalentPage: React.FC = () => {
     const { id: talentId } = useParams()
@@ -59,6 +59,12 @@ export const ViewTalentPage: React.FC = () => {
                                 <TabPanels className="flex-1">
                                     <TabPanel as={AnimatePresence} mode="popLayout">
                                         <TalentInformation talent={talent!} />
+                                    </TabPanel>
+                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                        <div />
+                                    </TabPanel>
+                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                        <JobProgress />
                                     </TabPanel>
                                 </TabPanels>
                             </TabGroup>
