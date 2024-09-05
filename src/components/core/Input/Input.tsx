@@ -90,7 +90,7 @@ export const InputField: React.FC<InputProps> = ({ label, error, optional, requi
                 </RenderIf>
             </div>
             <RenderIf condition={!!help}>
-                <Description className="flex items-center gap-1 text-xs text-gray-500">{help}</Description>
+                <Description className="flex items-start gap-1 text-xs text-gray-500">{help}</Description>
             </RenderIf>
             <RenderIf condition={!!error}>
                 <span className="neesilo-input--error">{error}</span>
