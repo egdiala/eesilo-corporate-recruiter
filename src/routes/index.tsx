@@ -6,6 +6,7 @@ import { OnboardingPage } from "@/pages/onboarding"
 import DashboardLayout from "@/layouts/dashboard-layout"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 import { AuthRoutes, DashboardRoutes, JobRoutes, SettingsRoutes, TalentRoutes } from "./modules"
+import { NotificationsPage } from "@/pages/notifications"
 
 
 function LocationProvider({ children }: { children: ReactNode }) {
@@ -20,6 +21,7 @@ const Router = () => {
                 <Route path="onboarding" element={<BlankLayout><LocationProvider><OnboardingPage /></LocationProvider></BlankLayout>} />
                 <Route path="/*" element={<DashboardLayout><LocationProvider><DashboardRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="jobs/*" element={<DashboardLayout><LocationProvider><JobRoutes /></LocationProvider></DashboardLayout>} />
+                <Route path="notifications/*" element={<DashboardLayout><LocationProvider><NotificationsPage /></LocationProvider></DashboardLayout>} />
                 <Route path="settings/*" element={<DashboardLayout><LocationProvider><SettingsRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="talent/*" element={<DashboardLayout><LocationProvider><TalentRoutes /></LocationProvider></DashboardLayout>} />
             </Routes>
