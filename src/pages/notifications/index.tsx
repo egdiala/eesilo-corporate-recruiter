@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 export const NotificationsPage: React.FC = () => {
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10">
-            <div className="flex flex-col md:flex-row gap-5 bg-white rounded-2xl lg:p-8">
+            <div className="flex flex-col gap-5 bg-white rounded-2xl lg:p-8">
                 {
                     Array.from({ length: 2 }).map((_,index) =>
                         <div key={index} className="flex items-center gap-3.5 p-4 flex-1">
