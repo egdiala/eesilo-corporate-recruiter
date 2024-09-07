@@ -9,7 +9,7 @@ export const useUpdateAccount = (msg?: string, fn?: () => void) => {
   return useMutation({
     mutationFn: updateAccount,
       onSuccess: async () => {
-        successToast({ param: {}, msg, size: "36" })
+        successToast({ param: null, msg, size: "36" })
         await queryClient.invalidateQueries({ queryKey: [GET_ACCOUNT] })
         fn?.()
     },

@@ -80,7 +80,7 @@ export const OrganizationInformation: React.FC = () => {
             <hr />
             <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} countryCallingCodeEditable={true} required />
+                <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
                 <ComboBox
                     label="Country"
                     disabled={fetchingCountries}
