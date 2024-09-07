@@ -1,4 +1,5 @@
 export * from "./JobProgress"
 export * from "./ScheduleInterview"
 export * from "./TalentCard"
+export * from "./TalentDocuments"
 export * from "./TalentInformation"

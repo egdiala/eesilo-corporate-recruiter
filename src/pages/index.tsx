@@ -3,13 +3,13 @@ import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { dummyJobs, dummyTalents } from "@/constants/data";
 import { RenderIf } from "@/components/core";
 import { JobCard } from "@/components/pages/jobs";
 import { TalentCard } from "@/components/pages/talent";
 import { Loader } from "@/components/core/Button/Loader";
 import type { JobDataCountType } from "@/types/dashboard";
 import { pageVariants } from "@/constants/animateVariants";
+import { dummyJobs, dummyTalents } from "@/constants/data";
 import { useGetDashboardStats } from "@/services/hooks/queries/useDashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 

@@ -8,7 +8,7 @@ import { useGetTalent } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import type { SingleTalent } from "@/types/applicants"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
-import { JobProgress, TalentInformation } from "@/components/pages/talent"
+import { JobProgress, TalentDocuments, TalentInformation } from "@/components/pages/talent"
 
 export const ViewTalentPage: React.FC = () => {
     const { id: talentId } = useParams()
@@ -42,7 +42,7 @@ export const ViewTalentPage: React.FC = () => {
                                 <Icon icon="ri:arrow-left-s-line" className="size-5" />
                                 Back
                             </Button>
-                            <h1 className="text-lg text-gray-900">{talent?.first_name} {talent?.last_name}</h1>
+                            <h1 className="text-lg text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                         </div>
                         <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
                             <TabGroup as="section" className="relative flex items-start gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -61,7 +61,7 @@ export const ViewTalentPage: React.FC = () => {
                                         <TalentInformation talent={talent!} />
                                     </TabPanel>
                                     <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <div />
+                                        <TalentDocuments />
                                     </TabPanel>
                                     <TabPanel as={AnimatePresence} mode="popLayout">
                                         <JobProgress />

@@ -24,7 +24,7 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, talent, ...props }) 
             <div className="grid gap-2.5">
                 <div className="flex items-center gap-3">
                     <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image="" />
-                    <h1 className="font-medium text-sm text-gray-900">{talent?.first_name} {talent?.last_name}</h1>
+                    <h1 className="font-medium text-sm text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                 </div>
                 <hr className="border-gray-200" />
                 {
