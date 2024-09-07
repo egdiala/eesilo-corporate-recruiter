@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react"
 
 export const Security: React.FC = () => {
     return (
-        <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
+        <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6 lg:pb-28">
             <div className="grid gap-2">
                 <h1 className="font-medium text-lg text-gray-900">Security</h1>
                 <p className="text-base text-gray-400">Edit and update security details to get your account secured</p>

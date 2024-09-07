@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Security } from "@/components/pages/settings";
+import { Notifications, Security, StaffAccessControl } from "@/components/pages/settings";
 import { AnimatePresence, motion } from "framer-motion";
 import { pageVariants } from "@/constants/animateVariants";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
@@ -40,14 +40,13 @@ export const SettingsPage: React.FC = () => {
                         <Security />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        <div />
+                        <Notifications />
                     </TabPanel>
                     <TabPanel as={AnimatePresence} mode="popLayout">
-                        <div />
+                        <StaffAccessControl />
                     </TabPanel>
                 </TabPanels>
             </TabGroup>
-
         </motion.div>
     )
 }

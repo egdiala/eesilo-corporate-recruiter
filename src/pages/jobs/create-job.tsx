@@ -160,7 +160,7 @@ export const CreateJobPage: React.FC = () => {
                                 />
                                 <InputField
                                     type="text"
-                                    label="Annual Salary Expectation"
+                                    label="Annual Salary Expectation ($)"
                                     placeholder="Enter number"
                                     size="40"
                                     help={<Fragment><Icon icon="ri:error-warning-fill" className="size-4 text-gray-400" />Won't be shown to candidates</Fragment>}
@@ -168,7 +168,15 @@ export const CreateJobPage: React.FC = () => {
                                     required
                                 />
                                 <div className="col-span-2">
-                                    <InputField type="text" label="Requirements" placeholder="Nursing Assistant" size="40" {...register("requirement")} required />
+                                    <InputField
+                                        type="text"
+                                        label="Requirements"
+                                        placeholder="Nursing Assistant"
+                                        size="40"
+                                        help={<Fragment><Icon icon="ri:error-warning-fill" className="size-4 text-gray-400" />Comma separated values eg Dentist, Optician, Nurse</Fragment>}
+                                        {...register("requirement")}
+                                        required
+                                    />
                                 </div>
                             </div>
                             
