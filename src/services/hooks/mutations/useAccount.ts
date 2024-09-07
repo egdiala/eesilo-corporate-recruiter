@@ -8,9 +8,9 @@ export const useUpdateAccount = (msg?: string, fn?: () => void) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: updateAccount,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [GET_ACCOUNT] })
+      onSuccess: async () => {
         successToast({ param: {}, msg, size: "36" })
+        await queryClient.invalidateQueries({ queryKey: [GET_ACCOUNT] })
         fn?.()
     },
     onError: (err: any) => {

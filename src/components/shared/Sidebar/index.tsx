@@ -20,7 +20,7 @@ export const Sidebar: React.FC = () => {
         navigate("/auth/login");
     }
     return (
-        <nav className={cn("max-lg:absolute transition transform translate-x-0 ease-out duration-500 bg-[#003449] flex flex-col justify-between gap-8 px-5 py-6 h-screen max-h-screen w-full max-w-60 lg:relative inset-y-0 left-0 z-20 border-r border-r-gray-200")}>
+        <nav className={cn("max-lg:absolute transition transform translate-x-0 ease-out duration-500 overflow-y-scroll bg-[#003449] flex flex-col justify-between gap-8 px-5 py-6 h-screen max-h-screen w-full max-w-60 lg:relative inset-y-0 left-0 z-20 border-r border-r-gray-200")}>
             <div className="grid gap-6">
                 <img src={logoGreenWhite} className="w-full" alt="eGO_green_logo" />
                 <div className="flex flex-1 flex-col gap-2 overflow-y-auto [&>[data-slot=section]+[data-slot=section]]:mt-6">
