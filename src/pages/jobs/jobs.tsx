@@ -126,8 +126,8 @@ export const JobsPage: React.FC = () => {
                                     <div className="flex flex-col items-center gap-2 py-14 flex-1">
                                         <img src={emptyState} alt="emptyState" className="size-24" />
                                         <div className="grid gap-1 text-center">
-                                            <h2 className="font-medium text-base text-gray-900">You have no performance metrics</h2>
-                                            <p className="text-sm text-gray-600">Create jobs and interact with candidates to view metrics</p>
+                                            <h2 className="font-medium text-base text-gray-900">You have not posted any job</h2>
+                                            <p className="text-sm text-gray-600">Post new jobs to view them here</p>
                                         </div>
                                     </div>
                                 </motion.div>
