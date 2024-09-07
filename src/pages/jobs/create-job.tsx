@@ -6,8 +6,11 @@ import { createJobSchema } from "@/validations/job"
 import { useCreateJob } from "@/services/hooks/mutations"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { Button, ComboBox, InputField, SelectInput, TextArea } from "@/components/core"
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
+import { Button, ComboBox, InputField, RenderIf, SelectInput, Tag, TextArea } from "@/components/core"
+import { useGetCitiesByStateAndCountry, useGetCountries, useGetJobRequirements, useGetStatesByCountry } from "@/services/hooks/queries"
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from "@headlessui/react"
+import { cn } from "@/libs/cn"
+import { Loader } from "@/components/core/Button/Loader"
 
 export const CreateJobPage: React.FC = () => {
     const navigate = useNavigate()
@@ -15,7 +18,8 @@ export const CreateJobPage: React.FC = () => {
     const [query, setQuery] = useState({
         country: "",
         state: "",
-        city: ""
+        city: "",
+        requirements: ""
     })
     const { handleSubmit, isValid, errors, register, values, setFieldValue, handleBlur } = useFormikWrapper({
         initialValues: {
@@ -25,21 +29,22 @@ export const CreateJobPage: React.FC = () => {
             country: "",
             state: "",
             city: "",
-            requirement: "",
+            requirement: [],
             required_travel: "",
             required_relocation: "",
             expected_salary: ""
         },
         validationSchema: createJobSchema,
         onSubmit: () => {
-            const { requirement, required_travel, year_exp, required_relocation, ...rest } = values
+            const { required_travel, year_exp, required_relocation, ...rest } = values
             const new_year_exp = year_exp.toString()
-            const new_requirement = requirement.split(", ")
             const new_required_travel = required_travel === "yes" ? "1" : "0"
             const new_required_relocation = required_relocation === "yes" ? "1" : "0"
-            create({ ...rest, requirement: new_requirement, required_travel: new_required_travel, required_relocation: new_required_relocation, year_exp: new_year_exp })
+            create({ ...rest, required_travel: new_required_travel, required_relocation: new_required_relocation, year_exp: new_year_exp })
         },
     })
+
+    const { data: fetchedRequirements, isFetching: fetchingRequirements } = useGetJobRequirements({ q: query.requirements })
 
     const { data: countries, isFetching: fetchingCountries } = useGetCountries()
     const fetchedCountries = query.country === ""
@@ -168,18 +173,59 @@ export const CreateJobPage: React.FC = () => {
                                     required
                                 />
                                 <div className="col-span-2">
-                                    <InputField
-                                        type="text"
-                                        label="Requirements"
-                                        placeholder="Nursing Assistant"
-                                        size="40"
-                                        help={<Fragment><Icon icon="ri:error-warning-fill" className="size-4 text-gray-400" />Comma separated values eg Dentist, Optician, Nurse</Fragment>}
-                                        {...register("requirement")}
-                                        required
-                                    />
+                                    <Field className="neesilo-input--outer">
+                                        <div className="text-sm tracking-custom flex gap-px items-center">
+                                            <Label passive className="neesilo-input--label">
+                                                Requirements 
+                                            </Label>
+                                            <div className="font-medium text-error-500 text-sm">*</div>
+                                        </div>
+                                        <Combobox multiple value={values.requirement} onChange={(value) => setFieldValue("requirement", value)} onClose={() => setQuery((prev) => ({
+                                                    ...prev,
+                                                    requirements: "",
+                                                }))}>
+                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} />
+                                            <ComboboxOptions
+                                                anchor="bottom"
+                                                portal={false}
+                                                transition
+                                                className={cn(
+                                                    "w-[var(--input-width)] rounded-b-lg shadow-lg z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:12rem]",
+                                                    "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+                                                )}
+                                            >
+                                                <RenderIf condition={fetchedRequirements !== undefined && fetchedRequirements?.length > 0 && !fetchingRequirements}>
+                                                {
+                                                    fetchedRequirements?.map((item) => (
+                                                        <ComboboxOption key={item.requirement} value={item.requirement} className="group flex cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-primary-25">
+                                                            <div className="text-sm/6 text-gray-800 group-data-[selected]:text-primary-500 group-data-[selected]:font-medium">{item.requirement}</div>
+                                                            <Icon icon="lucide:check" className="invisible size-4 text-primary-500 group-data-[selected]:visible" />
+                                                        </ComboboxOption>
+                                                    ))
+                                                }
+                                                </RenderIf>
+                                                <RenderIf condition={fetchedRequirements?.length === 0 && !fetchingRequirements}>
+                                                    <div className="flex items-center justify-center text-center font-medium text-gray-500 py-2 text-sm w-full">No items found</div>
+                                                </RenderIf>
+                                                <RenderIf condition={fetchingRequirements}>
+                                                    <div className="flex w-full h-10 items-center justify-center"><Loader className="spinner size-4 text-primary-500" /></div>
+                                                </RenderIf>
+                                            </ComboboxOptions>
+                                        </Combobox>
+                                    </Field>
                                 </div>
                             </div>
-                            
+                            <RenderIf condition={values.requirement.length > 0}>
+                                <div className="flex items-center gap-4 flex-wrap">
+                                {values.requirement.map((item) => (
+                                    <Tag key={item} theme="stroke" closeable>
+                                        {item}
+                                        <button type="button" onClick={() => setFieldValue("requirement", values.requirement.filter((v) => v !== item))}><Icon icon="ri:close-line" className="size-3.5 text-gray-400" /></button>
+                                    </Tag>
+                                ))}
+                                </div>
+                            </RenderIf>
+
                             <div className="grid md:grid-cols-2">
                                 <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid} block>Post Job</Button>
                             </div>

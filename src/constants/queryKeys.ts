@@ -12,6 +12,7 @@ export const GET_DASHBOARD_STATS = "get-dashboard-stats"
 
 // Jobs
 export const GET_JOBS = "get-jobs"
+export const GET_JOB_REQUIREMENTS = "get-job-requirements"
 
 // Applicants
 export const GET_SHORTLISTED = "get-shortlisted"

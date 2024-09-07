@@ -11,6 +11,10 @@ export type CreateJobParams = {
     expected_salary: string;
 }
 
+export type FetchJobRequirementsParams = {
+    q?: string;
+}
+
 export interface FetchedJob {
     business_id: string;
     title: string;

@@ -1,6 +1,7 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { GET_JOBS_API } from "@/constants/api";
-import type { CreateJobParams } from "@/types/jobs";
+import { GET_JOB_REQUIREMENTS_API, GET_JOBS_API } from "@/constants/api";
+import type { CreateJobParams, FetchJobRequirementsParams } from "@/types/jobs";
+import { createQueryString } from "@/utils/createQuery";
 
 export const getJobs = async () => {
   const res = await axiosUserInstance.get(GET_JOBS_API);
@@ -20,5 +21,10 @@ export const createJob = async (payload: CreateJobParams) => {
 export const updateJob = async (payload: CreateJobParams & { jobId: string; }) => {
   const { jobId, ...rest } = payload
   const res = await axiosUserInstance.put(`${GET_JOBS_API}/${jobId}`, rest);
+  return res.data;
+};
+
+export const getJobRequirements = async (query: FetchJobRequirementsParams) => {
+  const res = await axiosUserInstance.get(`${GET_JOB_REQUIREMENTS_API}${createQueryString(query)}`);
   return res.data;
 };

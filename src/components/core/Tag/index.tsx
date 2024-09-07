@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { cn } from "@/libs/cn";
 import "./tag.css";
+import { RenderIf } from "../RenderIf";
 
 interface TagProps {
     /**
@@ -12,6 +13,10 @@ interface TagProps {
      */
     disabled?: boolean;
     /**
+     * Wether or not to close the tag
+     */
+    closeable?: boolean;
+    /**
      * Renders variant for Tag component
      */
     theme: "stroke" | "gray";
@@ -21,8 +26,16 @@ interface TagProps {
     [x: string]: any;
 }
 
-export const Tag: React.FC<TagProps> = ({ children, disabled, theme, className }) => {
+export const Tag: React.FC<TagProps> = ({ children, disabled, theme, closeable = false, className }) => {
     return (
-        <button type="button" className={cn("neesilo-tag", `neesilo-tag--${theme}`, className)} disabled={disabled}>{children}</button>
+        <Fragment>
+            <RenderIf condition={!closeable}>
+                <button type="button" className={cn("neesilo-tag", `neesilo-tag--${theme}`, className)} disabled={disabled}>{children}</button>                
+            </RenderIf>
+            <RenderIf condition={closeable}>
+                <div className={cn("neesilo-tag", `neesilo-tag--${theme}`, className)}>{children}</div>                
+            </RenderIf>
+        </Fragment>
+        
     )
 }

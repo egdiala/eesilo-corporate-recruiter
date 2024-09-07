@@ -13,6 +13,7 @@ export const GET_DASHBOARD_STATS_API = "business/accounts/dashboard-stat"
 
 // Jobs
 export const GET_JOBS_API = "business/accounts/job"
+export const GET_JOB_REQUIREMENTS_API = "business/accounts/job-requirement"
 
 // Applicants
 export const GET_TALENTS_API = "business/applicants"
