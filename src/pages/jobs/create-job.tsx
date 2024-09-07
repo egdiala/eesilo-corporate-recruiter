@@ -7,13 +7,14 @@ import { useCreateJob } from "@/services/hooks/mutations"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, ComboBox, InputField, SelectInput, TextArea } from "@/components/core"
-import { useGetCitiesByCountry, useGetCountries } from "@/services/hooks/queries"
+import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
 
 export const CreateJobPage: React.FC = () => {
     const navigate = useNavigate()
     const { mutate: create, isPending } = useCreateJob("You have successfully created a job post.", () => navigate("/jobs"))
     const [query, setQuery] = useState({
         country: "",
+        state: "",
         city: ""
     })
     const { handleSubmit, isValid, errors, register, values, setFieldValue } = useFormikWrapper({
@@ -22,6 +23,7 @@ export const CreateJobPage: React.FC = () => {
             description: "",
             year_exp: "",
             country: "",
+            state: "",
             city: "",
             requirement: "",
             required_travel: "",
@@ -30,7 +32,8 @@ export const CreateJobPage: React.FC = () => {
         },
         validationSchema: createJobSchema,
         onSubmit: () => {
-            const { requirement, required_travel, year_exp, required_relocation, ...rest } = values
+            const { requirement, required_travel, year_exp, required_relocation, state, ...rest } = values
+            state.toLowerCase()
             const new_year_exp = year_exp.toString()
             const new_requirement = requirement.split(", ")
             const new_required_travel = required_travel === "yes" ? "1" : "0"
@@ -50,7 +53,18 @@ export const CreateJobPage: React.FC = () => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByCountry(selectedCountry?.iso2 as string)
+    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
+    const fetchedStates = query.state === ""
+        ? states
+        : states?.filter((state) => {
+            return state.name.toLowerCase().includes(query.state.toLowerCase())
+            })
+
+    const selectedState = useMemo(() => {
+        return states?.filter((item) => item?.name === values?.state)?.at(0)
+    },[states, values?.state])
+
+    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
     const fetchedCities = query.city === ""
         ? cities
         : cities?.filter((city) => {
@@ -103,6 +117,26 @@ export const CreateJobPage: React.FC = () => {
                                     required
                                 />
                                 <ComboBox
+                                    label="State"
+                                    disabled={fetchingStates}
+                                    onClose={() => setQuery((prev) => ({
+                                        ...prev,
+                                        state: "",
+                                    }))}
+                                    error={errors.state}
+                                    options={fetchedStates ?? []} 
+                                    onChange={(value) => setQuery((prev) => ({
+                                        ...prev,
+                                        state: value,
+                                    }))} 
+                                    displayValue={(item) => item?.name}
+                                    optionLabel={(option) => option?.name} 
+                                    setSelected={(value) => setFieldValue("state", value?.name)}
+                                    placeholder="Select state"
+                                    size="40"
+                                    required
+                                />
+                                <ComboBox
                                     label="City"
                                     disabled={fetchingCities}
                                     onClose={() => setQuery((prev) => ({
@@ -131,8 +165,11 @@ export const CreateJobPage: React.FC = () => {
                                     {...register("expected_salary")}
                                     required
                                 />
+                                <div className="col-span-2">
+                                    <InputField type="text" label="Requirements" placeholder="Nursing Assistant" size="40" {...register("requirement")} required />
+                                </div>
                             </div>
-                            <InputField type="text" label="Requirements" placeholder="Nursing Assistant" size="40" {...register("requirement")} required />
+                            
                             <div className="grid md:grid-cols-2">
                                 <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid} block>Post Job</Button>
                             </div>
