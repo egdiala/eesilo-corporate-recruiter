@@ -64,7 +64,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <Avatar size="80" alt="Burton" image="https://images.pexels.com/photos/3764571/pexels-photo-3764571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
                         </div>
                         <div className="grid gap-[3px]">
-                            <h1 className="font-medium text-xl text-gray-900">{talent?.first_name} {talent?.last_name}</h1>
+                            <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                             <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
                             <div className="flex items-center gap-1.5">
                                 <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
