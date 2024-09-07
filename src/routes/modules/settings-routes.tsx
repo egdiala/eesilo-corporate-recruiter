@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import { SettingsPage } from "@/pages/settings";
+import { ChangePasswordPage, SettingsPage } from "@/pages/settings";
+import { ChangeEmailPage } from "@/pages/settings/change-email";
 
 const SettingsRoutes = () => {
     return (
         <Routes>
             <Route index element={<SettingsPage />} />
-            {/* <Route path="create" element={<CreateJobPage />} />
-            <Route path=":id/view" element={<ViewJobPage />} />
-            <Route path=":id/edit" element={<EditJobPage />} /> */}
+            <Route path="change-email" element={<ChangeEmailPage />} />
+            <Route path="change-password" element={<ChangePasswordPage />} />
         </Routes>
     );
 };

@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
 import { Toggle } from "@/components/core"
 import { Icon } from "@iconify/react"
+import { Link } from "react-router-dom"
 
 
 export const Security: React.FC = () => {
@@ -35,20 +36,20 @@ export const Security: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center gap-6">
+            <Link className="flex items-center gap-6" to="change-email">
                 <div className="grid gap-2 flex-1">
                     <h2 className="font-medium text-sm text-gray-900">Email Address</h2>
                     <p className="text-sm text-gray-500">Update your email address</p>
                 </div>
                 <Icon icon="ri:arrow-right-s-line" className="size-6 text-gray-400" />
-            </div>
-            <div className="flex items-center gap-6">
+            </Link>
+            <Link className="flex items-center gap-6" to="change-password">
                 <div className="grid gap-2 flex-1">
                     <h2 className="font-medium text-sm text-gray-900">Password</h2>
                     <p className="text-sm text-gray-500">Update your password</p>
                 </div>
                 <Icon icon="ri:arrow-right-s-line" className="size-6 text-gray-400" />
-            </div>
+            </Link>
         </motion.div>
     )
 }
