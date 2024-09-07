@@ -17,7 +17,6 @@ export interface User {
         bio_data: boolean;
         contact_person: boolean;
         eid_number: boolean;
-        staff_access: boolean;
     };
     ein_id: {
         value: string;

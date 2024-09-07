@@ -8,7 +8,7 @@ import { useGetAccount } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import { pageVariants } from "@/constants/animateVariants"
 import { Dialog, DialogPanel, DialogTitle, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
-import { ContactPerson, OrganizationInformation, StaffsAndAccessControl, Verification } from "@/components/pages/onboarding"
+import { ContactPerson, OrganizationInformation, Verification } from "@/components/pages/onboarding"
 
 
 export const OnboardingPage: React.FC = () => {
@@ -16,7 +16,7 @@ export const OnboardingPage: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
     const { data: account, isFetching } = useGetAccount()
     const stages = useMemo(() => {
-        return ["bio_data", "contact_person", "staff_access", "eid_number"]
+        return ["bio_data", "contact_person", "eid_number"]
     },[])
     const firstIncompleteStage = useMemo(() => {
         return stages?.find(stage => account?.onboarding_stage?.[stage as keyof typeof account.onboarding_stage] === false);
@@ -35,10 +35,6 @@ export const OnboardingPage: React.FC = () => {
             },
             {
                 id: 3,
-                label: "Staffs and Access Control",
-            },
-            {
-                id: 4,
                 label: "Verification",
             }
         ]
@@ -83,9 +79,6 @@ export const OnboardingPage: React.FC = () => {
                             </TabPanel>
                             <TabPanel as={AnimatePresence} mode="popLayout">
                                 <ContactPerson />
-                            </TabPanel>
-                            <TabPanel as={AnimatePresence} mode="popLayout">
-                                <StaffsAndAccessControl />
                             </TabPanel>
                             <TabPanel as={AnimatePresence} mode="popLayout">
                                 <Verification />
