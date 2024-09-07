@@ -2,7 +2,8 @@ export type CreateJobParams = {
     title: string;
     description: string;
     year_exp: string;
-    country: Object;
+    country: string;
+    state: string;
     city: string;
     requirement: string[];
     required_travel: "0" | "1"; // 0=no travel | 1=required travel
@@ -18,6 +19,7 @@ export interface FetchedJob {
     required_travel: number;
     required_relocation: number;
     country: string;
+    state: string;
     city: string;
     expected_salary: number;
     requirement: string[];

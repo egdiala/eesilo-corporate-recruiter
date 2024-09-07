@@ -81,7 +81,7 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, opt
             <Combobox disabled={disabled} value={selected} defaultValue={defaultValue} onChange={(value) => setSelected(value)} onClose={onClose}>
                 <div className="relative">
                 <ComboboxInput
-                    className={cn("neesilo-input peer pl-2 pr-8", `neesilo-input--${size}`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)}
+                    className={cn("neesilo-input peer pl-2 pr-8", `neesilo-input--${size}-right`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)}
                     displayValue={(item) => displayValue?.(item)!}
                     onChange={(event) => onChange(event.target.value)}
                     {...props}

@@ -17,7 +17,7 @@ export const CreateJobPage: React.FC = () => {
         state: "",
         city: ""
     })
-    const { handleSubmit, isValid, errors, register, values, setFieldValue } = useFormikWrapper({
+    const { handleSubmit, isValid, errors, register, values, setFieldValue, handleBlur } = useFormikWrapper({
         initialValues: {
             title: "",
             description: "",
@@ -32,8 +32,7 @@ export const CreateJobPage: React.FC = () => {
         },
         validationSchema: createJobSchema,
         onSubmit: () => {
-            const { requirement, required_travel, year_exp, required_relocation, state, ...rest } = values
-            state.toLowerCase()
+            const { requirement, required_travel, year_exp, required_relocation, ...rest } = values
             const new_year_exp = year_exp.toString()
             const new_requirement = requirement.split(", ")
             const new_required_travel = required_travel === "yes" ? "1" : "0"
@@ -109,16 +108,17 @@ export const CreateJobPage: React.FC = () => {
                                         ...prev,
                                         country: value,
                                     }))} 
+                                    onBlur={handleBlur}
                                     displayValue={(item) => item?.name}
                                     optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("country", value?.name)}
+                                    setSelected={(value) => setFieldValue("country", value?.name, true)}
                                     placeholder="Country"
                                     size="40"
                                     required
                                 />
                                 <ComboBox
                                     label="State"
-                                    disabled={fetchingStates}
+                                    disabled={fetchingStates || !values.country}
                                     onClose={() => setQuery((prev) => ({
                                         ...prev,
                                         state: "",
@@ -129,16 +129,17 @@ export const CreateJobPage: React.FC = () => {
                                         ...prev,
                                         state: value,
                                     }))} 
+                                    onBlur={handleBlur}
                                     displayValue={(item) => item?.name}
                                     optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("state", value?.name)}
+                                    setSelected={(value) => setFieldValue("state", value?.name, true)}
                                     placeholder="Select state"
                                     size="40"
                                     required
                                 />
                                 <ComboBox
                                     label="City"
-                                    disabled={fetchingCities}
+                                    disabled={fetchingCities || !values.state}
                                     onClose={() => setQuery((prev) => ({
                                         ...prev,
                                         city: "",
@@ -149,9 +150,10 @@ export const CreateJobPage: React.FC = () => {
                                         ...prev,
                                         city: value,
                                     }))} 
+                                    onBlur={handleBlur}
                                     displayValue={(item) => item?.name}
                                     optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("city", value?.name)}
+                                    setSelected={(value) => setFieldValue("city", value?.name, true)}
                                     placeholder="Select city"
                                     size="40"
                                     required
