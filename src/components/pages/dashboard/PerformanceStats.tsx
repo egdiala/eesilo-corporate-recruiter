@@ -17,15 +17,15 @@ export const PerformanceStats: React.FC = () => {
                     <MenuItems
                     transition
                     anchor="bottom end"
-                    className="w-20 origin-top-right rounded-xl drop-shadow-2xl shadow-2xl bg-white p-1 text-sm/6 text-gray-600 transition duration-300 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                    className="w-20 origin-top-right rounded-xl shadow bg-white p-1 text-sm/6 text-gray-600 transition duration-300 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                     >
                         <MenuItem>
-                            <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
+                            <button className="group flex w-full items-center justify-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                             2023
                             </button>
                         </MenuItem>
                         <MenuItem>
-                            <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
+                            <button className="group flex w-full items-center justify-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
                             2024
                             </button>
                         </MenuItem>
