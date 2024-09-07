@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
 import { Button, InputField, RenderIf, Table } from "@/components/core"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
+import emptyState from "@/assets/empty_state.webp";
 import { FetchedJob } from "@/types/jobs"
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams"
 
@@ -88,35 +89,50 @@ export const JobsPage: React.FC = () => {
                         </div>
                     </div>
                     <RenderIf condition={!isFetching}>
-                        <AnimatePresence mode="popLayout">
-                            {
-                                gridView && (
-                                    <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
-                                        {
-                                            jobs?.map((item) =>
-                                                <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
-                                            )
-                                        }
-                                    </motion.div>
-                                )
-                            }
-                        </AnimatePresence>
-                        <AnimatePresence mode="popLayout">
-                            {
-                                !gridView && (
-                                    <Table
-                                        columns={columns}
-                                        data={jobs ?? []}
-                                        page={page}
-                                        perPage={itemsPerPage}
-                                        totalCount={jobs?.length}
-                                        onPageChange={handlePageChange}
-                                        emptyStateText="No items to be found here."
-                                        onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
-                                    />
-                                )
-                            }
-                        </AnimatePresence>
+                        <RenderIf condition={jobs !== undefined && jobs?.length > 0}>
+                            <AnimatePresence mode="popLayout">
+                                {
+                                    gridView && (
+                                        <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
+                                            {
+                                                jobs?.map((item) =>
+                                                    <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
+                                                )
+                                            }
+                                        </motion.div>
+                                    )
+                                }
+                            </AnimatePresence>
+                            <AnimatePresence mode="popLayout">
+                                {
+                                    !gridView && (
+                                        <Table
+                                            columns={columns}
+                                            data={jobs ?? []}
+                                            page={page}
+                                            perPage={itemsPerPage}
+                                            totalCount={jobs?.length}
+                                            onPageChange={handlePageChange}
+                                            emptyStateText="No items to be found here."
+                                            onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                                        />
+                                    )
+                                }
+                            </AnimatePresence>
+                        </RenderIf>
+                        <RenderIf condition={jobs !== undefined && jobs.length === 0}>
+                            <AnimatePresence mode="popLayout">
+                                <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid place-content-center">
+                                    <div className="flex flex-col items-center gap-2 py-14 flex-1">
+                                        <img src={emptyState} alt="emptyState" className="size-24" />
+                                        <div className="grid gap-1 text-center">
+                                            <h2 className="font-medium text-base text-gray-900">You have no performance metrics</h2>
+                                            <p className="text-sm text-gray-600">Create jobs and interact with candidates to view metrics</p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
+                        </RenderIf>
                     </RenderIf>
                     <RenderIf condition={isFetching}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
