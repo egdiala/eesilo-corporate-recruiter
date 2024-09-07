@@ -7,6 +7,7 @@ export const dummyJobs = [
         "required_travel": 0,
         "required_relocation": 0,
         "country": "united kingdom",
+        "state": "Yorkshire",
         "city": "liverpool",
         "expected_salary": 75000,
         "requirement": [
@@ -35,6 +36,7 @@ export const dummyJobs = [
         "required_travel": 0,
         "required_relocation": 0,
         "country": "united kingdom",
+        "state": "Yorkshire",
         "city": "liverpool",
         "expected_salary": 75000,
         "requirement": [
