@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { useDebounce } from "@/hooks/useDebounce"
 import { TalentCard } from "@/components/pages/talent"
 import { Loader } from "@/components/core/Button/Loader"
-import { useGetCitiesByCountry, useGetCountries, useGetJobs, useGetTalents } from "@/services/hooks/queries"
+import { useGetCitiesByStateAndCountry, useGetCountries, useGetJobs, useGetStatesByCountry, useGetTalents } from "@/services/hooks/queries"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import type { FetchedTalent } from "@/types/applicants"
 import { Button, CheckBox, ComboBox, EmptyState, InputField, RenderIf } from "@/components/core"
@@ -16,6 +16,7 @@ export const TalentSearchPage: React.FC = () => {
     const [query, setQuery] = useState({
         job: "",
         country: "",
+        state: "",
         city: ""
     })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs()
@@ -26,6 +27,7 @@ export const TalentSearchPage: React.FC = () => {
         initialValues: {
             job_id: "",
             country: "",
+            state: "",
             city: "",
             // year_exp: ""
         },
@@ -52,7 +54,18 @@ export const TalentSearchPage: React.FC = () => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByCountry(selectedCountry?.iso2 as string)
+    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
+    const fetchedStates = query.state === ""
+        ? states
+        : states?.filter((state) => {
+            return state.name.toLowerCase().includes(query.state.toLowerCase())
+            })
+
+    const selectedState = useMemo(() => {
+        return states?.filter((item) => item?.name === values?.state)?.at(0)
+    },[states, values?.state])
+
+    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
     const fetchedCities = query.city === ""
         ? cities
         : cities?.filter((city) => {
@@ -126,6 +139,22 @@ const filters = ["Willing to Travel", "Willing to Relocate"]
                             optionLabel={(option) => option?.name} 
                             setSelected={(value) => setFieldValue("country", value?.name)}
                             placeholder="Country"
+                        />
+                        <ComboBox
+                            disabled={fetchingStates}
+                            onClose={() => setQuery((prev) => ({
+                                ...prev,
+                                state: "",
+                            }))}
+                            options={fetchedStates ?? []} 
+                            onChange={(value) => setQuery((prev) => ({
+                                ...prev,
+                                state: value,
+                            }))} 
+                            displayValue={(item) => item?.name}
+                            optionLabel={(option) => option?.name} 
+                            setSelected={(value) => setFieldValue("state", value?.name)}
+                            placeholder="State"
                         />
                         <ComboBox
                             disabled={fetchingCities}
