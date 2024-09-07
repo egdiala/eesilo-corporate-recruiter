@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
 import { useFormikWrapper } from "@/hooks/useFormikWrapper";
-import { formatPhoneNumber } from "react-phone-number-input";
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding";
 import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
 import { Button, ComboBox, InputField, PhoneInput } from "@/components/core";
@@ -15,6 +14,14 @@ export const OrganizationInformation: React.FC = () => {
         state: "",
         city: ""
     })
+
+    const extractNumbers = (str: string) => {
+        // Use a regular expression to match all digits (\d)
+        const numbers = str.match(/\d+/g);
+
+        // Join the array of numbers into a single string
+        return numbers ? numbers.join("") : "";
+    }
     
     const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
@@ -38,7 +45,7 @@ export const OrganizationInformation: React.FC = () => {
                 address: values.address,
                 zip_code: values.zip_code
             }
-            mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
+            mutate({ address_data, name, phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""), website, phone_prefix: selectedCountry?.phonecode })
         },
     })
 
