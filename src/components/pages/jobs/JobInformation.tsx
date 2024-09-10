@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
-import { Button, Tag } from "@/components/core";
+import { Button, ContentDivider, Tag } from "@/components/core";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { FetchedJob } from "@/types/jobs";
@@ -35,10 +35,10 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
                     Edit Job
                 </Button>
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <h3 className="font-medium text-gray-900 text-sm">Description</h3>
             <p className="text-gray-700 text-sm font-normal">{job?.description}</p>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <div className="flex items-center flex-wrap gap-6">
                 {
                     firstRow.map((item) =>
@@ -49,7 +49,7 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
                     )
                 }
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <div className="flex items-center flex-wrap gap-6">
                 {
                     secondRow.map((item) =>
@@ -60,7 +60,7 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
                     )
                 }
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <h3 className="font-medium text-gray-900 text-sm">Requirements</h3>
             <div className="flex items-center flex-wrap gap-4">
                 {

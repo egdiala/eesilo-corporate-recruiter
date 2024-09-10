@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
-import { Button, InputField, SelectInput } from "@/components/core"
+import { Button, ContentDivider, InputField, SelectInput } from "@/components/core"
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 
 
@@ -31,7 +31,7 @@ export const StaffAccessControl: React.FC = () => {
                 <h1 className="font-medium text-lg text-gray-900">Staffs and Access Control</h1>
                 <p className="text-base text-gray-400">Create and grant access to members of staff</p>
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <div className="flex flex-col gap-5">
                 <div className="grid gap-2.5 p-2.5">
                     <div className="flex items-center justify-between gap-4">

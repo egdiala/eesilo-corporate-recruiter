@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { Avatar } from "@/components/core";
+import { Avatar, ContentDivider } from "@/components/core";
 
 export const UpcomingInterviews: React.FC = () => {
     return (
@@ -13,7 +13,7 @@ export const UpcomingInterviews: React.FC = () => {
                 </div>
                 <Link to="/jobs" className="font-medium text-sm text-gray-500">View All</Link>
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             {
                 Array.from({ length: 4 }).map((_, index) =>
                     <div key={index} className="flex items-start justify-between p-1">

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Icon } from "@iconify/react"
 import { useNavigate } from "react-router-dom"
-import { Button, InputField } from "@/components/core"
+import { Button, ContentDivider, InputField } from "@/components/core"
 import { AnimatePresence, motion } from "framer-motion"
 import { authCodeSchema } from "@/validations/settings"
 import { changePasswordSchema } from "@/validations/auth"
@@ -52,7 +52,7 @@ export const ChangePasswordPage: React.FC = () => {
                                             <h1 className="font-medium text-lg text-gray-900">Authentication Codes</h1>
                                             <p className="text-base text-gray-400">Provide the codes sent to your email and phone number</p>
                                         </div>
-                                        <hr className="border-[#E2E4E9]" />
+                                        <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
                                             <InputField type="password" label="Email Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
                                             <InputField type="password" label="Phone Code" placeholder="• • • • • • • • • •" size="40" {...register("phone_code")} required />
@@ -70,7 +70,7 @@ export const ChangePasswordPage: React.FC = () => {
                                             <h1 className="font-medium text-lg text-gray-900">Create New Password</h1>
                                             <p className="text-base text-gray-400">You can now create new password to secure your account</p>
                                         </div>
-                                        <hr className="border-[#E2E4E9]" />
+                                        <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
                                             <InputField type="password" label="New Password" placeholder="• • • • • • • • • •" size="40" {...registerPasswordFields("password")} required />
                                             <InputField type="password" label="Confirm Password" placeholder="• • • • • • • • • •" size="40" {...registerPasswordFields("confirm_password")} required />

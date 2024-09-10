@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
-import { Button, InputField, Toggle } from "@/components/core"
+import { Button, ContentDivider, InputField, Toggle } from "@/components/core"
 import { Icon } from "@iconify/react"
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 
@@ -32,7 +32,7 @@ export const Security: React.FC = () => {
                 <h1 className="font-medium text-lg text-gray-900">Security</h1>
                 <p className="text-base text-gray-400">Edit and update security details to get your account secured</p>
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <div className="flex flex-col gap-5">
                 <div className="flex items-center gap-6">
                     <div className="grid gap-2 flex-1">

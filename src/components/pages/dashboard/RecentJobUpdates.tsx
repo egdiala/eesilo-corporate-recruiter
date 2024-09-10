@@ -2,6 +2,7 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import emptyState from "@/assets/empty_state.webp";
+import { ContentDivider } from "@/components/core";
 
 export const RecentJobUpdates: React.FC = () => {
     return (
@@ -13,7 +14,7 @@ export const RecentJobUpdates: React.FC = () => {
                 </div>
                 <Link to="/jobs" className="font-medium text-sm text-gray-500">View All</Link>
             </div>
-            <hr className="border-[#E2E4E9]" />
+            <ContentDivider />
             <div className="flex flex-col items-center gap-2 py-14">
                 <img src={emptyState} alt="emptyState" className="size-24" />
                 <div className="grid gap-1 text-center">

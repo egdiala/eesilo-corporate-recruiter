@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Icon } from "@iconify/react"
 import { useNavigate } from "react-router-dom"
-import { Button, InputField } from "@/components/core"
+import { Button, ContentDivider, InputField } from "@/components/core"
 import { AnimatePresence, motion } from "framer-motion"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
@@ -50,7 +50,7 @@ export const ChangeEmailPage: React.FC = () => {
                                             <h1 className="font-medium text-lg text-gray-900">Authentication Codes</h1>
                                             <p className="text-base text-gray-400">Provide the codes sent to your email and phone number</p>
                                         </div>
-                                        <hr className="border-[#E2E4E9]" />
+                                        <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
                                             <InputField type="password" label="Email Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
                                             <InputField type="password" label="Phone Code" placeholder="• • • • • • • • • •" size="40" {...register("phone_code")} required />
@@ -68,7 +68,7 @@ export const ChangeEmailPage: React.FC = () => {
                                             <h1 className="font-medium text-lg text-gray-900">Enter New Email</h1>
                                             <p className="text-base text-gray-400">You can now provide your new email address</p>
                                         </div>
-                                        <hr className="border-[#E2E4E9]" />
+                                        <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
                                             <InputField type="text" label="New Email " placeholder="Email" size="40" {...registerPasswordFields("email")} required />
                                         </div>
