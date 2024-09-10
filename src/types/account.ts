@@ -33,3 +33,7 @@ export interface UpdateAccountParams {
 export interface FetchedAccount extends User, Omit<UpdateAccountParams, "ein_id" | "phone_prefix" | "twofactor" | "website"> {
 
 }
+
+export type GetCalendarEventQuery = {
+    year_month: string // Format is YYYY-MM
+}

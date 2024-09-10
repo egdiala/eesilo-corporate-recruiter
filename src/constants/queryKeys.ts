@@ -6,6 +6,7 @@ export const GET_CITIES_BY_STATE_AND_COUNTRY = "get-cities-by-state-and-country"
 
 // Account
 export const GET_ACCOUNT = "get-account"
+export const GET_EVENT_CALENDAR = "get-event-calendar"
 
 // Dashboard
 export const GET_DASHBOARD_STATS = "get-dashboard-stats"

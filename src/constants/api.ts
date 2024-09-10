@@ -7,6 +7,7 @@ export const FORGOT_PASSWORD_API = "business/auths/forgot-password"
 
 // Account
 export const GET_ACCOUNT_API = "business/accounts"
+export const GET_EVENT_CALENDAR_API = "business/accounts/event-calendar"
 
 // Dashboard
 export const GET_DASHBOARD_STATS_API = "business/accounts/dashboard-stat"
