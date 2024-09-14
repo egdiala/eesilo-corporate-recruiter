@@ -126,3 +126,11 @@ export interface SingleTalent extends FetchedTalent {
         __v: number;
     }[];
 }
+
+export type GetDocumentQuery = {
+    user_id: string;
+    document_id?: string;
+    page?: string;
+    item_per_page?: string;
+    component?: "count" | "view";
+}

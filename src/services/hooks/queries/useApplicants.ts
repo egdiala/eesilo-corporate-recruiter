@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { GET_SHORTLISTED, GET_TALENTS } from "@/constants/queryKeys";
-import { getShortlisted, getTalent, getTalents } from "@/services/apis/applicants";
-import type { GetShortlistedQuery, GetTalentsQuery } from "@/types/applicants";
+import { getApplicantDocument, getShortlisted, getTalent, getTalents } from "@/services/apis/applicants";
+import type { GetDocumentQuery, GetShortlistedQuery, GetTalentsQuery } from "@/types/applicants";
 
 export const useGetShortlisted = <T>(query: GetShortlistedQuery) => {
     return useQuery({
@@ -28,6 +28,17 @@ export const useGetTalent = <T>(id: string) => {
         enabled: !!id,
         queryKey: [GET_TALENTS, id],
         queryFn: () => getTalent(id),
+        select: (res) => res?.data as T,
+        retry: false,
+        refetchOnWindowFocus: false,
+    });
+};
+
+export const useGetApplicantDocument = <T>(query: GetDocumentQuery) => {
+    return useQuery({
+        enabled: !!query.user_id,
+        queryKey: [GET_TALENTS, query],
+        queryFn: () => getApplicantDocument(query),
         select: (res) => res?.data as T,
         retry: false,
         refetchOnWindowFocus: false,

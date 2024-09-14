@@ -3,11 +3,13 @@ import { format } from "date-fns";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import type { FetchedJob } from "@/types/jobs";
+import emptyState from "@/assets/empty_state.webp";
 import type { SingleTalent } from "@/types/applicants";
 import { tabVariants } from "@/constants/animateVariants";
 import { useGetCountries, useGetJobs } from "@/services/hooks/queries";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
+import { capitalizeWords } from "@/utils/capitalize";
 
 
 interface TalentInformationProps {
@@ -79,40 +81,62 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:graduation-cap-line" className="size-6 text-primary-500" />
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                {
-                    talent.education_data.map((education) =>
-                        <div key={education._id} className="flex flex-col gap-2.5">
-                            <div className="grid gap-1.5">
-                                <h3 className="font-medium text-sm text-gray-900">{education?.school_name}</h3>
-                                <p className="text-xs text-gray-900">{education?.degree_name}</p>
-                                <span className="text-xs text-gray-900">{education?.completion_year}</span>
-                            </div>
-                            <div className="grid gap-2.5 py-2">
-                                <h4 className="text-sm text-gray-500">Related coursework or projects</h4>
-                                <p className="text-xs text-gray-900">{education?.description}</p>
-                            </div>
+                <RenderIf condition={!!talent?.education_data}>
+                    <div className="grid grid-cols-2 gap-4">
+                        {
+                            talent?.education_data?.map((education) =>
+                                <div key={education._id} className="flex flex-col gap-2.5">
+                                    <div className="grid gap-1.5">
+                                        <h3 className="font-medium text-sm text-gray-900">{education?.school_name}</h3>
+                                        <p className="text-xs text-gray-900">{education?.degree_name}</p>
+                                        <span className="text-xs text-gray-900">{education?.completion_year}</span>
+                                    </div>
+                                    <div className="grid gap-2.5 py-2">
+                                        <h4 className="text-sm text-gray-500">Related coursework or projects</h4>
+                                        <p className="text-xs text-gray-900">{education?.description}</p>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                </RenderIf>
+                <RenderIf condition={!talent?.education_data}>
+                    <div className="flex flex-col items-center gap-2 py-7 max-auto">
+                        <img src={emptyState} alt="emptyState" className="size-24" />
+                        <div className="grid gap-1 text-center">
+                            <h2 className="font-medium text-base text-gray-900">No Educational Information</h2>
+                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name)} has no educational qualification at this moment</p>
                         </div>
-                    )
-                }
-                </div>
+                    </div>
+                </RenderIf>
             </div>
             <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">
                 <div className="flex items-center gap-4 pb-4 border-b border-b-[#E2E4E9]">
                     <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                {
-                    talent.workexp_data.map((work) =>
-                        <div className="flex flex-col gap-1.5" key={work?._id}>
-                            <h3 className="font-medium text-sm text-gray-900 capitalize">{work?.job_title}</h3>
-                            <p className="text-xs text-gray-900 capitalize">{work?.company}</p>
-                            <span className="text-xs text-gray-500">{format(work?.date_data?.start_date, "MMMM yyyy")} - {work?.date_data?.currently_working ? "Present" : format(work?.date_data?.end_date, "MMMM yyyy")}</span>
+                <RenderIf condition={!!talent?.workexp_data}>
+                    <div className="grid grid-cols-2 gap-4">
+                        {
+                            talent?.workexp_data?.map((work) =>
+                                <div className="flex flex-col gap-1.5" key={work?._id}>
+                                    <h3 className="font-medium text-sm text-gray-900 capitalize">{work?.job_title}</h3>
+                                    <p className="text-xs text-gray-900 capitalize">{work?.company}</p>
+                                    <span className="text-xs text-gray-500">{format(work?.date_data?.start_date, "MMMM yyyy")} - {work?.date_data?.currently_working ? "Present" : format(work?.date_data?.end_date, "MMMM yyyy")}</span>
+                                </div>
+                            )
+                        }
+                    </div>
+                </RenderIf>
+                <RenderIf condition={!talent?.education_data}>
+                    <div className="flex flex-col items-center gap-2 py-7 max-auto">
+                        <img src={emptyState} alt="emptyState" className="size-24" />
+                        <div className="grid gap-1 text-center">
+                            <h2 className="font-medium text-base text-gray-900">No Work Experience</h2>
+                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name)} has no work experience at this moment</p>
                         </div>
-                    )
-                }
-                </div>
+                    </div>
+                </RenderIf>
             </div>
             <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">
                 <div className="flex items-center gap-4 pb-4 border-b border-b-[#E2E4E9]">

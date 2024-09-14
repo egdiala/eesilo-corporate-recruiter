@@ -15,7 +15,7 @@ import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/compon
 
 export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
-    const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<JobDataCountType>({ component: "job-interview-count" })
+    const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<any[]>({ component: "job-interview-count" })
     const { data: yearlyCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
     const cards = useMemo(() => {
         return [
@@ -25,7 +25,7 @@ export const DashboardPage: React.FC = () => {
             { icon: "ri:user-received-line", iconClass: "text-error-500 size-8", background: "bg-error-25", label: "Total Invited", value: dataCount?.total_invited },
         ]
     },[dataCount?.total_employee, dataCount?.total_invited, dataCount?.total_job, dataCount?.total_shortlisted])
-    console.log("interviewCount", interviewCount)
+
     console.log("yearlyCount", yearlyCount)
     return (
         <Fragment>
@@ -74,7 +74,7 @@ export const DashboardPage: React.FC = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                            <UpcomingInterviews />
+                            <UpcomingInterviews interviews={interviewCount!} />
                             <RecentJobUpdates />
                         </div>
                     </div>

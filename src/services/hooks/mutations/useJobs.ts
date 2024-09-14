@@ -7,7 +7,7 @@ export const useCreateJob = (msg?: string, fn?: () => void) => {
     return useMutation({
         mutationFn: createJob,
         onSuccess: () => {
-            successToast({ param: {}, msg, size: "36" })
+            successToast({ param: null, msg, size: "36" })
             fn?.()
         },
         onError: (err: any) => {
@@ -21,7 +21,7 @@ export const useUpdateJob = (msg?: string, fn?: () => void) => {
     return useMutation({
         mutationFn: updateJob,
         onSuccess: () => {
-            successToast({ param: {}, msg, size: "36" })
+            successToast({ param: null, msg, size: "36" })
             fn?.()
         },
         onError: (err: any) => {
