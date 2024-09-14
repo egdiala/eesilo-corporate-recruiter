@@ -7,7 +7,7 @@ import { OnboardingPage } from "@/pages/onboarding"
 import DashboardLayout from "@/layouts/dashboard-layout"
 import { NotificationsPage } from "@/pages/notifications"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
-import { AuthRoutes, BillingRoutes, DashboardRoutes, JobRoutes, SettingsRoutes, TalentRoutes } from "./modules"
+import { AuthRoutes, BillingRoutes, DashboardRoutes, EmployeeRoutes, JobRoutes, SettingsRoutes, TalentRoutes } from "./modules"
 
 
 function LocationProvider({ children }: { children: ReactNode }) {
@@ -21,6 +21,7 @@ const Router = () => {
                 <Route path="auth/*" element={<AuthLayout><LocationProvider><AuthRoutes /></LocationProvider></AuthLayout>} />
                 <Route path="billings/*" element={<DashboardLayout><LocationProvider><BillingRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="calendar/*" element={<DashboardLayout><LocationProvider><CalendarPage /></LocationProvider></DashboardLayout>} />
+                <Route path="employees/*" element={<DashboardLayout><LocationProvider><EmployeeRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="onboarding" element={<BlankLayout><LocationProvider><OnboardingPage /></LocationProvider></BlankLayout>} />
                 <Route path="/*" element={<DashboardLayout><LocationProvider><DashboardRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="jobs/*" element={<DashboardLayout><LocationProvider><JobRoutes /></LocationProvider></DashboardLayout>} />

@@ -1,0 +1,18 @@
+import { Routes, Route } from "react-router-dom";
+import { EmployeeActiveRolesPage, EmployeeDocumentsPage, EmployeeInformationPage, EmployeeJobProgressPage, EmployeesPage, ViewEmployeePage } from "@/pages/employees";
+
+const EmployeeRoutes = () => {
+    return (
+        <Routes>
+            <Route index element={<EmployeesPage />} />
+            <Route path="view/:id" element={<ViewEmployeePage />}>
+                <Route path="active-roles" element={<EmployeeActiveRolesPage />} />
+                <Route path="documents" element={<EmployeeDocumentsPage />} />
+                <Route path="information" element={<EmployeeInformationPage />} />
+                <Route path="job-progress" element={<EmployeeJobProgressPage />} />
+            </Route>
+        </Routes>
+    );
+};
+
+export default EmployeeRoutes;

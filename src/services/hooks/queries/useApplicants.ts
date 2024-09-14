@@ -26,7 +26,7 @@ export const useGetTalents = <T>(query: GetTalentsQuery) => {
 export const useGetTalent = <T>(id: string) => {
     return useQuery({
         enabled: !!id,
-        queryKey: [GET_TALENTS, id],
+        queryKey: [GET_TALENTS],
         queryFn: () => getTalent(id),
         select: (res) => res?.data as T,
         retry: false,
