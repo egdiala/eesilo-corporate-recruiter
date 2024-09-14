@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import { Button, RenderIf } from "@/components/core"
@@ -7,9 +7,11 @@ import { cn } from "@/libs/cn"
 import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameMonth, isToday, parse, startOfToday, startOfWeek } from "date-fns"
 import { useGetEventCalendar } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
+import { UpcomingInterviews } from "@/components/pages/calendar"
 
 
 export const CalendarPage: React.FC = () => {
+    const [openInterviewModal, setOpenInterviewModal] = useState(false)
     let today = startOfToday()
     let [selectedDay, setSelectedDay] = useState(today)
     let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"))
@@ -37,6 +39,10 @@ export const CalendarPage: React.FC = () => {
         "col-start-7",
     ]
     const { isFetching: isFetchingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+
+    const toggleInterviewModal = useCallback(() => {
+        setOpenInterviewModal(!openInterviewModal)
+    },[openInterviewModal])
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 view-page-container overflow-y-scroll pt-5 pb-10">
             <div className="flex flex-col gap-0 bg-white rounded-2xl p-4 lg:p-8">
@@ -78,84 +84,82 @@ export const CalendarPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex text-lg leading-6 lg:flex-auto">
-                                    <div className="hidden w-full lg:grid lg:grid-cols-7">
-                                        {newDays.map((day, dayIdx) => (
-                                        <div
-                                            key={day.toString()}
-                                            role="button"
-                                            onClick={() => setSelectedDay(day)}
-                                            className={cn(
-                                            isSameMonth(day, today) ? "text-gray-500" : "text-gray-400",
-                                            "flex flex-col justify-between bg-white relative p-3 h-28 border-r-gray-200 border-r border-b",
-                                            dayIdx === 0 && colStartClasses[getDay(day)]
-                                            )}
-                                        >
-                                            <time
-                                            dateTime={format(day, "yyyy-MM-dd")}
-                                            className={
-                                                isToday(day)
-                                                ? "flex h-6 w-6 items-center justify-center rounded-full bg-primary-500 font-semibold text-white"
-                                                : "flex h-6 w-6 items-center justify-center"
-                                            }
+                                        <div className="hidden w-full lg:grid lg:grid-cols-7">
+                                            {newDays.map((day, dayIdx) => (
+                                            <div
+                                                key={day.toString()}
+                                                className={cn(
+                                                isSameMonth(day, today) ? "text-gray-500" : "text-gray-400",
+                                                "flex flex-col justify-between bg-white relative p-3 h-28 border-r-gray-200 border-r border-b",
+                                                dayIdx === 0 && colStartClasses[getDay(day)]
+                                                )}
                                             >
-                                            {format(day, "d")}
-                                            </time>
-                                            <RenderIf condition={isToday(day)}>
-                                                <ol>
-                                                    <li>
-                                                        <div className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full">
-                                                            <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
-                                                                1 <span className="sr-only sm:not-sr-only">Interview 🙏🏽</span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </RenderIf>
+                                                <time
+                                                dateTime={format(day, "yyyy-MM-dd")}
+                                                className={
+                                                    isToday(day)
+                                                    ? "flex h-6 w-6 items-center justify-center rounded-full bg-primary-500 font-semibold text-white"
+                                                    : "flex h-6 w-6 items-center justify-center"
+                                                }
+                                                >
+                                                {format(day, "d")}
+                                                </time>
+                                                <RenderIf condition={isToday(day)}>
+                                                    <ol>
+                                                        <li>
+                                                            <button type="button" className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full" onClick={toggleInterviewModal}>
+                                                                <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
+                                                                    1 <span className="sr-only sm:not-sr-only">Interview 🙏🏽</span>
+                                                                </div>
+                                                            </button>
+                                                        </li>
+                                                    </ol>
+                                                </RenderIf>
+                                            </div>
+                                            ))}
                                         </div>
-                                        ))}
-                                    </div>
-                                    <div className="isolate grid w-full grid-cols-7 gap-px lg:hidden">
-                                        {newDays.map((day, dayIdx) => (
-                                        <button
-                                            key={day.toString()}
-                                            type="button"
-                                            onClick={() => setSelectedDay(day)}
-                                            className={cn(
-                                            isSameMonth(day, today) ? "text-gray-500" : "text-gray-400",
-                                            (isEqual(day, selectedDay) || isToday(day)) && "font-semibold",
-                                            isEqual(day, selectedDay) && "text-white",
-                                            !isEqual(day, selectedDay) && isToday(day) && "text-primary-500",
-                                            !isEqual(day, selectedDay) && isSameMonth(day, today) && !isToday(day) && "text-gray-900",
-                                            !isEqual(day, selectedDay) && !isSameMonth(day, today) && !isToday(day) && "text-gray-500",
-                                            "flex flex-col justify-between bg-white relative p-3 h-auto md:h-28 border-r-gray-200 border-r border-b",
-                                            dayIdx === 0 && colStartClasses[getDay(day)]
-                                            )}
-                                        >
-                                            <time
-                                            dateTime={format(day, "yyyy-MM-dd")}
-                                            className={cn(
-                                                isEqual(day, selectedDay) && "flex h-6 w-6 items-center justify-center rounded-full",
-                                                isEqual(day, selectedDay) && isToday(day) && "bg-primary-500",
-                                                isEqual(day, selectedDay) && !isToday(day) && "bg-warning-600",
-                                                "ml-auto",
-                                            )}
+                                        <div className="isolate grid w-full grid-cols-7 gap-px lg:hidden">
+                                            {newDays.map((day, dayIdx) => (
+                                            <button
+                                                key={day.toString()}
+                                                type="button"
+                                                onClick={() => setSelectedDay(day)}
+                                                className={cn(
+                                                isSameMonth(day, today) ? "text-gray-500" : "text-gray-400",
+                                                (isEqual(day, selectedDay) || isToday(day)) && "font-semibold",
+                                                isEqual(day, selectedDay) && "text-white",
+                                                !isEqual(day, selectedDay) && isToday(day) && "text-primary-500",
+                                                !isEqual(day, selectedDay) && isSameMonth(day, today) && !isToday(day) && "text-gray-900",
+                                                !isEqual(day, selectedDay) && !isSameMonth(day, today) && !isToday(day) && "text-gray-500",
+                                                "flex flex-col justify-between bg-white relative p-3 h-auto md:h-28 border-r-gray-200 border-r border-b",
+                                                dayIdx === 0 && colStartClasses[getDay(day)]
+                                                )}
                                             >
-                                            {format(day, "d")}
-                                            </time>
-                                            <RenderIf condition={isToday(day)}>
-                                                <ol>
-                                                    <li>
-                                                        <div className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full">
-                                                            <span className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
-                                                                1 Interview 🙏🏽
-                                                            </span>
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </RenderIf>
-                                        </button>
-                                        ))}
-                                    </div>
+                                                <time
+                                                dateTime={format(day, "yyyy-MM-dd")}
+                                                className={cn(
+                                                    isEqual(day, selectedDay) && "flex h-6 w-6 items-center justify-center rounded-full",
+                                                    isEqual(day, selectedDay) && isToday(day) && "bg-primary-500",
+                                                    isEqual(day, selectedDay) && !isToday(day) && "bg-warning-600",
+                                                    "ml-auto",
+                                                )}
+                                                >
+                                                {format(day, "d")}
+                                                </time>
+                                                <RenderIf condition={isToday(day)}>
+                                                    <ol>
+                                                        <li>
+                                                            <div className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full">
+                                                                <span className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
+                                                                    1 Interview 🙏🏽
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ol>
+                                                </RenderIf>
+                                            </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -169,6 +173,7 @@ export const CalendarPage: React.FC = () => {
                         )
                     }
                 </AnimatePresence>
+                <UpcomingInterviews isOpen={openInterviewModal} onClose={toggleInterviewModal} />
             </div>
         </motion.div>
     )

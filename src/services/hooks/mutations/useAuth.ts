@@ -24,8 +24,7 @@ export const useLogin = (fn?: (v: User) => void) => {
       fn?.(response?.data);
     },
     onError: (err: any) => {
-      console.log(err)
-        errorToast({ param: err, variant: "light" })
+      errorToast({ param: err, variant: "light" })
     },
   });
 };
@@ -75,7 +74,6 @@ export const useForgotPassword = (fn?: (v: string) => void) => {
   return useMutation({
     mutationFn: forgotPassword,
     onSuccess: (response: any) => {
-      console.log(response)
         successToast({ param: null, msg: "A password reset link has been sent to your email" })
         fn?.(response?.data?.link)
     },

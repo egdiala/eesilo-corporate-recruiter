@@ -16,7 +16,7 @@ import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/compon
 export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
     const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<any[]>({ component: "job-interview-count" })
-    const { data: yearlyCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
+    const { isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
     const cards = useMemo(() => {
         return [
             { icon: "ri:briefcase-4-line", iconClass: "text-warning-500 size-8", background: "bg-warning-25", label: "Job Posts", value: dataCount?.total_job },
@@ -26,7 +26,6 @@ export const DashboardPage: React.FC = () => {
         ]
     },[dataCount?.total_employee, dataCount?.total_invited, dataCount?.total_job, dataCount?.total_shortlisted])
 
-    console.log("yearlyCount", yearlyCount)
     return (
         <Fragment>
             <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount}>
