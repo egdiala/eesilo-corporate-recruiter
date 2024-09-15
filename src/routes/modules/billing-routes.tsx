@@ -1,11 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import { BillingPage, MakePaymentPage } from "@/pages/billing";
+import { BillingPage, BillingPlansPage, BillingsHistoryPage, BillingsMethodPage } from "@/pages/billing";
 
 const BillingRoutes = () => {
     return (
         <Routes>
-            <Route index element={<BillingPage />} />
-            <Route path="payment" element={<MakePaymentPage />} />
+            <Route path="" element={<BillingPage />}>
+                <Route path="plans" element={<BillingPlansPage />} />
+                <Route path="payment-methods" element={<BillingsMethodPage />} />
+                <Route path="history" element={<BillingsHistoryPage />} />
+            </Route>
         </Routes>
     );
 };

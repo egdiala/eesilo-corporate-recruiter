@@ -1,2 +1,4 @@
 export * from "./billing"
-export * from "./make-payment"
+export * from "./history"
+export * from "./payment-method"
+export * from "./plans"
