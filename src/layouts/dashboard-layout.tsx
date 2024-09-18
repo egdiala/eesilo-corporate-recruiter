@@ -26,7 +26,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="relative bg-gray-50 isolate flex min-h-dvh w-full overflow-hidden">
-            <Sidebar />
+            <Sidebar admin={account!} />
             <div className="relative h-full flex-1">
                 <Header />
                 <main className="flex-1 overflow-hidden">

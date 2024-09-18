@@ -2,18 +2,21 @@ import React from "react"
 import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
 import { NavItem } from "@/components/core"
+import topStatus from "@/assets/top_status.svg"
 import { removeItem } from "@/utils/localStorage"
 import { Link, useNavigate } from "react-router-dom"
-import blankImg from "@/assets/company_recruiter.png"
+import type { FetchedAccount } from "@/types/account"
+import companyAvatar from "@/assets/company_avatar.svg"
 import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
-import { getAdminData } from "@/utils/authUtil"
 
+interface SidebarProps {
+    admin: FetchedAccount
+}
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<SidebarProps> = ({ admin }) => {
     const navigate = useNavigate()
-    const admin = getAdminData()
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
         removeItem(APP_USERDATA_STORAGE_KEY)
@@ -44,7 +47,10 @@ export const Sidebar: React.FC = () => {
                     </button>
                 </div>
                 <Link to="/profile" className="flex items-center gap-2 p-3">
-                    <img src={blankImg} className="size-10 rounded-full object-cover" alt="user" />
+                    <div className="size-10 relative">
+                        <img src={admin?.avatar ?? companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name} />
+                        <img src={topStatus} className="absolute -top-0.5 -right-1.5" alt="top-status" />
+                    </div>
                     <div className="flex-1 grid gap-1">
                         <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">{admin?.name}</h3>
                         <span className="font-medium text-xs text-gray-300 line-clamp-1 capitalize">Company</span>

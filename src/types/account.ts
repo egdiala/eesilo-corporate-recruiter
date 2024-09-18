@@ -31,7 +31,7 @@ export interface UpdateAccountParams {
 }
 
 export interface FetchedAccount extends User, Omit<UpdateAccountParams, "ein_id" | "phone_prefix" | "twofactor" | "website"> {
-
+    avatar: string;
 }
 
 export type GetCalendarEventQuery = {

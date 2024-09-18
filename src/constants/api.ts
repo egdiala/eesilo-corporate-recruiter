@@ -7,14 +7,15 @@ export const FORGOT_PASSWORD_API = "business/auths/forgot-password"
 
 // Account
 export const GET_ACCOUNT_API = "business/accounts"
-export const GET_EVENT_CALENDAR_API = "business/accounts/event-calendar"
+export const GET_EVENT_CALENDAR_API = "business/jobs/event-calendar"
+export const UPLOAD_LOGO_API = "business/accounts/profile-logo"
 
 // Dashboard
-export const GET_DASHBOARD_STATS_API = "business/accounts/dashboard-stat"
+export const GET_DASHBOARD_STATS_API = "business/jobs/dashboard-stat"
 
 // Jobs
-export const GET_JOBS_API = "business/accounts/job"
-export const GET_JOB_REQUIREMENTS_API = "business/accounts/job-requirement"
+export const GET_JOBS_API = "business/jobs"
+export const GET_JOB_REQUIREMENTS_API = "business/jobs/requirement"
 
 // Applicants
 export const GET_TALENTS_API = "business/applicants"

@@ -5,10 +5,10 @@ import { FetchedAccount } from "@/types/account"
 import { tabVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { formatPhoneNumber } from "react-phone-number-input"
-import { useUpdateAccount } from "@/services/hooks/mutations"
 import { parsePhoneNumberFromString } from "libphonenumber-js"
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
-import { Button, ComboBox, InputField, PhoneInput, RenderIf } from "@/components/core"
+import { useUpdateAccount, useUploadLogo } from "@/services/hooks/mutations"
+import { Button, ComboBox, ImageUpload, InputField, PhoneInput, RenderIf } from "@/components/core"
 import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
 
 interface OrganizationInformationProps {
@@ -17,6 +17,7 @@ interface OrganizationInformationProps {
 
 export const OrganizationInformation: React.FC<OrganizationInformationProps> = ({ account }) => {
     const { mutate, isPending } = useUpdateAccount("Organization information edited successfully")
+    const { mutateAsync: uploadLogo, isPending: isUploading } = useUploadLogo()
     const [query, setQuery] = useState({
         country: "",
         state: "",
@@ -42,6 +43,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
     const { errors, handleSubmit, isValid, dirty, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
             name: account?.name || "",
+            file: account?.avatar || "" as unknown,
             phone_number: phoneNumber?.parsedPhoneNumber || "",
             website: account?.website || "",
             country: account?.address_data?.country || "",
@@ -53,7 +55,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         validationSchema: onboardOrganizationInfoSchema,
         enableReinitialize: true,
         onSubmit: () => {
-            const { name, phone_number, website } = values
+            const { name, phone_number, website, file } = values
             const address_data = {
                 country: values.country,
                 country_code: selectedCountry?.phonecode,
@@ -62,7 +64,14 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 address: values.address,
                 zip_code: values.zip_code
             }
-            mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
+
+            if ((file as File)?.size > 0) {
+                const formData = new FormData();
+                formData.append("file", values.file as File);
+                uploadLogo(formData).then(() => mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode }))
+            } else {
+                mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
+            }
         },
     })
     const fetchedCountries = query.country === ""
@@ -121,6 +130,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         </Button>
                     </div>
                     <hr />
+                    <ImageUpload image={account?.avatar} onReset={() => setFieldValue("file", account?.avatar || "" as unknown, true)} size="64" type="company" setFile={(file) => setFieldValue("file", file, true)} showActions />
                     <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" defaultCountry={phoneNumber?.country?.iso2} value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
@@ -195,7 +205,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
                     </div>
                     <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
-                    <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid || !dirty}>Save Changes</Button>
+                    <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending || isUploading} disabled={isPending || isUploading || !isValid || !dirty}>Save Changes</Button>
                 </motion.form>
             </RenderIf>
             <RenderIf condition={!editMode}>
@@ -208,6 +218,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         </Button>
                     </div>
                     <hr />
+                    <ImageUpload image={account?.avatar} size="64" type="company" titleText="Company Logo" />
                     {
                         information.map((info) =>
                             <div key={info.label} className="flex items-center justify-between py-3">

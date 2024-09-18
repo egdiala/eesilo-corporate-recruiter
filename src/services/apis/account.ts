@@ -1,5 +1,5 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { GET_ACCOUNT_API, GET_EVENT_CALENDAR_API } from "@/constants/api";
+import { GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPLOAD_LOGO_API } from "@/constants/api";
 import type { GetCalendarEventQuery, UpdateAccountParams } from "@/types/account";
 import { createQueryString } from "@/utils/createQuery";
 
@@ -15,5 +15,15 @@ export const getAccount = async () => {
 
 export const getEventCalendar = async (query: GetCalendarEventQuery) => {
   const res = await axiosUserInstance.get(`${GET_EVENT_CALENDAR_API}${createQueryString(query)}`);
+  return res.data;
+};
+
+export const uploadLogo = async (payload: FormData) => {
+  const res = await axiosUserInstance.post(UPLOAD_LOGO_API, payload, {
+    headers: {
+      "Accept": "application/form-data",
+      "Content-Type": "multipart/form-data"
+    },
+  });
   return res.data;
 };
