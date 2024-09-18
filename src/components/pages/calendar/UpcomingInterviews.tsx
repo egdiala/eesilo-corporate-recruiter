@@ -1,27 +1,29 @@
 import React, { useMemo } from "react";
+import { cn } from "@/libs/cn";
+import type { FetchedCalendarEvent } from "@/types/account";
 import { Avatar, Button, ContentDivider } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { cn } from "@/libs/cn";
+import { format } from "date-fns";
 
 interface UpcomingInterviewsProps {
     isOpen: boolean;
     onClose: () => void;
+    events: FetchedCalendarEvent[]
 }
 
-export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ isOpen, onClose }) => {
-    const interviews = [1, 2, 3, 4, 5]
+export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, isOpen, onClose }) => {
     
     const interviewColumns = useMemo(() => {
-        if (interviews.length === 1) {
+        if (events?.length === 1) {
             return "grid-cols-1"
         }
-        if (interviews.length === 2) {
+        if (events?.length === 2) {
             return "grid-cols-3"
         }
-        if (interviews.length > 2) {
+        if (events?.length > 2) {
             return "grid-cols-3"
         }
-    },[interviews.length])
+    },[events?.length])
     
     return (
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={onClose}>
@@ -36,10 +38,10 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ isOpen, 
                         </div>
                         <div className={cn("grid gap-5", interviewColumns)}>
                             {
-                                interviews.map((item) =>
-                                    <div key={item} className="flex flex-col gap-3 border border-gray-200 bg-gray-25 rounded-xl p-4">
+                                events?.map((item) =>
+                                    <div key={item?._id} className="flex flex-col gap-3 border border-gray-200 bg-gray-25 rounded-xl p-4">
                                         <div className="grid gap-5">
-                                            <h2 className="font-semibold text-base text-gray-900">Certified Health Worker</h2>
+                                            <h2 className="font-semibold text-base text-gray-900">{item?.title}</h2>
                                             <div className="flex items-center gap-3">
                                                 <Avatar size="40" image="https://images.pexels.com/photos/7275354/pexels-photo-7275354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Ferdinard Tabitha" />
                                                 <div className="grid gap-1">
@@ -53,19 +55,19 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ isOpen, 
                                             <li>
                                                 <div className="flex items-center gap-1.5">
                                                     <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Date:</div>
-                                                    <div className="font-medium text-sm text-gray-500">12 January 2023</div>
+                                                    <div className="font-medium text-sm text-gray-500">{format(item?.event_schedule, "dd MMMM yyyy")}</div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div className="flex items-center gap-1.5">
                                                     <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Time:</div>
-                                                    <div className="font-medium text-sm text-gray-500">12:00 PM GMT</div>
+                                                    <div className="font-medium text-sm text-gray-500">{format(item?.event_schedule, "p")} {format(item?.event_schedule, "OOOO")}</div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div className="flex items-start gap-1.5 overflow-hidden text-ellipsis">
                                                     <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Meeting link:</div>
-                                                    <a href="#" className="flex-1 whitespace-pre-wrap line-clamp-1 font-medium text-sm text-blue-500">zoommtg://zoom.us/join?confno=8529015944&pwd=&uname=Nobody%20-%2051800000000</a>
+                                                    <a href={item?.data?.meeting_link} target="_blank" className="flex-1 whitespace-pre-wrap line-clamp-1 font-medium text-sm text-blue-500">{item?.data?.meeting_link}</a>
                                                 </div>
                                             </li>
                                         </ul>

@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react"
 import { Button, RenderIf } from "@/components/core"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
+import type { FetchedCalendarEvent } from "@/types/account"
 import { useGetEventCalendar } from "@/services/hooks/queries"
 import { UpcomingInterviews } from "@/components/pages/calendar"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
@@ -38,7 +39,9 @@ export const CalendarPage: React.FC = () => {
         "col-start-6",
         "col-start-7",
     ]
-    const { isFetching: isFetchingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+    const { data: events, isFetching: isFetchingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+
+    let [eventsToView, setEventsToView] = useState<FetchedCalendarEvent[]>([])
 
     const toggleInterviewModal = useCallback(() => {
         setOpenInterviewModal(!openInterviewModal)
@@ -104,16 +107,25 @@ export const CalendarPage: React.FC = () => {
                                                 >
                                                 {format(day, "d")}
                                                 </time>
-                                                <RenderIf condition={isToday(day)}>
-                                                    <ol>
-                                                        <li>
-                                                            <button type="button" className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full" onClick={toggleInterviewModal}>
-                                                                <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
-                                                                    1 <span className="sr-only sm:not-sr-only">Interview 🙏🏽</span>
-                                                                </div>
-                                                            </button>
-                                                        </li>
-                                                    </ol>
+                                                <RenderIf condition={(events !== undefined) && (events.length > 0)}>
+                                                    {
+                                                        [events?.find((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))!]?.map((item) =>
+                                                        <RenderIf key={item?._id} condition={isEqual(format(day, "yyyy-MM-dd"), item?.data?.date)}>
+                                                            <ol>
+                                                                <li>
+                                                                    <button type="button" className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full" onClick={() => {
+                                                                        setEventsToView(events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))!)
+                                                                        toggleInterviewModal()
+                                                                    }}>
+                                                                        <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
+                                                                            {events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date)).length} <span className="sr-only sm:not-sr-only">Interview{events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))?.length! > 1 ? "s" : ""}</span>
+                                                                        </div>
+                                                                    </button>
+                                                                </li>
+                                                            </ol>
+                                                        </RenderIf>
+                                                        )
+                                                    }
                                                 </RenderIf>
                                             </div>
                                             ))}
@@ -173,7 +185,7 @@ export const CalendarPage: React.FC = () => {
                         )
                     }
                 </AnimatePresence>
-                <UpcomingInterviews isOpen={openInterviewModal} onClose={toggleInterviewModal} />
+                <UpcomingInterviews events={eventsToView} isOpen={openInterviewModal} onClose={toggleInterviewModal} />
             </div>
         </motion.div>
     )

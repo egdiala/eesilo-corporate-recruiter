@@ -37,3 +37,17 @@ export interface FetchedAccount extends User, Omit<UpdateAccountParams, "ein_id"
 export type GetCalendarEventQuery = {
     year_month: string // Format is YYYY-MM
 }
+
+export interface FetchedCalendarEvent {
+    _id: string;
+    business_id: string;
+    user_id: string;
+    title: string;
+    comment: string;
+    event_schedule: Date | string;
+    data: {
+        time: string;
+        date: string;
+        meeting_link: string;
+    }
+}
