@@ -1,7 +1,7 @@
 import React from "react"
 import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
-import { NavItem } from "@/components/core"
+import { NavItem, RenderIf } from "@/components/core"
 import topStatus from "@/assets/top_status.svg"
 import { removeItem } from "@/utils/localStorage"
 import { Link, useNavigate } from "react-router-dom"
@@ -49,7 +49,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ admin }) => {
                 <Link to="/profile" className="flex items-center gap-2 p-3">
                     <div className="size-10 relative">
                         <img src={admin?.avatar ?? companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name} />
-                        <img src={topStatus} className="absolute -top-0.5 -right-1.5" alt="top-status" />
+                        <RenderIf condition={admin?.status === 1}>
+                            <img src={topStatus} className="absolute -top-0.5 -right-1.5" alt="top-status" />
+                        </RenderIf>
                     </div>
                     <div className="flex-1 grid gap-1">
                         <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">{admin?.name}</h3>

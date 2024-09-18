@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { pageVariants, routeVariants } from "@/constants/animateVariants"
-import { Button, RenderIf } from "@/components/core"
-import { Icon } from "@iconify/react"
 import { cn } from "@/libs/cn"
-import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameMonth, isToday, parse, startOfToday, startOfWeek } from "date-fns"
-import { useGetEventCalendar } from "@/services/hooks/queries"
+import { Icon } from "@iconify/react"
+import { Button, RenderIf } from "@/components/core"
+import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
+import { useGetEventCalendar } from "@/services/hooks/queries"
 import { UpcomingInterviews } from "@/components/pages/calendar"
+import { pageVariants, routeVariants } from "@/constants/animateVariants"
+import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameMonth, isToday, parse, startOfToday, startOfWeek } from "date-fns"
 
 
 export const CalendarPage: React.FC = () => {

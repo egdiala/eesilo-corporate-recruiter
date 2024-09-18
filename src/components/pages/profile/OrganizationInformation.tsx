@@ -68,9 +68,21 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             if ((file as File)?.size > 0) {
                 const formData = new FormData();
                 formData.append("file", values.file as File);
-                uploadLogo(formData).then(() => mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode }))
+                uploadLogo(formData).then(() => mutate({
+                    address_data,
+                    ...(account?.status !== 1 && { name: name }),
+                    phone_number: formatPhoneNumber(phone_number).split(" ").join(""),
+                    website,
+                    phone_prefix: selectedCountry?.phonecode
+                }))
             } else {
-                mutate({ address_data, name, phone_number: formatPhoneNumber(phone_number).split(" ").join(""), website, phone_prefix: selectedCountry?.phonecode })
+                mutate({
+                    address_data,
+                    ...(account?.status !== 1 && { name: name }),
+                    phone_number: formatPhoneNumber(phone_number).split(" ").join(""),
+                    website,
+                    phone_prefix: selectedCountry?.phonecode
+                })
             }
         },
     })
@@ -131,7 +143,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                     </div>
                     <hr />
                     <ImageUpload image={account?.avatar} onReset={() => setFieldValue("file", account?.avatar || "" as unknown, true)} size="64" type="company" setFile={(file) => setFieldValue("file", file, true)} showActions />
-                    <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
+                    <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} disabled={account?.status === 1} readOnly={account?.status === 1} required />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" defaultCountry={phoneNumber?.country?.iso2} value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
                         <ComboBox
