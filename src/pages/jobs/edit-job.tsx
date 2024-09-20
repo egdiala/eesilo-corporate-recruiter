@@ -84,6 +84,12 @@ export const EditJobPage: React.FC = () => {
         { label: "No", value: "0" }
     ]
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setFieldValue("requirement", [...values.requirement, query.requirements], true)
+        }
+    }
+
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
             <div className="flex flex-col gap-0 view-page-container overflow-hidden">
@@ -188,7 +194,7 @@ export const EditJobPage: React.FC = () => {
                                                     ...prev,
                                                     requirements: "",
                                                 }))}>
-                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} />
+                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} onKeyDown={(e) => handleKeyDown(e)} />
                                             <ComboboxOptions
                                                 anchor="bottom"
                                                 portal={false}

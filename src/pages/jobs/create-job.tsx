@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react"
+import React, { Fragment, useEffect, useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom"
@@ -21,6 +21,7 @@ export const CreateJobPage: React.FC = () => {
         city: "",
         requirements: ""
     })
+    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
     const { handleSubmit, isValid, errors, register, values, setFieldValue, handleBlur } = useFormikWrapper({
         initialValues: {
             title: "",
@@ -34,6 +35,7 @@ export const CreateJobPage: React.FC = () => {
             required_relocation: "",
             expected_salary: ""
         },
+        enableReinitialize: true,
         validationSchema: createJobSchema,
         onSubmit: () => {
             const { required_travel, year_exp, required_relocation, ...rest } = values
@@ -46,7 +48,6 @@ export const CreateJobPage: React.FC = () => {
 
     const { data: fetchedRequirements, isFetching: fetchingRequirements } = useGetJobRequirements({ q: query.requirements })
 
-    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
     const fetchedCountries = query.country === ""
         ? countries
         : countries?.filter((country) => {
@@ -80,6 +81,27 @@ export const CreateJobPage: React.FC = () => {
         { label: "No", value: "0" }
     ]
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setFieldValue("requirement", [...values.requirement, query.requirements], true)
+        }
+    }
+    const defaultCountry = {
+        "id": 233,
+        "name": "United States",
+        "iso2": "US",
+        "iso3": "USA",
+        "phonecode": "1",
+        "capital": "Washington",
+        "currency": "USD",
+        "native": "United States",
+        "emoji": "🇺🇸"
+    }
+
+    useEffect(() => {
+        setFieldValue("country", defaultCountry?.name, false)
+    },[])
+
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
             <div className="flex flex-col gap-0 view-page-container overflow-hidden">
@@ -88,7 +110,7 @@ export const CreateJobPage: React.FC = () => {
                         <Icon icon="ri:arrow-left-s-line" className="size-5" />
                         Back
                     </Button>
-                    <h1 className="text-lg text-gray-900">Create New Job Posting</h1>
+                    <h1 className="text-lg text-gray-900">Create New Job Posting</h1> {values.country}
                 </div>
                 <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
                     <div className="bg-white rounded-2xl p-4 lg:p-8">
@@ -114,6 +136,7 @@ export const CreateJobPage: React.FC = () => {
                                         country: value,
                                     }))} 
                                     onBlur={handleBlur}
+                                    defaultValue={defaultCountry}
                                     displayValue={(item) => item?.name}
                                     optionLabel={(option) => option?.name} 
                                     setSelected={(value) => setFieldValue("country", value?.name, true)}
@@ -184,7 +207,7 @@ export const CreateJobPage: React.FC = () => {
                                                     ...prev,
                                                     requirements: "",
                                                 }))}>
-                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} />
+                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} onKeyDown={(e) => handleKeyDown(e)} />
                                             <ComboboxOptions
                                                 anchor="bottom"
                                                 portal={false}
