@@ -4,12 +4,13 @@ import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import type { FetchedJob } from "@/types/jobs";
 import emptyState from "@/assets/empty_state.webp";
+import { capitalizeWords } from "@/utils/capitalize";
 import type { SingleTalent } from "@/types/applicants";
 import { tabVariants } from "@/constants/animateVariants";
+import { useShortlistApplicant } from "@/services/hooks/mutations";
 import { useGetCountries, useGetJobs } from "@/services/hooks/queries";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
-import { capitalizeWords } from "@/utils/capitalize";
 
 
 interface TalentInformationProps {
@@ -17,6 +18,10 @@ interface TalentInformationProps {
 }
 
 export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) => {
+    const { mutate: shortlist, isPending: isShortlisting } = useShortlistApplicant(`${talent?.first_name} shortlisted successfully!`, () => {
+        toggleShortlistCandidate()
+        toggleInvitedModal()
+    })
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
         openInvitedModal: false,
@@ -34,7 +39,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         })
     
     const country = useMemo(() => {
-        return countries?.find((item) => item.iso2.toLowerCase() === talent.address_data.country_code.toLowerCase())
+        return countries?.find((item) => (item?.iso2?.toLowerCase() === talent?.address_data?.country_code?.toLowerCase()) || (item?.name?.toLowerCase() === talent?.address_data?.country?.toLowerCase()))
     }, [countries, talent.address_data.country_code])
 
     const toggleShortlistCandidate = useCallback(() => {
@@ -189,7 +194,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                                 <Button type="button" theme="neutral" variant="stroke" size="40" block onClick={() => closeModal()}>Dismiss</Button>
-                                <Button type="button" theme="primary" variant="filled" size="40" disabled={!selected?.job_id} onClick={toggleInvitedModal} block>Yes, Send Invitation</Button>
+                                <Button type="button" theme="primary" variant="filled" size="40" loading={isShortlisting} disabled={isShortlisting || !selected?.job_id} onClick={() => shortlist({ job_id: selected?.job_id as string, user_id: talent?.user_id, invite_status: "0" })} block>Yes, Send Invitation</Button>
                             </div>
                         </DialogPanel>
                     </div>
@@ -215,11 +220,13 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                                 <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={() => {
                                     toggleInvitedModal()
-                                    closeModal()
+                                    setQuery("")
+                                    setSelected(null)
                                 }}>Dismiss</Button>
                                 <Button type="button" theme="primary" variant="filled" size="36" block onClick={() => {
                                     toggleInvitedModal()
-                                    closeModal()
+                                    setQuery("")
+                                    setSelected(null)
                                 }}>Done</Button>
                             </div>
                         </DialogPanel>
