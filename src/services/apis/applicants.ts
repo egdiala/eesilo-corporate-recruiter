@@ -18,6 +18,12 @@ export const getShortlisted = async (query: GetShortlistedQuery) => {
   return res.data;
 };
 
+export const getShortlistedCandidate = async (query: GetShortlistedQuery & { talentId: string }) => {
+  const { talentId, ...rest } = query
+  const res = await axiosUserInstance.get(`${GET_SHORTLISTED_CANDIDATES_API}/${talentId}${createQueryString(rest)}`);
+  return res.data;
+};
+
 export const shortlistCandidate = async (data: ShortlistCandidateParams) => {
   const res = await axiosUserInstance.post(GET_SHORTLISTED_CANDIDATES_API, data);
   return res.data;

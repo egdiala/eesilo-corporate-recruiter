@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react"
+import React, { Fragment } from "react"
 import { Icon } from "@iconify/react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Button, RenderIf } from "@/components/core"
@@ -7,30 +7,12 @@ import { pageVariants } from "@/constants/animateVariants"
 import { useGetTalent } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import type { SingleTalent } from "@/types/applicants"
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
-import { JobProgress, TalentDocuments, TalentInformation } from "@/components/pages/talent"
+import { TalentInformation } from "@/components/pages/talent"
 
 export const ViewTalentPage: React.FC = () => {
     const { id: talentId } = useParams()
     const navigate = useNavigate()
-    const [selectedIndex, setSelectedIndex] = useState(0)
     const { data: talent, isFetching } = useGetTalent<SingleTalent>(talentId as string)
-    const tabs = useMemo(() => {
-        return [
-            {
-                id: 1,
-                label: "General Information",
-            },
-            {
-                id: 2,
-                label: "Documents",
-            },
-            {
-                id: 3,
-                label: "Job Progress",
-            },
-        ]
-    }, [])
     
     return (
         <Fragment>
@@ -45,29 +27,11 @@ export const ViewTalentPage: React.FC = () => {
                             <h1 className="text-lg text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                         </div>
                         <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
-                            <TabGroup as="section" className="relative flex items-start gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-                                <TabList className="sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
-                                    <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Profile menu</div>
-                                    <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
-                                    {
-                                        tabs.map((tab) =>
-                                            <Tab key={tab.id} className="flex whitespace-nowrap rounded-lg p-2 text-sm font-medium text-gray-500 focus:outline-none data-[selected]:bg-primary-500 data-[selected]:text-white data-[hover]:bg-gray-100 data-[hover]:text-gray-900 data-[focus]:outline-0 transition duration-500 ease-out">{tab.label}</Tab>
-                                        )
-                                    }
-                                    </div>
-                                </TabList>
-                                <TabPanels className="flex-1">
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <TalentInformation talent={talent!} />
-                                    </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <TalentDocuments talent={talent!} />
-                                    </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <JobProgress />
-                                    </TabPanel>
-                                </TabPanels>
-                            </TabGroup>
+                            <div className="flex-1">
+                                <AnimatePresence mode="popLayout">
+                                    <TalentInformation talent={talent!} />
+                                </AnimatePresence>
+                            </div>
                         </div>
                     </div>
                 </motion.div>

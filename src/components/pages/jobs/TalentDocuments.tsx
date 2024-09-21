@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { motion } from "framer-motion";
 import { RenderIf } from "@/components/core";
-import { SingleTalent } from "@/types/applicants";
+import { FetchedShortlistedCandidate } from "@/types/applicants";
 import emptyState from "@/assets/empty_state.webp";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
@@ -9,7 +9,7 @@ import { useGetApplicantDocument } from "@/services/hooks/queries";
 
 
 interface TalentDocumentsProps {
-    talent: SingleTalent
+    talent: FetchedShortlistedCandidate
 }
 
 export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {

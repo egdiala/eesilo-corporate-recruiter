@@ -9,6 +9,7 @@ export const FORGOT_PASSWORD_API = "business/auths/forgot-password"
 export const GET_ACCOUNT_API = "business/accounts"
 export const GET_EVENT_CALENDAR_API = "business/jobs/event-calendar"
 export const UPLOAD_LOGO_API = "business/accounts/profile-logo"
+export const CREATE_STAFF_ADMIN_API = "business/accounts/staff-admin"
 
 // Dashboard
 export const GET_DASHBOARD_STATS_API = "business/jobs/dashboard-stat"

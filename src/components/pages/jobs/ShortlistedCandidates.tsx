@@ -5,7 +5,7 @@ import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
 import { Avatar, Button, InputField, ProgressBar, RenderIf, Table } from "@/components/core";
 import { useGetShortlisted } from "@/services/hooks/queries";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import type { FetchedShortlistedCandidate, FetchedTalentCount } from "@/types/applicants";
 import { DeleteShortlist } from "./DeleteShortlist";
@@ -14,6 +14,7 @@ import { DeleteShortlist } from "./DeleteShortlist";
 export const ShortlistedCandidates: React.FC = () => {
     const { id } = useParams()
     const location = useLocation();
+    const navigate = useNavigate();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ invite_status: "0", job_id: id as string })
@@ -38,8 +39,8 @@ export const ShortlistedCandidates: React.FC = () => {
                 const item = row?.original as FetchedShortlistedCandidate
                 return (
                     <div className="flex items-center gap-3">
-                        <Avatar size="40" image="" alt={`${item?.user_data?.at(0)?.first_name}_${item?.user_data?.at(0)?.last_name}`} />
-                        <div className="whitespace-nowrap">{item?.user_data?.at(0)?.first_name} {item?.user_data?.at(0)?.last_name}</div>
+                        <Avatar size="40" image={item?.user_data?.avatar as string} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
+                        <div className="whitespace-nowrap">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
                     </div>
                 )
             }
@@ -50,7 +51,7 @@ export const ShortlistedCandidates: React.FC = () => {
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as FetchedShortlistedCandidate
                 return (
-                    <div className="whitespace-nowrap">{item?.user_data?.at(0)?.specialty_data?.title}</div>
+                    <div className="whitespace-nowrap">{item?.user_data?.specialty_data?.title}</div>
                 )
             }
         },
@@ -164,7 +165,8 @@ export const ShortlistedCandidates: React.FC = () => {
                         perPage={itemsPerPage}
                         totalCount={count?.total}
                         onPageChange={handlePageChange}
-                        emptyStateText="No items to be found here."
+                        onClick={({ original }: { original: FetchedShortlistedCandidate }) => navigate(`/jobs/${id}/shortlists/${original?.user_id}`)}
+                        emptyStateText="No candidate has been shortlisted for this role."
                     />
                 </motion.div>
             </RenderIf>

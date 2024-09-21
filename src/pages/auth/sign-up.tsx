@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import logo from "@/assets/logo.svg"
 import { Icon } from "@iconify/react"
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -15,7 +15,7 @@ export const SignUpPage: React.FC = () => {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
     const [link, setLink] = useState("")
-    const [step, setStep] = useState(searchParams.get("step") || "create-account")
+    const [step, setStep] = useState("")
     const { mutate, isPending } = useRegister((v) => {
         setLink(v.split("?l=")?.at(1) as string)
         setSearchParams({ step: "confirm-email" })
@@ -50,6 +50,19 @@ export const SignUpPage: React.FC = () => {
         setItem("newPass", "newPass")
         navigate("/auth/login")
     }
+
+    useEffect(() => {
+        const possibleLink = searchParams.get("l") as string
+        const linkStep = searchParams.get("step") as string
+        if (possibleLink) {
+            setStep("create-password")
+            setLink(possibleLink)
+        } else if (linkStep) {
+            setStep(linkStep)
+        } else {
+            setStep("create-account")
+        }
+    },[])
     return (
         <Fragment>
         <AnimatePresence mode="popLayout">

@@ -55,6 +55,7 @@ export interface FetchedTalent {
     },
     first_name: string;
     last_name: string;
+    avatar: string;
     specialty_data: {
         industry: string;
         specialty_main: string;
@@ -82,7 +83,7 @@ export interface FetchedShortlistedCandidate {
     },
     createdAt: Date | string;
     updatedAt: Date | string;
-    user_data: Array<Omit<FetchedTalent, "user_id"> & { _id: string; }>,
+    user_data: Omit<FetchedTalent, "user_id"> & { _id: string; } & Omit<SingleTalent, "total">;
     job_data: {
         _id: string;
         title: string;

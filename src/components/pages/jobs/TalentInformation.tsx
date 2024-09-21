@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import type { FetchedJob } from "@/types/jobs";
 import emptyState from "@/assets/empty_state.webp";
 import { capitalizeWords } from "@/utils/capitalize";
-import type { SingleTalent } from "@/types/applicants";
+import type { FetchedShortlistedCandidate } from "@/types/applicants";
 import { tabVariants } from "@/constants/animateVariants";
 import { useShortlistApplicant } from "@/services/hooks/mutations";
 import { useGetCountries, useGetJobs } from "@/services/hooks/queries";
@@ -14,11 +14,11 @@ import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui
 
 
 interface TalentInformationProps {
-    talent: SingleTalent
+    talent: FetchedShortlistedCandidate
 }
 
 export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) => {
-    const { mutate: shortlist, isPending: isShortlisting } = useShortlistApplicant(`${talent?.first_name} shortlisted successfully!`, () => {
+    const { mutate: shortlist, isPending: isShortlisting } = useShortlistApplicant(`${talent?.user_data?.first_name} shortlisted successfully!`, () => {
         toggleShortlistCandidate()
         toggleInvitedModal()
     })
@@ -39,8 +39,8 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         })
     
     const country = useMemo(() => {
-        return countries?.find((item) => (item?.iso2?.toLowerCase() === talent?.address_data?.country_code?.toLowerCase()) || (item?.name?.toLowerCase() === talent?.address_data?.country?.toLowerCase()))
-    }, [countries, talent?.address_data?.country, talent?.address_data?.country_code])
+        return countries?.find((item) => (item?.iso2?.toLowerCase() === talent?.user_data?.address_data?.country_code?.toLowerCase()) || (item?.name?.toLowerCase() === talent?.user_data?.address_data?.country?.toLowerCase()))
+    }, [countries, talent?.user_data?.address_data?.country, talent?.user_data?.address_data?.country_code])
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -68,17 +68,20 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                 <div className="flex items-center px-8 justify-between -mt-9">
                     <div className="grid">
                         <div className="border-[3px] border-white rounded-full w-fit h-fit">
-                            <Avatar size="80" alt={talent?.first_name} image={talent?.avatar} />
+                            <Avatar size="80" alt={talent?.user_data?.first_name} image={talent?.user_data?.avatar} />
                         </div>
                         <div className="grid gap-[3px]">
-                            <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
-                            <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
+                            <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.user_data?.first_name} {talent?.user_data?.last_name}</h1>
+                            <p className="text-sm text-gray-400">{talent?.user_data?.specialty_data?.specialty_main} / {talent?.user_data?.specialty_data?.specialty_sub}</p>
                             <div className="flex items-center gap-1.5">
-                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
+                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
                             </div>
                         </div>
                     </div>
-                    <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleShortlistCandidate}>Shortlist this candidate</Button>
+                    <Button type="button" theme="primary" variant="lighter" size="40">
+                        <Icon icon="ri:check-double-line" className="size-5" />
+                        Invitation Sent
+                    </Button>
                 </div>
             </div>
             <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">
@@ -86,10 +89,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:graduation-cap-line" className="size-6 text-primary-500" />
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
-                <RenderIf condition={!!talent?.education_data}>
+                <RenderIf condition={!!talent?.user_data?.education_data}>
                     <div className="grid grid-cols-2 gap-4">
                         {
-                            talent?.education_data?.map((education) =>
+                            talent?.user_data?.education_data?.map((education) =>
                                 <div key={education._id} className="flex flex-col gap-2.5">
                                     <div className="grid gap-1.5">
                                         <h3 className="font-medium text-sm text-gray-900">{education?.school_name}</h3>
@@ -105,12 +108,12 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.education_data}>
+                <RenderIf condition={!talent?.user_data?.education_data}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
                             <h2 className="font-medium text-base text-gray-900">No Educational Information</h2>
-                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name)} has no educational qualification at this moment</p>
+                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.user_data?.first_name)} has no educational qualification at this moment</p>
                         </div>
                     </div>
                 </RenderIf>
@@ -120,10 +123,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
-                <RenderIf condition={!!talent?.workexp_data}>
+                <RenderIf condition={!!talent?.user_data?.workexp_data}>
                     <div className="grid grid-cols-2 gap-4">
                         {
-                            talent?.workexp_data?.map((work) =>
+                            talent?.user_data?.workexp_data?.map((work) =>
                                 <div className="flex flex-col gap-1.5" key={work?._id}>
                                     <h3 className="font-medium text-sm text-gray-900 capitalize">{work?.job_title}</h3>
                                     <p className="text-xs text-gray-900 capitalize">{work?.company}</p>
@@ -133,12 +136,12 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.education_data}>
+                <RenderIf condition={!talent?.user_data?.education_data}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
                             <h2 className="font-medium text-base text-gray-900">No Work Experience</h2>
-                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name)} has no work experience at this moment</p>
+                            <p className="text-sm text-gray-600">{capitalizeWords(talent?.user_data?.first_name)} has no work experience at this moment</p>
                         </div>
                     </div>
                 </RenderIf>
@@ -151,11 +154,11 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                         <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to travel?</h3>
-                        <p className="text-xs text-gray-900 capitalize">{talent?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>
+                        <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to relocate?</h3>
-                        <p className="text-xs text-gray-900 capitalize">{talent?.relocation_data?.ready_to_relocate ? "Yes" : "No"}</p>
+                        <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_relocate ? "Yes" : "No"}</p>
                     </div>
                 </div>
             </div>

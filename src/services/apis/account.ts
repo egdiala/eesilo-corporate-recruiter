@@ -1,6 +1,6 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPLOAD_LOGO_API } from "@/constants/api";
-import type { GetCalendarEventQuery, UpdateAccountParams } from "@/types/account";
+import { CREATE_STAFF_ADMIN_API, GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPLOAD_LOGO_API } from "@/constants/api";
+import type { CreateStaffParams, GetCalendarEventQuery, UpdateAccountParams } from "@/types/account";
 import { createQueryString } from "@/utils/createQuery";
 
 export const updateAccount = async (data: UpdateAccountParams) => {
@@ -25,5 +25,31 @@ export const uploadLogo = async (payload: FormData) => {
       "Content-Type": "multipart/form-data"
     },
   });
+  return res.data;
+};
+
+export const createStaffAdmin = async (payload: CreateStaffParams) => {
+  const res = await axiosUserInstance.post(CREATE_STAFF_ADMIN_API, payload);
+  return res.data;
+};
+
+export const updateStaffAdmin = async (payload: Partial<CreateStaffParams> & { user_id: string; }) => {
+  const { user_id, ...rest } = payload
+  const res = await axiosUserInstance.put(`${CREATE_STAFF_ADMIN_API}/${user_id}`, rest);
+  return res.data;
+};
+
+export const getStaffAdmins = async () => {
+  const res = await axiosUserInstance.get(CREATE_STAFF_ADMIN_API);
+  return res.data;
+};
+
+export const getStaffAdmin = async (user_id: string) => {
+  const res = await axiosUserInstance.get(`${CREATE_STAFF_ADMIN_API}/${user_id}`);
+  return res.data;
+};
+
+export const deleteStaffAdmin = async (user_id: string) => {
+  const res = await axiosUserInstance.delete(`${CREATE_STAFF_ADMIN_API}/${user_id}`);
   return res.data;
 };

@@ -23,7 +23,7 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, talent, ...props }) 
         <Component className="border border-gray-200 bg-gray-25 rounded-xl overflow-hidden" {...props}>
             <div className="grid gap-3.5">
                 <div className="flex items-center gap-3 bg-gray-800 py-2.5 px-4">
-                    <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image="" />
+                    <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image={talent?.avatar} />
                     <h1 className="font-medium text-sm text-white capitalize">{talent?.first_name} {talent?.last_name}</h1>
                 </div>
                 <div className="grid gap-2.5 px-4 pb-4">

@@ -9,3 +9,10 @@ export const authCodeSchema = Yup.object().shape({
 export const changeEmailSchema = Yup.object().shape({
   email: EmailSchema
 });
+
+export const createStaffAdminSchema = Yup.object().shape({
+    name: Yup.string().trim().required("Staff name is required"),
+    email: EmailSchema,
+    job_title: Yup.string().trim().required("Staff role is required"),
+    access_sensitive_data: Yup.string().trim().required("Staff access is required"),
+});

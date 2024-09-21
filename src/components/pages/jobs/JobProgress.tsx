@@ -4,7 +4,7 @@ import { tabVariants } from "@/constants/animateVariants"
 import { Icon } from "@iconify/react"
 import { cn } from "@/libs/cn"
 import { Button } from "@/components/core"
-import { ScheduleInterview } from "./ScheduleInterview"
+import { ScheduleInterview } from "../talent/ScheduleInterview"
 
 export const JobProgress: React.FC = () => {
     const [toggleModals, setToggleModals] = useState({

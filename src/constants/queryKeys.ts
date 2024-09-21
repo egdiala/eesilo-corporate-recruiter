@@ -7,6 +7,8 @@ export const GET_CITIES_BY_STATE_AND_COUNTRY = "get-cities-by-state-and-country"
 // Account
 export const GET_ACCOUNT = "get-account"
 export const GET_EVENT_CALENDAR = "get-event-calendar"
+export const GET_STAFF_ADMINS = "get-staff-admins"
+export const GET_STAFF_ADMIN = "get-staff-admin"
 
 // Dashboard
 export const GET_DASHBOARD_STATS = "get-dashboard-stats"
@@ -17,4 +19,5 @@ export const GET_JOB_REQUIREMENTS = "get-job-requirements"
 
 // Applicants
 export const GET_SHORTLISTED = "get-shortlisted"
+export const GET_SHORTLISTED_CANDIDATE = "get-shortlisted-candidate"
 export const GET_TALENTS = "get-talents"

@@ -12,7 +12,7 @@ interface DeleteShortlistProps {
 }
 
 export const DeleteShortlist: React.FC<DeleteShortlistProps> = ({ isOpen, onClose, talent }) => {
-    const { mutate, isPending } = useRemoveShortlisted("Candidate delisted successfully!", () => onClose())
+    const { mutate, isPending } = useRemoveShortlisted("Candidate removed successfully!", () => onClose())
     
     return (
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={onClose}>
@@ -34,7 +34,7 @@ export const DeleteShortlist: React.FC<DeleteShortlistProps> = ({ isOpen, onClos
                         </div>
                         <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                             <Button type="button" theme="neutral" variant="stroke" size="40" block disabled={isPending} onClick={onClose}>Dismiss</Button>
-                            <Button type="button" theme="error" variant="filled" size="40" block disabled={isPending} loading={isPending} onClick={() => mutate({ user_id: talent?.user_data?.at(0)?._id as string, job_id: talent?.job_id })}>Yes, Remove</Button>
+                            <Button type="button" theme="error" variant="filled" size="40" block disabled={isPending} loading={isPending} onClick={() => mutate({ user_id: talent?.user_id as string, job_id: talent?.job_id })}>Yes, Remove</Button>
                         </div>
                     </DialogPanel>
                 </div>

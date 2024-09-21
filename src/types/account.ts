@@ -51,3 +51,10 @@ export interface FetchedCalendarEvent {
         meeting_link: string;
     }
 }
+
+export interface CreateStaffParams {
+    name: string;
+    email: string;
+    job_title: string;
+    access_sensitive_data: "0" | "1"; // 0=NO | 1=YES
+}
