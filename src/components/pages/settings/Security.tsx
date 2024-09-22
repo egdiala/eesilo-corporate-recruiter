@@ -3,10 +3,15 @@ import { motion } from "framer-motion"
 import { tabVariants } from "@/constants/animateVariants"
 import { Button, ContentDivider, InputField, Toggle } from "@/components/core"
 import { Icon } from "@iconify/react"
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
 
+const channels = [
+    { label: "Email", value: "email" },
+    { label: "Phone Number", value: "phone" }
+]
 
 export const Security: React.FC = () => {
+    const [selected, setSelected] = useState(channels[0])
     const [toggleModals, setToggleModals] = useState({
         openChangeEmail: false,
         openChangePassword: false,
@@ -86,8 +91,9 @@ export const Security: React.FC = () => {
                                     Codes will be sent to your email and phone number. Provide password to proceed.
                                 </p>
                             </div>
-                            <div className="p-4">
+                            <div className="grid gap-5 p-4">
                                 <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" required />
+                                <InputField label="New Email" placeholder="• • • • • • • • • •" size="40" type="text" required />
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                                 <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={toggleChangeEmail}>Cancel</Button>
@@ -114,8 +120,23 @@ export const Security: React.FC = () => {
                                     Codes will be sent to your email and phone number. Provide password to proceed.
                                 </p>
                             </div>
-                            <div className="p-4">
+                            <div className="grid gap-5 p-4">
                                 <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" required />
+                                <Fieldset className="grid gap-5">
+                                    <Legend className="font-medium text-gray-900 text-sm">Receive OTP via</Legend>
+                                    <RadioGroup name="value" value={selected} onChange={setSelected} className="grid gap-2.5">
+                                    {channels.map((plan) => (
+                                        <Field key={plan.value} className="flex items-center gap-6">
+                                            <Label className="flex-1 text-gray-500 text-sm">{plan.label}</Label>
+                                            <Radio value={plan} className="group">
+                                                <span className="size-5 grid place-content-center rounded-full bg-white border border-gray-200 group-data-[checked]:border-primary-700 group-data-[checked]:bg-primary-500 transition duration-500 ease-out" style={{ boxShadow: "0px 2px 2px 0px rgba(27, 28, 29, 0.12) inset" }}>
+                                                    <div className="hidden group-data-[checked]:grid size-2 bg-white rounded-full shadow-[0px -2px 3px 0px rgba(207, 209, 211, 1) inset]" style={{ boxShadow: "0px 2px 2px 0px rgba(27, 28, 29, 0.12)" }} />
+                                                </span>
+                                            </Radio>
+                                        </Field>
+                                    ))}
+                                    </RadioGroup>
+                                </Fieldset>
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                                 <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={toggleChangePassword}>Cancel</Button>

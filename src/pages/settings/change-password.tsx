@@ -3,7 +3,6 @@ import { Icon } from "@iconify/react"
 import { useNavigate } from "react-router-dom"
 import { Button, ContentDivider, InputField } from "@/components/core"
 import { AnimatePresence, motion } from "framer-motion"
-import { authCodeSchema } from "@/validations/settings"
 import { changePasswordSchema } from "@/validations/auth"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
@@ -11,18 +10,10 @@ import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 export const ChangePasswordPage: React.FC = () => {
     const navigate = useNavigate()
     const [isAuth, setIsAuth] = useState(true)
-    const { handleSubmit, isValid, register } = useFormikWrapper({
+
+    const { handleSubmit, isValid: isPasswordValid, register } = useFormikWrapper({
         initialValues: {
             email_code: "",
-            phone_code: "",
-        },
-        validationSchema: authCodeSchema,
-        onSubmit: () => {
-            setIsAuth(false)
-        },
-    })
-    const { isValid: isPasswordValid, register: registerPasswordFields } = useFormikWrapper({
-        initialValues: {
             password: "",
             confirm_password: "",
         },
@@ -49,33 +40,22 @@ export const ChangePasswordPage: React.FC = () => {
                                 isAuth && (
                                     <motion.form variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-[27.25rem] w-full mx-auto">
                                         <div className="grid gap-2">
-                                            <h1 className="font-medium text-lg text-gray-900">Authentication Codes</h1>
-                                            <p className="text-base text-gray-400">Provide the codes sent to your email and phone number</p>
+                                            <h1 className="font-medium text-lg text-gray-900">Authentication Code</h1>
+                                            <p className="text-base text-gray-400">Provide the code sent to you</p>
+                                        </div>
+                                        <div className="flex flex-col py-4 gap-4">
+                                            <InputField type="password" label="Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
                                         </div>
                                         <ContentDivider />
-                                        <div className="flex flex-col py-4 gap-4">
-                                            <InputField type="password" label="Email Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
-                                            <InputField type="password" label="Phone Code" placeholder="• • • • • • • • • •" size="40" {...register("phone_code")} required />
-                                        </div>
-                                        <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isValid} block>Continue</Button>
-                                    </motion.form>
-                                )
-                            }
-                        </AnimatePresence>
-                        <AnimatePresence mode="popLayout">
-                            {
-                                !isAuth && (
-                                    <motion.form variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-[27.25rem] w-full mx-auto">
                                         <div className="grid gap-2">
                                             <h1 className="font-medium text-lg text-gray-900">Create New Password</h1>
                                             <p className="text-base text-gray-400">You can now create new password to secure your account</p>
                                         </div>
-                                        <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
-                                            <InputField type="password" label="New Password" placeholder="• • • • • • • • • •" size="40" {...registerPasswordFields("password")} required />
-                                            <InputField type="password" label="Confirm Password" placeholder="• • • • • • • • • •" size="40" {...registerPasswordFields("confirm_password")} required />
+                                            <InputField type="password" label="New Password" placeholder="• • • • • • • • • •" size="40" {...register("password")} required />
+                                            <InputField type="password" label="Confirm Password" placeholder="• • • • • • • • • •" size="40" {...register("confirm_password")} required />
                                         </div>
-                                        <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isPasswordValid} block>Ok</Button>
+                                        <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isPasswordValid} block>Continue</Button>
                                     </motion.form>
                                 )
                             }

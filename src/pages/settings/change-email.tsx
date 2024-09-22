@@ -47,15 +47,14 @@ export const ChangeEmailPage: React.FC = () => {
                                 isAuth && (
                                     <motion.form variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-[27.25rem] w-full mx-auto">
                                         <div className="grid gap-2">
-                                            <h1 className="font-medium text-lg text-gray-900">Authentication Codes</h1>
-                                            <p className="text-base text-gray-400">Provide the codes sent to your email and phone number</p>
+                                            <h1 className="font-medium text-lg text-gray-900">Authentication Code</h1>
+                                            <p className="text-base text-gray-400">Provide the code sent to your new email</p>
                                         </div>
                                         <ContentDivider />
                                         <div className="flex flex-col py-4 gap-4">
-                                            <InputField type="password" label="Email Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
-                                            <InputField type="password" label="Phone Code" placeholder="• • • • • • • • • •" size="40" {...register("phone_code")} required />
+                                            <InputField type="password" label="Code" placeholder="• • • • • • • • • •" size="40" {...register("email_code")} required />
                                         </div>
-                                        <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isValid} block>Continue</Button>
+                                        <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isValid} block>Confirm</Button>
                                     </motion.form>
                                 )
                             }
