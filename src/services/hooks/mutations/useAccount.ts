@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
-import { confirmEmailUpdate, createStaffAdmin, deleteStaffAdmin, updateAccount, updateEmail, updateStaffAdmin, uploadLogo } from "@/services/apis/account";
+import { confirmEmailUpdate, confirmPasswordUpdate, createStaffAdmin, deleteStaffAdmin, updateAccount, updateEmail, updatePassword, updateStaffAdmin, uploadLogo } from "@/services/apis/account";
 import { GET_ACCOUNT, GET_STAFF_ADMINS } from "@/constants/queryKeys";
 
 // eslint-disable-next-line no-unused-vars
@@ -100,6 +100,33 @@ export const useUpdateEmail = (fn?: () => void) => {
 export const useConfirmUpdateEmail = (fn?: () => void) => {
   return useMutation({
     mutationFn: confirmEmailUpdate,
+      onSuccess: async () => {
+        fn?.()
+    },
+    onError: (err: any) => {
+        errorToast({ param: err, variant: "light" })
+    },
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+export const useUpdatePassword = (msg?: string, fn?: () => void) => {
+  return useMutation({
+    mutationFn: updatePassword,
+      onSuccess: async () => {
+        successToast({ param: null, msg, size: "36" })
+        fn?.()
+    },
+    onError: (err: any) => {
+        errorToast({ param: err, variant: "light" })
+    },
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+export const useConfirmUpdatePassword = (fn?: () => void) => {
+  return useMutation({
+    mutationFn: confirmPasswordUpdate,
       onSuccess: async () => {
         fn?.()
     },

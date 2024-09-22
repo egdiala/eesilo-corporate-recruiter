@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { useNavigate } from "react-router-dom"
-import { getItem } from "@/utils/localStorage"
 import { AnimatePresence, motion } from "framer-motion"
 import { authCodeSchema } from "@/validations/settings"
+import { getItem, removeItem } from "@/utils/localStorage"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { useConfirmUpdateEmail } from "@/services/hooks/mutations"
@@ -13,7 +13,10 @@ import { Button, ContentDivider, InputField } from "@/components/core"
 export const ChangeEmailPage: React.FC = () => {
     const navigate = useNavigate()
     const [isAuth, setIsAuth] = useState(false)
-    const { mutate: confirmUpdate, isPending: isConfirming } = useConfirmUpdateEmail(() => setIsAuth(true))
+    const { mutate: confirmUpdate, isPending: isConfirming } = useConfirmUpdateEmail(() => {
+        setIsAuth(true)
+        removeItem("change-email")
+    })
     const { handleSubmit, isValid, register, values } = useFormikWrapper({
         initialValues: {
             code: "",

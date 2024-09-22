@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
-import { loginSchema } from "@/validations/auth"
-import { tabVariants } from "@/constants/animateVariants"
-import { useUpdateEmail } from "@/services/hooks/mutations"
-import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { Button, ContentDivider, InputField, Toggle } from "@/components/core"
-import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
 import { useNavigate } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
+import { loginSchema } from "@/validations/auth"
+import { tabVariants } from "@/constants/animateVariants"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { updatePasswordSchema } from "@/validations/settings"
+import { useUpdateEmail, useUpdatePassword } from "@/services/hooks/mutations"
+import { Button, ContentDivider, InputField, RenderIf, Toggle } from "@/components/core"
+import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
 
 const channels = [
     { label: "Email", value: "email" },
@@ -21,7 +22,7 @@ export const SettingsSecurityPage: React.FC = () => {
         setItem("change-email", "change-email")
         navigate("/settings/change-email")
     })
-    const [selected, setSelected] = useState(channels[0])
+
     const [toggleModals, setToggleModals] = useState({
         openChangeEmail: false,
         openChangePassword: false,
@@ -50,6 +51,22 @@ export const SettingsSecurityPage: React.FC = () => {
         onSubmit: () => {
             updateEmail(values)
         }
+    })
+
+    const { errors, handleSubmit: handlePasswordSubmit, isValid: isPasswordValid, register: registerPassword, setFieldValue, values: passwordValues } = useFormikWrapper({
+        initialValues: {
+            password: "",
+            otp_channel: "" as "email" | "phone"
+        },
+        validationSchema: updatePasswordSchema,
+        onSubmit: () => {
+            updatePassword(passwordValues)
+        }
+    })
+    
+    const { mutate: updatePassword, isPending: isUpdatingPassword } = useUpdatePassword(`Code has been sent your ${channels?.find((item) => item?.value === passwordValues?.otp_channel)?.label?.toLowerCase()}`, () => {
+        setItem("change-password", channels?.find((item) => item?.value === passwordValues?.otp_channel)?.label?.toLowerCase())
+        navigate("/settings/change-password")
     })
 
     return (
@@ -127,7 +144,7 @@ export const SettingsSecurityPage: React.FC = () => {
             <Dialog open={toggleModals.openChangePassword} as="div" className="relative z-10 focus:outline-none" onClose={toggleChangePassword}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">
-                        <DialogPanel transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                        <DialogPanel as="form" onSubmit={handlePasswordSubmit} transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
                             <div className="flex flex-col items-center gap-1 py-4 pl-5 pr-4 border-b border-b-gray-200">
                                 <div className="flex items-center w-full gap-2 justify-between">
                                     <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
@@ -142,14 +159,14 @@ export const SettingsSecurityPage: React.FC = () => {
                                 </p>
                             </div>
                             <div className="grid gap-5 p-4">
-                                <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" required />
+                                <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" {...registerPassword("password")} required />
                                 <Fieldset className="grid gap-5">
                                     <Legend className="font-medium text-gray-900 text-sm">Receive OTP via</Legend>
-                                    <RadioGroup name="value" value={selected} onChange={setSelected} className="grid gap-2.5">
+                                    <RadioGroup name="value" value={passwordValues.otp_channel} onChange={(v) => setFieldValue("otp_channel", v, true)} className="grid gap-2.5">
                                     {channels.map((plan) => (
                                         <Field key={plan.value} className="flex items-center gap-6">
                                             <Label className="flex-1 text-gray-500 text-sm">{plan.label}</Label>
-                                            <Radio value={plan} className="group">
+                                            <Radio value={plan.value} className="group">
                                                 <span className="size-5 grid place-content-center rounded-full bg-white border border-gray-200 group-data-[checked]:border-primary-700 group-data-[checked]:bg-primary-500 transition duration-500 ease-out" style={{ boxShadow: "0px 2px 2px 0px rgba(27, 28, 29, 0.12) inset" }}>
                                                     <div className="hidden group-data-[checked]:grid size-2 bg-white rounded-full shadow-[0px -2px 3px 0px rgba(207, 209, 211, 1) inset]" style={{ boxShadow: "0px 2px 2px 0px rgba(27, 28, 29, 0.12)" }} />
                                                 </span>
@@ -157,11 +174,14 @@ export const SettingsSecurityPage: React.FC = () => {
                                         </Field>
                                     ))}
                                     </RadioGroup>
+                                    <RenderIf condition={!!errors?.otp_channel}>
+                                        <span className="neesilo-input--error">{errors?.otp_channel}</span>
+                                    </RenderIf>
                                 </Fieldset>
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
-                                <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={toggleChangePassword}>Cancel</Button>
-                                <Button type="button" theme="primary" variant="filled" size="36" block>Yes, Proceed</Button>
+                                <Button type="button" theme="neutral" variant="stroke" size="36" block disabled={isUpdatingPassword} onClick={toggleChangePassword}>Cancel</Button>
+                                <Button type="submit" theme="primary" variant="filled" size="36" block disabled={!isPasswordValid || isUpdatingPassword} loading={isUpdatingPassword}>Yes, Proceed</Button>
                             </div>
                         </DialogPanel>
                     </div>
