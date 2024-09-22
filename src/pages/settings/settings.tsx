@@ -1,52 +1,63 @@
-import React, { useMemo, useState } from "react";
-import { Notifications, Security, StaffAccessControl } from "@/components/pages/settings";
+import React, { useEffect, useMemo } from "react";
+import { cn } from "@/libs/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { pageVariants } from "@/constants/animateVariants";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export const SettingsPage: React.FC = () => {
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const navigate = useNavigate();
+    const location = useLocation();
     const tabs = useMemo(() => {
         return [
             {
                 id: 1,
                 label: "Security",
+                href: "/settings/security"
             },
             {
                 id: 2,
                 label: "Notifications",
+                href: "/settings/notifications"
             },
             {
                 id: 3,
                 label: "Staff & Access Control",
+                href: "/settings/staff-access"
             }
         ]
-    },[])
+    }, [])
+    
+    useEffect(() => {
+        if (location.pathname === "/settings") {
+            navigate("/settings/security")
+        }
+    },[location.pathname, navigate])
+    
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10">
-            <TabGroup as="section" className="flex flex-col md:flex-row gap-5 bg-white rounded-2xl lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-                <TabList className="flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 scrollbar-hide rounded-2xl md:max-w-72 w-full">
+            <div className="flex flex-col md:flex-row gap-5 bg-white rounded-2xl lg:p-8">
+                <div className="flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 scrollbar-hide rounded-2xl md:max-w-72 w-full">
                     <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Select menu</div>
                     <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
                     {
                         tabs.map((tab) =>
-                            <Tab key={tab.id} className="flex whitespace-nowrap rounded-lg p-2 text-sm font-medium text-gray-500 focus:outline-none data-[selected]:bg-primary-500 data-[selected]:text-white data-[hover]:bg-gray-100 data-[hover]:text-gray-900 data-[focus]:outline-0 transition duration-500 ease-out">{tab.label}</Tab>
+                            <NavLink to={tab.href} key={tab.id}>
+                            {({ isActive }) => (
+                                <div className={cn("flex whitespace-nowrap rounded-lg p-2 text-sm font-medium focus:outline-none group transition duration-500 ease-out", isActive ? "bg-primary-500 outline-0" : "hover:bg-gray-100")}>
+                                    <span className={cn("flex-1", !isActive && "group-hover:text-gray-900", isActive ? "text-white" : "text-gray-500")}>{tab.label}</span>
+                                </div>
+                            )}
+                            </NavLink>
                         )
                     }
                     </div>
-                </TabList>
-                <TabPanels className="max-w-xl w-full flex-1">
-                    <TabPanel as={AnimatePresence} mode="popLayout">
-                        <Security />
-                    </TabPanel>
-                    <TabPanel as={AnimatePresence} mode="popLayout">
-                        <Notifications />
-                    </TabPanel>
-                    <TabPanel as={AnimatePresence} mode="popLayout">
-                        <StaffAccessControl />
-                    </TabPanel>
-                </TabPanels>
-            </TabGroup>
+                </div>
+                <div className="max-w-xl w-full flex-1">
+                    <AnimatePresence mode="popLayout">
+                        <Outlet />
+                    </AnimatePresence>
+                </div>
+            </div>
         </motion.div>
     )
 }

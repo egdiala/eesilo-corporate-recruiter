@@ -64,3 +64,13 @@ export interface CreateStaffParams {
     job_title: string;
     access_sensitive_data: "0" | "1"; // 0=NO | 1=YES
 }
+
+export interface UpdatePasswordParams {
+    otp_channel: "phone" | "email";
+    password: string;
+}
+
+export interface ConfirmPasswordUpdateParams {
+    code: string;
+    password: string;
+}

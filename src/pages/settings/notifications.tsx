@@ -4,7 +4,7 @@ import { ContentDivider, Toggle } from "@/components/core"
 import { tabVariants } from "@/constants/animateVariants"
 
 
-export const Notifications: React.FC = () => {
+export const SettingsNotificationsPage: React.FC = () => {
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6 lg:pb-28">
             <div className="grid gap-2">

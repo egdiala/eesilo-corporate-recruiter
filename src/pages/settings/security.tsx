@@ -1,16 +1,26 @@
 import React, { useCallback, useState } from "react"
-import { motion } from "framer-motion"
-import { tabVariants } from "@/constants/animateVariants"
-import { Button, ContentDivider, InputField, Toggle } from "@/components/core"
 import { Icon } from "@iconify/react"
+import { motion } from "framer-motion"
+import { loginSchema } from "@/validations/auth"
+import { tabVariants } from "@/constants/animateVariants"
+import { useUpdateEmail } from "@/services/hooks/mutations"
+import { useFormikWrapper } from "@/hooks/useFormikWrapper"
+import { Button, ContentDivider, InputField, Toggle } from "@/components/core"
 import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
+import { useNavigate } from "react-router-dom"
+import { setItem } from "@/utils/localStorage"
 
 const channels = [
     { label: "Email", value: "email" },
     { label: "Phone Number", value: "phone" }
 ]
 
-export const Security: React.FC = () => {
+export const SettingsSecurityPage: React.FC = () => {
+    const navigate = useNavigate();
+    const { mutate: updateEmail, isPending: isUpdatingEmail } = useUpdateEmail(() => {
+        setItem("change-email", "change-email")
+        navigate("/settings/change-email")
+    })
     const [selected, setSelected] = useState(channels[0])
     const [toggleModals, setToggleModals] = useState({
         openChangeEmail: false,
@@ -30,7 +40,18 @@ export const Security: React.FC = () => {
         openChangePassword: !toggleModals.openChangePassword,
       }))
     }, [toggleModals.openChangePassword])
-    
+
+    const { handleSubmit, isValid, register, values } = useFormikWrapper({
+        initialValues: {
+            email: "",
+            password: ""
+        },
+        validationSchema: loginSchema,
+        onSubmit: () => {
+            updateEmail(values)
+        }
+    })
+
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6 lg:pb-28">
             <div className="grid gap-2">
@@ -77,7 +98,7 @@ export const Security: React.FC = () => {
             <Dialog open={toggleModals.openChangeEmail} as="div" className="relative z-10 focus:outline-none" onClose={toggleChangeEmail}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">
-                        <DialogPanel transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                        <DialogPanel as="form" onSubmit={handleSubmit} transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
                             <div className="flex flex-col items-center gap-1 py-4 pl-5 pr-4 border-b border-b-gray-200">
                                 <div className="flex items-center w-full gap-2 justify-between">
                                     <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
@@ -92,12 +113,12 @@ export const Security: React.FC = () => {
                                 </p>
                             </div>
                             <div className="grid gap-5 p-4">
-                                <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" required />
-                                <InputField label="New Email" placeholder="• • • • • • • • • •" size="40" type="text" required />
+                                <InputField label="Password" placeholder="• • • • • • • • • •" size="40" type="password" {...register("password")} required />
+                                <InputField label="New Email" placeholder="• • • • • • • • • •" size="40" type="text" {...register("email")} required />
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
-                                <Button type="button" theme="neutral" variant="stroke" size="36" block onClick={toggleChangeEmail}>Cancel</Button>
-                                <Button type="button" theme="primary" variant="filled" size="36" block>Yes, Proceed</Button>
+                                <Button type="button" theme="neutral" variant="stroke" size="36" disabled={isUpdatingEmail} block onClick={toggleChangeEmail}>Cancel</Button>
+                                <Button type="submit" theme="primary" variant="filled" size="36" loading={isUpdatingEmail} disabled={isUpdatingEmail || !isValid} block>Yes, Proceed</Button>
                             </div>
                         </DialogPanel>
                     </div>

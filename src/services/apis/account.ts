@@ -1,7 +1,8 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { CREATE_STAFF_ADMIN_API, GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPLOAD_LOGO_API } from "@/constants/api";
-import type { CreateStaffParams, GetCalendarEventQuery, UpdateAccountParams } from "@/types/account";
+import { CONFIRM_EMAIL_UPDATE_API, CONFIRM_PASSWORD_UPDATE_API, CREATE_STAFF_ADMIN_API, GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPDATE_EMAIL_API, UPDATE_PASSWORD_API, UPLOAD_LOGO_API } from "@/constants/api";
+import type { ConfirmPasswordUpdateParams, CreateStaffParams, GetCalendarEventQuery, UpdateAccountParams, UpdatePasswordParams } from "@/types/account";
 import { createQueryString } from "@/utils/createQuery";
+import type { LoginType } from "@/types/auth";
 
 export const updateAccount = async (data: UpdateAccountParams) => {
   const res = await axiosUserInstance.put(GET_ACCOUNT_API, data);
@@ -51,5 +52,25 @@ export const getStaffAdmin = async (user_id: string) => {
 
 export const deleteStaffAdmin = async (user_id: string) => {
   const res = await axiosUserInstance.delete(`${CREATE_STAFF_ADMIN_API}/${user_id}`);
+  return res.data;
+};
+
+export const updateEmail = async (payload: LoginType) => {
+  const res = await axiosUserInstance.post(UPDATE_EMAIL_API, payload);
+  return res.data;
+};
+
+export const confirmEmailUpdate = async (code: string) => {
+  const res = await axiosUserInstance.post(CONFIRM_EMAIL_UPDATE_API, { code });
+  return res.data;
+};
+
+export const updatePassword = async (payload: UpdatePasswordParams) => {
+  const res = await axiosUserInstance.post(UPDATE_PASSWORD_API, payload);
+  return res.data;
+};
+
+export const confirmPasswordUpdate = async (payload: ConfirmPasswordUpdateParams) => {
+  const res = await axiosUserInstance.post(CONFIRM_PASSWORD_UPDATE_API, payload);
   return res.data;
 };

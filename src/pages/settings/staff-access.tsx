@@ -16,7 +16,7 @@ const accessLevel = [
     { label: "No", value: "0" },
 ]
 
-export const StaffAccessControl: React.FC = () => {
+export const SettingsStaffAccessControlPage: React.FC = () => {
     const { data: staffs, isFetching: fetchingStaffs } = useGetStaffAdmins()
     const { mutate: createAdmin, isPending: isCreating } = useCreateStaffAdmin(() => toggleCreateStaff())
     const { mutate: deleteAdmin, isPending: isDeleting } = useDeleteStaffAdmin(() => toggleDeleteStaff(null))
