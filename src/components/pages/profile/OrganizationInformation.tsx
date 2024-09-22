@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { FetchedAccount } from "@/types/account"
 import { tabVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { formatPhoneNumber } from "react-phone-number-input"
 import { parsePhoneNumberFromString } from "libphonenumber-js"
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
 import { useUpdateAccount, useUploadLogo } from "@/services/hooks/mutations"
@@ -71,7 +70,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 uploadLogo(formData).then(() => mutate({
                     address_data,
                     ...(account?.status !== 1 && { name: name }),
-                    phone_number: formatPhoneNumber(phone_number).split(" ").join(""),
+                    phone_number: phone_number.replace(`+${selectedCountry?.phonecode}`, ""),
                     website,
                     phone_prefix: selectedCountry?.phonecode
                 }))
@@ -79,7 +78,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 mutate({
                     address_data,
                     ...(account?.status !== 1 && { name: name }),
-                    phone_number: formatPhoneNumber(phone_number).split(" ").join(""),
+                    phone_number: phone_number.replace(`+${selectedCountry?.phonecode}`, ""),
                     website,
                     phone_prefix: selectedCountry?.phonecode
                 })
