@@ -10,7 +10,7 @@ export const RecentJobUpdates: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3.5 py-0.5">
                     <Icon icon="ri:file-text-line" className="size-6 text-primary-500" />
-                    <h3 className="font-medium text-base text-gray-900">Recent Job Updates</h3>
+                    <h3 className="font-medium text-base text-gray-900"><span className="sr-only md:not-sr-only">Recent </span>Job Updates</h3>
                 </div>
                 <Link to="/jobs" className="font-medium text-sm text-gray-500">View All</Link>
             </div>

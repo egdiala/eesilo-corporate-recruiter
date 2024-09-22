@@ -12,10 +12,11 @@ import { appRoutes, otherRoutes } from "@/constants/routes"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
 
 interface SidebarProps {
-    admin: FetchedAccount
+    admin: FetchedAccount;
+    showSidebar: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ admin }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ admin, showSidebar }) => {
     const navigate = useNavigate()
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
@@ -23,9 +24,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ admin }) => {
         navigate("/auth/login");
     }
     return (
-        <nav className={cn("max-lg:absolute transition transform translate-x-0 ease-out duration-500 overflow-y-scroll bg-[#003449] flex flex-col justify-between gap-8 px-5 py-6 h-screen max-h-screen w-full max-w-60 lg:relative inset-y-0 left-0 z-20 border-r border-r-gray-200")}>
+        <nav className={cn("bg-[#003449] flex flex-col gap-8 px-5 py-6 h-screen max-h-screen w-full max-w-60 lg:fixed inset-y-0 z-20 overflow-y-scroll justify-between left-0 border-r border-r-gray-200 transition transform ease-out duration-500", showSidebar ? "translate-x-0 max-lg:absolute" : "max-lg:hidden")}>
             <div className="grid gap-6">
-                <img src={logoGreenWhite} className="w-full" alt="eGO_green_logo" />
+                <img src={logoGreenWhite} className="w-full" alt="neesilo_green_logo" />
                 <div className="flex flex-1 flex-col gap-2 overflow-y-auto [&>[data-slot=section]+[data-slot=section]]:mt-6">
                     {
                         appRoutes.map((route) => 

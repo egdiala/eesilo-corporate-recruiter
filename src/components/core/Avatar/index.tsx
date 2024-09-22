@@ -1,6 +1,6 @@
 import React from "react"
 import { cn } from "@/libs/cn"
-import blankImage from "@/assets/blank.svg"
+import blankImage from "@/assets/user_avatar.svg"
 
 interface AvatarProps {
     size: "80" | "72" | "64" | "56" | "48" | "40" | "32" | "24" | "20"

@@ -1,14 +1,15 @@
 import React, { useMemo, type ElementType } from "react";
 import { Avatar, ContentDivider, ProgressBar } from "@/components/core";
 import type { FetchedTalent } from "@/types/applicants";
+import { cn } from "@/libs/cn";
 
 interface TalentCardProps {
     as?: ElementType | "div"
     talent: FetchedTalent
-    [x: string]: unknown
+    [x: string]: any;
 }
 
-export const TalentCard: React.FC<TalentCardProps> = ({ as, talent, ...props }) => {
+export const TalentCard: React.FC<TalentCardProps> = ({ as, className, talent, ...props }) => {
     const Component = as === undefined ? "div" : as;
 
     const infos = useMemo(() => {
@@ -20,7 +21,7 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, talent, ...props }) 
     },[talent?.specialty_data?.specialty_main, talent?.specialty_data?.specialty_sub, talent?.specialty_data?.year_exp])
 
     return (
-        <Component className="border border-gray-200 bg-gray-25 rounded-xl overflow-hidden" {...props}>
+        <Component className={cn("border border-gray-200 bg-gray-25 rounded-xl overflow-hidden", className)} {...props}>
             <div className="grid gap-3.5">
                 <div className="flex items-center gap-3 bg-gray-800 py-2.5 px-4">
                     <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image={talent?.avatar} />

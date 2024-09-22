@@ -4,12 +4,14 @@ import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { RenderIf } from "@/components/core";
+import type { FetchedJob } from "@/types/jobs";
 import { JobCard } from "@/components/pages/jobs";
 import { TalentCard } from "@/components/pages/talent";
+import type { FetchedTalent } from "@/types/applicants";
 import { Loader } from "@/components/core/Button/Loader";
 import type { JobDataCountType } from "@/types/dashboard";
 import { pageVariants } from "@/constants/animateVariants";
-import { dummyJobs, dummyTalents } from "@/constants/data";
+import { useGetJobs, useGetTalents } from "@/services/hooks/queries";
 import { useGetDashboardStats } from "@/services/hooks/queries/useDashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 
@@ -17,6 +19,8 @@ export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
     const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<any[]>({ component: "job-interview-count" })
     const { isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
+    const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
     const cards = useMemo(() => {
         return [
             { icon: "ri:briefcase-4-line", iconClass: "text-warning-500 size-8", background: "bg-warning-25", label: "Job Posts", value: dataCount?.total_job },
@@ -28,10 +32,10 @@ export const DashboardPage: React.FC = () => {
 
     return (
         <Fragment>
-            <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount}>
+            <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount && !fetchingTalents && !fetchingJobs}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container overflow-y-scroll">
                     <div className="flex flex-col p-8 gap-6 bg-white rounded-2xl">
-                        <div className="grid grid-cols-4 gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {
                                 cards.map((card) =>
                                     <div className={cn(card.background, "rounded-xl p-5 flex flex-col gap-9")}>
@@ -47,11 +51,11 @@ export const DashboardPage: React.FC = () => {
                         <div className="grid gap-5">
                             <div className="flex items-center justify-between">
                                 <h4 className="uppercase font-medium text-xs text-[#868C98] py-1 px-2">recommended talents</h4>
-                                <Link to="/talent" className="py-1 px-2 text-right font-medium uppercase text-xs text-primary-500">Search more talents</Link>
+                                <Link to="/talent" className="py-1 px-2 text-right font-medium uppercase text-xs text-primary-500"><span className="sr-only md:not-sr-only">Search</span> more talents</Link>
                             </div>
-                            <div className="grid grid-cols-3 gap-5">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                             {
-                                dummyTalents.map((item) =>
+                                talents?.map((item) =>
                                     <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/employees/${item?.user_id}/view`} />
                                 )
                             }
@@ -66,20 +70,20 @@ export const DashboardPage: React.FC = () => {
                             </div>
                             <div className="flex items-center overflow-x-scroll gap-5">
                             {
-                                dummyJobs.map((job, index) =>
+                                jobs?.map((job, index) =>
                                     <JobCard key={index} job={job} />
                                 )
                             }
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-5">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                             <UpcomingInterviews interviews={interviewCount!} />
                             <RecentJobUpdates />
                         </div>
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={fetchingDataCount || fetchingInterviewCount || fetchingYearlyCount}>
+            <RenderIf condition={fetchingDataCount || fetchingInterviewCount || fetchingYearlyCount || fetchingTalents || fetchingJobs}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

@@ -14,7 +14,7 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ intervie
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3.5 py-0.5">
                     <Icon icon="ri:calendar-2-line" className="size-6 text-warning-500" />
-                    <h3 className="font-medium text-base text-gray-900">Upcoming Interviews</h3>
+                    <h3 className="font-medium text-base text-gray-900"><span className="sr-only md:not-sr-only">Upcoming </span>Interviews</h3>
                 </div>
                 <Link to="/jobs" className="font-medium text-sm text-gray-500">View All</Link>
             </div>
