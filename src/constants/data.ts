@@ -76,6 +76,7 @@ export const dummyTalents = [
         },
         "first_name": "Stephen",
         "last_name": "Diala",
+        "avatar": "",
         "specialty_data": {
             "industry": "Information Technology",
             "specialty_main": "Frontend Engineer",
@@ -101,6 +102,7 @@ export const dummyTalents = [
         },
         "first_name": "Increase",
         "last_name": "Nkanta",
+        "avatar": "",
         "specialty_data": {
             "industry": "Information Technology",
             "specialty_main": "Backend Engineer",
@@ -126,6 +128,7 @@ export const dummyTalents = [
         },
         "first_name": "Happiness",
         "last_name": "Angel",
+        "avatar": "",
         "specialty_data": {
             "industry": "Health",
             "specialty_main": "Nursing",
