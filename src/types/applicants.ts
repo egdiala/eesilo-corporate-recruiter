@@ -1,4 +1,5 @@
 export type GetShortlistedQuery = {
+    q?: string;
     job_id?: string;
     invite_status?: "0" | "1" | "2" | "3" | "4"; // 0=shortlisted, 1=accepted, 2=rejected, 3=invited, 4=interview sent
     offer_status?: "0" | "1" | "2" // 0=pending, 1=hired, 2=rejected

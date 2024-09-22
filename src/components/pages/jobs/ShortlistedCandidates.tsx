@@ -9,6 +9,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from "react-rout
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import type { FetchedShortlistedCandidate, FetchedTalentCount } from "@/types/applicants";
 import { DeleteShortlist } from "./DeleteShortlist";
+import { useDebounce } from "@/hooks/useDebounce";
 
 
 export const ShortlistedCandidates: React.FC = () => {
@@ -17,8 +18,9 @@ export const ShortlistedCandidates: React.FC = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ invite_status: "0", job_id: id as string })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", invite_status: "0", job_id: id as string })
+    const { value, onChangeHandler } = useDebounce(500)
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ invite_status: "0", job_id: id as string, q: value })
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", invite_status: "0", job_id: id as string, q: value })
     const [searchParams, setSearchParams] = useSearchParams();
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
@@ -152,7 +154,7 @@ export const ShortlistedCandidates: React.FC = () => {
                     <div className="flex items-center justify-between">
                         <h2 className="font-medium text-gray-900 text-base">Shortlisted</h2>
                         <div className="flex items-center gap-5 flex-1 max-w-96">
-                            <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" />
+                            <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                             <Button theme="neutral" variant="stroke" size="36">
                                 <Icon icon="ri:filter-3-line" className="size-5" />
                             </Button>

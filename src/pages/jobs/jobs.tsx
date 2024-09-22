@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { JobCard } from "@/components/pages/jobs"
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { useGetJobs } from "@/services/hooks/queries"
 import { AnimatePresence, motion } from "framer-motion"
 import { Loader } from "@/components/core/Button/Loader"
-import { Button, InputField, RenderIf, Table } from "@/components/core"
+import { Button, InputField, Pagination, RenderIf, Table } from "@/components/core"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import emptyState from "@/assets/empty_state.webp";
 import type { FetchedJob, FetchedJobCount } from "@/types/jobs"
@@ -68,6 +68,20 @@ export const JobsPage: React.FC = () => {
         setPaginationParams(page, itemsPerPage, searchParams, setSearchParams)
     };
 
+    // Function to navigate to previous page
+    const prev = () => {
+        if (page > 1) {
+            handlePageChange(page - 1);
+        }
+    };
+
+    // Function to navigate to next page
+    const next = () => {
+        if (page < count?.total!) {
+            handlePageChange(page + 1);
+        }
+    };
+
     useEffect(() => {
         getPaginationParams(location, setPage, () => {})
     }, [location, setPage])
@@ -96,13 +110,26 @@ export const JobsPage: React.FC = () => {
                             <AnimatePresence mode="popLayout">
                                 {
                                     gridView && (
-                                        <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
-                                            {
-                                                jobs?.map((item) =>
-                                                    <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
-                                                )
-                                            }
-                                        </motion.div>
+                                        <Fragment>
+                                            <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
+                                                {
+                                                    jobs?.map((item) =>
+                                                        <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
+                                                    )
+                                                }
+                                            </motion.div>
+                                            <RenderIf condition={count?.total! > 0}>
+                                                <Pagination
+                                                    className="px-0 py-3"
+                                                    count={count?.total}
+                                                    currentPage={page}
+                                                    dataLength={count?.total}
+                                                    totalPages={Math.ceil(count?.total! / itemsPerPage)}
+                                                    prev={prev}
+                                                    next={next}
+                                                />
+                                            </RenderIf>
+                                        </Fragment>
                                     )
                                 }
                             </AnimatePresence>
