@@ -9,15 +9,15 @@ import { JobCard } from "@/components/pages/jobs";
 import { TalentCard } from "@/components/pages/talent";
 import type { FetchedTalent } from "@/types/applicants";
 import { Loader } from "@/components/core/Button/Loader";
-import type { JobDataCountType } from "@/types/dashboard";
 import { pageVariants } from "@/constants/animateVariants";
 import { useGetJobs, useGetTalents } from "@/services/hooks/queries";
 import { useGetDashboardStats } from "@/services/hooks/queries/useDashboard";
+import type { InterviewDataCountType, JobDataCountType } from "@/types/dashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 
 export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
-    const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<any[]>({ component: "job-interview-count" })
+    const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<InterviewDataCountType[]>({ component: "job-interview-count" })
     const { isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
     const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
@@ -56,7 +56,7 @@ export const DashboardPage: React.FC = () => {
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                             {
                                 talents?.map((item) =>
-                                    <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/employees/${item?.user_id}/view`} />
+                                    <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
                                 )
                             }
                             </div>
@@ -71,7 +71,7 @@ export const DashboardPage: React.FC = () => {
                             <div className="flex items-center overflow-x-scroll gap-5">
                             {
                                 jobs?.map((job, index) =>
-                                    <JobCard key={index} job={job} />
+                                    <JobCard key={index} job={job} as={Link} to={`/jobs/${job?.job_id}/view`} />
                                 )
                             }
                             </div>

@@ -8,3 +8,20 @@ export interface JobDataCountType {
     total_invited: number;
     total_shortlisted: number;
 }
+
+export interface InterviewDataCountType {
+    timestamp_data: {
+        shortlisted_at: Date | string;
+    },
+    interview_data: {
+        i_date: string;
+        i_time: string;
+        i_schedule: Date | string;
+    },
+    user_data: {
+        _id: string;
+        first_name: string;
+        last_name: string;
+        avatar: string;
+    }
+}

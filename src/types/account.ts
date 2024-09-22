@@ -45,6 +45,12 @@ export interface FetchedCalendarEvent {
     title: string;
     comment: string;
     event_schedule: Date | string;
+    user_data: {
+        first_name: string;
+        last_name: string;
+        avatar: string;
+        specialty_title: string;
+    }
     data: {
         time: string;
         date: string;

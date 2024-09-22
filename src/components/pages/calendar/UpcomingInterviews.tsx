@@ -18,7 +18,7 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
             return "grid-cols-1"
         }
         if (events?.length === 2) {
-            return "grid-cols-3"
+            return "grid-cols-2"
         }
         if (events?.length > 2) {
             return "grid-cols-3"
@@ -43,10 +43,10 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
                                         <div className="grid gap-5">
                                             <h2 className="font-semibold text-base text-gray-900">{item?.title}</h2>
                                             <div className="flex items-center gap-3">
-                                                <Avatar size="40" image="https://images.pexels.com/photos/7275354/pexels-photo-7275354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Ferdinard Tabitha" />
+                                                <Avatar size="40" image={item?.user_data?.avatar} alt={`${item?.user_data?.first_name} ${item?.user_data?.last_name}`} />
                                                 <div className="grid gap-1">
-                                                    <h3 className="font-medium text-sm text-gray-900">Ferdinard Tabitha</h3>
-                                                    <p className="text-xs text-gray-600">Human Resources, Feh Medicals</p>
+                                                    <h3 className="font-medium text-sm text-gray-900">{item?.user_data?.first_name} {item?.user_data?.last_name}</h3>
+                                                    <p className="text-xs text-gray-600">{item?.user_data?.specialty_title}</p>
                                                 </div>
                                             </div>
                                         </div>

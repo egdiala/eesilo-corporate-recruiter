@@ -2,13 +2,17 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import emptyState from "@/assets/empty_state.webp";
+import { capitalizeWords } from "@/utils/capitalize";
+import { format, formatDistanceToNow } from "date-fns";
+import { InterviewDataCountType } from "@/types/dashboard";
 import { Avatar, ContentDivider, RenderIf } from "@/components/core";
 
 interface UpcomingInterviewsProps {
-    interviews: any[]
+    interviews: InterviewDataCountType[]
 }
 
 export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ interviews }) => {
+
     return (
         <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-xl">
             <div className="flex items-center justify-between">
@@ -16,21 +20,21 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ intervie
                     <Icon icon="ri:calendar-2-line" className="size-6 text-warning-500" />
                     <h3 className="font-medium text-base text-gray-900"><span className="sr-only md:not-sr-only">Upcoming </span>Interviews</h3>
                 </div>
-                <Link to="/jobs" className="font-medium text-sm text-gray-500">View All</Link>
+                <Link to="/calendar" className="font-medium text-sm text-gray-500">View All</Link>
             </div>
             <ContentDivider />
             <RenderIf condition={interviews.length > 0}>
                 {
-                    Array.from({ length: 4 }).map((_, index) =>
-                        <div key={index} className="flex items-start justify-between p-1">
+                    interviews?.map((interview) =>
+                        <div key={interview?.user_data?._id} className="flex items-start justify-between p-1">
                             <div className="flex items-center gap-4">
-                                <Avatar size="40" alt="user" image="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+                                <Avatar size="40" alt="user" image={interview?.user_data?.avatar} />
                                 <div className="grid gap-1">
-                                    <h1 className="font-medium text-sm text-gray-900">Interview Call with Kyle</h1>
+                                    <h1 className="font-medium text-sm text-gray-900">Interview Call with {capitalizeWords(interview?.user_data?.first_name)}</h1>
                                     <p className="text-sm text-gray-600">Zoom Call</p>
                                 </div>
                             </div>
-                            <span className="text-sm text-gray-600">Today, 2:13pm</span>
+                            <span className="text-sm text-gray-600 capitalize">{formatDistanceToNow(interview?.interview_data?.i_schedule, { addSuffix: true })}, {format(interview?.interview_data?.i_schedule, "p")}</span>
                         </div>
                     )
                 }
