@@ -11,6 +11,7 @@ import { Button, CheckBox, ComboBox, EmptyState, InputField, RenderIf } from "@/
 import { Link } from "react-router-dom"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Menu, MenuButton, MenuHeading, MenuItem, MenuItems, MenuSection } from "@headlessui/react"
+import { FetchedJob } from "@/types/jobs"
 
 export const TalentSearchPage: React.FC = () => {
     const [query, setQuery] = useState({
@@ -19,7 +20,7 @@ export const TalentSearchPage: React.FC = () => {
         state: "",
         city: ""
     })
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs()
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({})
     const { value: keyword, onChangeHandler } = useDebounce(500)
     const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
 

@@ -28,7 +28,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
     })
     const [selected, setSelected] = useState<FetchedJob | null>(null)
     const { data: countries } = useGetCountries()
-    const { data: jobs } = useGetJobs()
+    const { data: jobs } = useGetJobs<FetchedJob[]>({})
     const [query, setQuery] = useState("")
 
     const filteredJobs =

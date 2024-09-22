@@ -10,6 +10,7 @@ import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationP
 import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AddToShortlist } from "./AddToShortlist";
+import { FetchedJob } from "@/types/jobs";
 
 
 export const SearchCandidates: React.FC = () => {
@@ -26,7 +27,7 @@ export const SearchCandidates: React.FC = () => {
         city: ""
     })
     const [job_id, setJobId] = useState("")
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs()
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({})
     const [activeTalent, setActiveTalent] = useState<FetchedTalent | null>(null)
     const [searchParams, setSearchParams] = useSearchParams();
     const { value: keyword, onChangeHandler } = useDebounce(500)

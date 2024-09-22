@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { GET_JOB_REQUIREMENTS, GET_JOBS } from "@/constants/queryKeys";
 import { getJob, getJobRequirements, getJobs } from "@/services/apis/jobs";
-import type { FetchedJob, FetchJobRequirementsParams } from "@/types/jobs";
+import type { FetchedJob, FetchJobRequirementsParams, GetJobsQuery } from "@/types/jobs";
 
-export const useGetJobs = () => {
+export const useGetJobs = <T>(query: GetJobsQuery) => {
     return useQuery({
-        queryKey: [GET_JOBS],
-        queryFn: getJobs,
-        select: (res) => res?.data as FetchedJob[],
+        queryKey: [GET_JOBS, query],
+        queryFn: () => getJobs(query),
+        select: (res) => res?.data as T,
         retry: false,
         refetchOnWindowFocus: false,
     });

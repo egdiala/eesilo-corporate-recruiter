@@ -11,6 +11,17 @@ export type CreateJobParams = {
     expected_salary: string;
 }
 
+export type GetJobsQuery = {
+    q?: string;
+    start_date?: string; // should be converted to UTC using the user's time zone. Format is YYYY-MM-DD
+    end_date?: string; // should be converted to UTC using the user's time zone. Format is YYYY-MM-DD
+    job_status?: "0" | "1" | "2"; // 0=pending, 1=active, 2=suspended
+    trash_status?: "1" | "2"; // 1=active, 2=to be deleted
+    page?: string;
+    item_per_page?: string;
+    component?: "count"
+}
+
 export type FetchJobRequirementsParams = {
     q?: string;
 }
@@ -39,4 +50,8 @@ export interface FetchedJob {
     total_declined: number;
     total_pending: number;
     total_shortlisted: number;
+}
+
+export interface FetchedJobCount {
+    total: number;
 }

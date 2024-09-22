@@ -8,15 +8,18 @@ import { Loader } from "@/components/core/Button/Loader"
 import { Button, InputField, RenderIf, Table } from "@/components/core"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
 import emptyState from "@/assets/empty_state.webp";
-import { FetchedJob } from "@/types/jobs"
+import type { FetchedJob, FetchedJobCount } from "@/types/jobs"
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams"
+import { useDebounce } from "@/hooks/useDebounce"
 
 export const JobsPage: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: jobs, isFetching } = useGetJobs()
+    const { value, onChangeHandler } = useDebounce(500)
+    const { data: count, isFetching: fetchingCount } = useGetJobs<FetchedJobCount>({ page: page.toString(), item_per_page: itemsPerPage.toString(), component: "count" })
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
     const [gridView, setGridView] = useState(true)
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -70,14 +73,14 @@ export const JobsPage: React.FC = () => {
     }, [location, setPage])
 
     return (
-        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container">
+        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container overflow-y-scroll">
             <div className="bg-white rounded-2xl lg:p-8">
                 <div className="flex flex-col gap-5 border border-gray-200 rounded-xl p-4">
                     <div className="flex items-center justify-between">
                         <h2 className="font-medium text-base text-gray-900">Posted Jobs</h2>
                         <div className="flex items-center justify-end gap-5 flex-1">
                             <div className="flex-1 max-w-80">
-                                <InputField placeholder="Search Jobs" type="text" size="40" iconRight="ri:search-2-line" />
+                                <InputField placeholder="Search Jobs" type="text" size="40" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                             </div>
                             <Button type="button" theme="neutral" variant="stroke" size="40" onClick={() => setGridView(!gridView)}>
                                 <Icon icon={gridView ? "ri:list-unordered" : "ri:layout-grid-line"} className="size-5" />
@@ -88,7 +91,7 @@ export const JobsPage: React.FC = () => {
                             </Button>
                         </div>
                     </div>
-                    <RenderIf condition={!isFetching}>
+                    <RenderIf condition={!fetchingJobs && !fetchingCount}>
                         <RenderIf condition={jobs !== undefined && jobs?.length > 0}>
                             <AnimatePresence mode="popLayout">
                                 {
@@ -111,7 +114,7 @@ export const JobsPage: React.FC = () => {
                                             data={jobs ?? []}
                                             page={page}
                                             perPage={itemsPerPage}
-                                            totalCount={jobs?.length}
+                                            totalCount={count?.total}
                                             onPageChange={handlePageChange}
                                             emptyStateText="No items to be found here."
                                             onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
@@ -134,7 +137,7 @@ export const JobsPage: React.FC = () => {
                             </AnimatePresence>
                         </RenderIf>
                     </RenderIf>
-                    <RenderIf condition={isFetching}>
+                    <RenderIf condition={fetchingJobs || fetchingCount}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                     </RenderIf>
                 </div>

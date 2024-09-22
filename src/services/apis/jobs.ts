@@ -1,10 +1,10 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
 import { GET_JOB_REQUIREMENTS_API, GET_JOBS_API } from "@/constants/api";
-import type { CreateJobParams, FetchJobRequirementsParams } from "@/types/jobs";
+import type { CreateJobParams, FetchJobRequirementsParams, GetJobsQuery } from "@/types/jobs";
 import { createQueryString } from "@/utils/createQuery";
 
-export const getJobs = async () => {
-  const res = await axiosUserInstance.get(GET_JOBS_API);
+export const getJobs = async (query: GetJobsQuery) => {
+  const res = await axiosUserInstance.get(`${GET_JOBS_API}${createQueryString(query)}`);
   return res.data;
 };
 
