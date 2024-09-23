@@ -158,16 +158,25 @@ export const CalendarPage: React.FC = () => {
                                                 >
                                                 {format(day, "d")}
                                                 </time>
-                                                <RenderIf condition={isToday(day)}>
-                                                    <ol>
-                                                        <li>
-                                                            <div className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full">
-                                                                <span className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
-                                                                    1 Interview 🙏🏽
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                    </ol>
+                                                <RenderIf condition={(events !== undefined) && (events.length > 0)}>
+                                                    {
+                                                        [events?.find((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))!]?.map((item) =>
+                                                        <RenderIf key={item?._id} condition={isEqual(format(day, "yyyy-MM-dd"), item?.data?.date)}>
+                                                            <ol>
+                                                                <li>
+                                                                    <button type="button" className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full" onClick={() => {
+                                                                        setEventsToView(events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))!)
+                                                                        toggleInterviewModal()
+                                                                    }}>
+                                                                        <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
+                                                                            {events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date)).length} <span className="sr-only sm:not-sr-only">Interview{events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))?.length! > 1 ? "s" : ""}</span>
+                                                                        </div>
+                                                                    </button>
+                                                                </li>
+                                                            </ol>
+                                                        </RenderIf>
+                                                        )
+                                                    }
                                                 </RenderIf>
                                             </button>
                                             ))}
