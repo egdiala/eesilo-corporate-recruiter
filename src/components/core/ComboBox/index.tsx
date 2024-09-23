@@ -78,7 +78,7 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, opt
                     )}
                 </div>
             </RenderIf>
-            <Combobox disabled={disabled} value={selected} defaultValue={defaultValue} onChange={(value) => setSelected(value)} onClose={onClose}>
+            <Combobox disabled={disabled} value={selected} defaultValue={defaultValue} virtual={{ options }} onChange={(value) => setSelected(value)} onClose={onClose}>
                 <div className="relative">
                 <ComboboxInput
                     className={cn("neesilo-input peer pl-2 pr-8", `neesilo-input--${size}-right`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)}
@@ -91,31 +91,40 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, opt
                 </ComboboxButton>
                 </div>
                 
-                <ComboboxOptions
-                anchor="bottom"
-                portal={false}
-                transition
-                className={cn(
-                    "w-[var(--input-width)] rounded-b-lg shadow-lg z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:24rem]",
-                    "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
-                )}
-                >
-                    <RenderIf condition={options.length > 0}>
-                    {options.map((option, idx) => (
-                        <ComboboxOption
-                        key={idx}
-                        value={option}
-                        className="group flex cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-primary-25"
-                        >
-                        <div className="text-sm/6 text-gray-800 group-data-[selected]:text-primary-500 group-data-[selected]:font-medium">{optionLabel(option)}</div>
-                        <Icon icon="lucide:check" className="invisible size-4 text-primary-500 group-data-[selected]:visible" />
-                        </ComboboxOption>
-                    ))}
-                    </RenderIf>
-                    <RenderIf condition={options.length === 0}>
+                <RenderIf condition={options.length > 0}>
+                    <ComboboxOptions
+                        anchor="bottom"
+                        portal={false}
+                        transition
+                        className={cn(
+                            "w-[var(--input-width)] rounded-b-lg shadow-lg z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:24rem]",
+                            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+                        )}
+                    >
+                        {({ option }) => (
+                            <ComboboxOption
+                            value={option}
+                            className="group flex w-full cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-primary-25"
+                            >
+                            <div className="text-sm/6 text-gray-800 group-data-[selected]:text-primary-500 group-data-[selected]:font-medium">{optionLabel(option)}</div>
+                            <Icon icon="lucide:check" className="invisible size-4 text-primary-500 group-data-[selected]:visible" />
+                            </ComboboxOption>
+                        )}
+                    </ComboboxOptions>
+                </RenderIf>
+                <RenderIf condition={options.length === 0}>
+                    <ComboboxOptions
+                        anchor="bottom"
+                        portal={false}
+                        transition
+                        className={cn(
+                            "w-[var(--input-width)] rounded-b-lg shadow-lg z-10 bg-white mt-2 p-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:24rem]",
+                            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+                        )}
+                    >
                         <div className="flex items-center justify-center text-center font-medium text-gray-500 py-1 text-sm w-full">No items found</div>
-                    </RenderIf>
-                </ComboboxOptions>
+                    </ComboboxOptions>
+                </RenderIf>
             </Combobox>
             <RenderIf condition={!!help}>
                 <span className="neesilo-input--help">{help}</span>
