@@ -22,11 +22,15 @@ interface NavItemProps {
    * Number count
    */
   count?: string | number;
+  /**
+   * Number count
+   */
+  close?: () => void;
 }
 
-export const NavItem: React.FC<NavItemProps> = ({ count, icon, name, to }) => {
+export const NavItem: React.FC<NavItemProps> = ({ close, count, icon, name, to }) => {
     return (
-        <NavLink to={to}>
+        <NavLink to={to} onClick={() => close?.()}>
             {({ isActive }) => (
                 <div className={cn("neesilo-module-list-item group", isActive && "neesilo-module-list-item--active")}>
                     <Icon icon={icon} className={cn("size-5 transition-all duration-500 ease-out", !isActive && "group-hover:text-[#71839B]")} />

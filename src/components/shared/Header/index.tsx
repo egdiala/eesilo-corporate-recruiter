@@ -11,7 +11,7 @@ export const Header: React.FC<HeaderProps> = ({ setShowSidebar }) => {
     const routeTitle = useRouteTitle()
     return (
         <header className="flex items-center gap-3 sticky top-0 left-0 right-0 bg-white border-b border-b-gray-200 py-5 px-8">
-            <button type="button" className="group lg:hidden grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300" onClick={setShowSidebar}>
+            <button type="button" className="group xl:hidden grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300" onClick={setShowSidebar}>
                 <div className="relative">
                     <Icon icon="ri:menu-line" className="size-5 text-gray-500 group-focus:text-primary-500" />
                 </div>
