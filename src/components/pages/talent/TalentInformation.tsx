@@ -174,7 +174,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <div className="flex flex-col gap-4 px-5 pb-5">
                                 <InputField type="text" placeholder="Search job roles" iconRight="ri:search-2-line" onChange={(event) => setQuery((event.target as HTMLInputElement).value)} />
                                 <RenderIf condition={filteredJobs !== undefined && filteredJobs?.length > 0}>
-                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="space-y-2.5">
+                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="max-h-64 overflow-y-scroll space-y-2.5">
                                         {
                                             filteredJobs?.map((job) => (
                                             <Radio

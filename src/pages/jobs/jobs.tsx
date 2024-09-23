@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { JobCard } from "@/components/pages/jobs"
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
@@ -110,14 +110,14 @@ export const JobsPage: React.FC = () => {
                             <AnimatePresence mode="popLayout">
                                 {
                                     gridView && (
-                                        <Fragment>
-                                            <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-2 gap-5">
+                                        <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-5">
+                                            <div className="grid grid-cols-2">
                                                 {
                                                     jobs?.map((item) =>
                                                         <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />
                                                     )
                                                 }
-                                            </motion.div>
+                                            </div>
                                             <RenderIf condition={count?.total! > 0}>
                                                 <Pagination
                                                     className="px-0 py-3"
@@ -129,23 +129,25 @@ export const JobsPage: React.FC = () => {
                                                     next={next}
                                                 />
                                             </RenderIf>
-                                        </Fragment>
+                                        </motion.div>
                                     )
                                 }
                             </AnimatePresence>
                             <AnimatePresence mode="popLayout">
                                 {
                                     !gridView && (
-                                        <Table
-                                            columns={columns}
-                                            data={jobs ?? []}
-                                            page={page}
-                                            perPage={itemsPerPage}
-                                            totalCount={count?.total}
-                                            onPageChange={handlePageChange}
-                                            emptyStateText="No items to be found here."
-                                            onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
-                                        />
+                                        <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial}>
+                                            <Table
+                                                columns={columns}
+                                                data={jobs ?? []}
+                                                page={page}
+                                                perPage={itemsPerPage}
+                                                totalCount={count?.total}
+                                                onPageChange={handlePageChange}
+                                                emptyStateText="No items to be found here."
+                                                onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                                            />
+                                        </motion.div>
                                     )
                                 }
                             </AnimatePresence>

@@ -12,13 +12,13 @@ import { Loader } from "@/components/core/Button/Loader";
 import { pageVariants } from "@/constants/animateVariants";
 import { useGetJobs, useGetTalents } from "@/services/hooks/queries";
 import { useGetDashboardStats } from "@/services/hooks/queries/useDashboard";
-import type { InterviewDataCountType, JobDataCountType } from "@/types/dashboard";
+import type { InterviewDataCountType, JobDataCountType, JobYearlyCountType } from "@/types/dashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 
 export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
     const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<InterviewDataCountType[]>({ component: "job-interview-count" })
-    const { isFetching: fetchingYearlyCount } = useGetDashboardStats<JobDataCountType>({ component: "job-yearly-count" })
+    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count" })
     const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
     const cards = useMemo(() => {
@@ -61,7 +61,7 @@ export const DashboardPage: React.FC = () => {
                             }
                             </div>
                         </div>
-                        <PerformanceStats />
+                        <PerformanceStats yearData={yearlyDataCount ?? []} />
                         <hr className="border-gray-200" />
                         <div className="grid gap-6">
                             <div className="flex items-center justify-between">
