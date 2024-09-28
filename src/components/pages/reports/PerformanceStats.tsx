@@ -81,14 +81,17 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
     },[yearData])
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col pb-5">
             <div className="flex items-center justify-between p-5">
                 <h3 className="font-semibold text-base text-gray-00">Performance</h3>
                 <Menu>
-                    <MenuButton className="inline-flex items-center gap-2 rounded-md p-0 focus:outline-none data-[focus]:outline-0">
-                        <span className="font-medium text-base text-gray-600">2024</span>
-                        <Icon icon="ri:arrow-down-s-line" className="size-6 text-gray-900" />
-                    </MenuButton>
+                    <div className="flex items-center gap-1">
+                        <span className="font-medium text-base text-gray-600">Sort By:</span>
+                        <MenuButton className="inline-flex items-center gap-2 rounded-md p-0 focus:outline-none data-[focus]:outline-0">
+                            <span className="font-medium text-base text-gray-400">Yearly</span>
+                            <Icon icon="ri:arrow-down-s-line" className="size-6 text-gray-900" />
+                        </MenuButton>
+                    </div>
 
                     <MenuItems
                     transition
@@ -108,9 +111,8 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                     </MenuItems>
                 </Menu>
             </div>
-            <div className="flex items-center justify-end uppercase font-medium text-xs text-primary-500">Generate Report</div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
-                <div className="flex flex-col p-5 gap-5">
+                <div className="flex flex-col py-5 pr-5 pl-10 gap-5">
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
@@ -132,7 +134,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                     </div>
                 </div>
                 <ChartContainer config={chartConfig} className="min-h-auto max-h-96 flex-1 ml-0 pl-0">
-                    <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ left: -20 }} barSize={4} barGap={8}>
+                    <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ right: 40 }} barSize={4} barGap={8}>
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="month"

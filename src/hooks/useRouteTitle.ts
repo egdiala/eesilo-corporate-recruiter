@@ -13,7 +13,7 @@ export const useRouteTitle = () => {
         "/employees": "Employees",
         "/calendar": "Calendar",
         "/billings": "Billing & Subscription",
-        "/report": "Report",
+        "/report": "Reports",
         "/notifications": "Notifications",
         "/settings": "Settings",
         "/help": "Help & Support",

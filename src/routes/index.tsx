@@ -8,6 +8,7 @@ import DashboardLayout from "@/layouts/dashboard-layout"
 import { NotificationsPage } from "@/pages/notifications"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 import { AuthRoutes, BillingRoutes, DashboardRoutes, EmployeeRoutes, JobRoutes, SettingsRoutes, TalentRoutes } from "./modules"
+import { ReportsPage } from "@/pages/reports"
 
 
 function LocationProvider({ children }: { children: ReactNode }) {
@@ -26,6 +27,7 @@ const Router = () => {
                 <Route path="/*" element={<DashboardLayout><LocationProvider><DashboardRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="jobs/*" element={<DashboardLayout><LocationProvider><JobRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="notifications/*" element={<DashboardLayout><LocationProvider><NotificationsPage /></LocationProvider></DashboardLayout>} />
+                <Route path="report" element={<DashboardLayout><LocationProvider><ReportsPage /></LocationProvider></DashboardLayout>} />
                 <Route path="settings/*" element={<DashboardLayout><LocationProvider><SettingsRoutes /></LocationProvider></DashboardLayout>} />
                 <Route path="talent/*" element={<DashboardLayout><LocationProvider><TalentRoutes /></LocationProvider></DashboardLayout>} />
             </Routes>

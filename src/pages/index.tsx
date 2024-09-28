@@ -10,8 +10,7 @@ import { TalentCard } from "@/components/pages/talent";
 import type { FetchedTalent } from "@/types/applicants";
 import { Loader } from "@/components/core/Button/Loader";
 import { pageVariants } from "@/constants/animateVariants";
-import { useGetJobs, useGetTalents } from "@/services/hooks/queries";
-import { useGetDashboardStats } from "@/services/hooks/queries/useDashboard";
+import { useGetDashboardStats, useGetJobs, useGetTalents } from "@/services/hooks/queries";
 import type { InterviewDataCountType, JobDataCountType, JobYearlyCountType } from "@/types/dashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
 
