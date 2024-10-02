@@ -65,7 +65,7 @@ export const ViewJobCandidatePage: React.FC = () => {
                                         <TalentDocuments talent={candidate!} />
                                     </TabPanel>
                                     <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <JobProgress />
+                                        <JobProgress job={job!} />
                                     </TabPanel>
                                 </TabPanels>
                             </TabGroup>

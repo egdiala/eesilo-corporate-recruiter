@@ -1,12 +1,17 @@
 import React, { Fragment, useCallback, useState } from "react"
-import { motion } from "framer-motion"
-import { tabVariants } from "@/constants/animateVariants"
-import { Icon } from "@iconify/react"
 import { cn } from "@/libs/cn"
+import { Icon } from "@iconify/react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/core"
+import type { FetchedJob } from "@/types/jobs"
+import { tabVariants } from "@/constants/animateVariants"
 import { ScheduleInterview } from "../talent/ScheduleInterview"
 
-export const JobProgress: React.FC = () => {
+interface JobProgressProps {
+    job: FetchedJob
+}
+
+export const JobProgress: React.FC<JobProgressProps> = ({ job }) => {
     const [toggleModals, setToggleModals] = useState({
         openScheduleInvite: false,
     })
@@ -54,7 +59,7 @@ export const JobProgress: React.FC = () => {
                 <h1 className="font-medium text-lg text-gray-900">Track Progress</h1>
                 <p className="text-base text-gray-400">Track and manage the progress of this job</p>
             </div>
-            <span className="font-medium text-base text-gray-900">Certified Health Worker</span>
+            <span className="font-medium text-base text-gray-900">{job?.title}</span>
             <div className="flow-root">
                 <ul role="list" className="-mb-8">
                     {timeline.map((event, eventIdx) => (

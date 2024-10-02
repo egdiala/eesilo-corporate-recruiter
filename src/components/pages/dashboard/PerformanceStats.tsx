@@ -131,27 +131,29 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                         </div>
                     </div>
                 </div>
-                <ChartContainer config={chartConfig} className="min-h-auto max-h-96 flex-1 ml-0 pl-0">
-                    <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ left: -20 }} barSize={4} barGap={8}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="month"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
-                        />
-                        <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="line" />}
-                        />
-                        <Bar dataKey="invited" fill="var(--color-invited)" radius={[4,4,0,0]} />
-                        <Bar dataKey="accepted" fill="var(--color-accepted)" radius={[4,4,0,0]} />
-                        <Bar dataKey="rejected" fill="var(--color-rejected)" radius={[4,4,0,0]} />
-                        <Bar dataKey="hired" fill="var(--color-hired)" radius={[4,4,0,0]} />
-                    </BarChart>
-                </ChartContainer>
+                <div className="flex-1">
+                    <ChartContainer config={chartConfig} className="min-h-auto max-h-96 w-full ml-0 pl-0">
+                        <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ left: -20 }} barSize={4} barGap={8}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="month"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={(value) => value.slice(0, 3)}
+                            />
+                            <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent indicator="line" />}
+                            />
+                            <Bar dataKey="invited" fill="var(--color-invited)" radius={[4,4,0,0]} />
+                            <Bar dataKey="accepted" fill="var(--color-accepted)" radius={[4,4,0,0]} />
+                            <Bar dataKey="rejected" fill="var(--color-rejected)" radius={[4,4,0,0]} />
+                            <Bar dataKey="hired" fill="var(--color-hired)" radius={[4,4,0,0]} />
+                        </BarChart>
+                    </ChartContainer>
+                </div>
             </div>
         </div>
     )
