@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode } from "react";
+import React, { forwardRef, Fragment, ReactNode } from "react";
 import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { RenderIf } from "../RenderIf";
@@ -56,7 +56,7 @@ interface InputProps extends Omit<React.AllHTMLAttributes<HTMLInputElement>, "si
 /**
  * Input component for entering user data
  */
-export const InputField: React.FC<InputProps> = ({ label, error, optional, required, iconLeft, iconRight, className, help, disabled, passive, size, ...props }) => {
+export const InputField: React.FC<InputProps> = forwardRef(({ label, error, optional, required, iconLeft, iconRight, className, help, disabled, passive, size, ...props }, ref: React.Ref<HTMLInputElement>) => {
     return (
         <Field disabled={disabled} className="neesilo-input--outer">
             <RenderIf condition={!!label}>
@@ -80,7 +80,7 @@ export const InputField: React.FC<InputProps> = ({ label, error, optional, requi
                 />
                 </RenderIf>
                 <Input as={Fragment}>
-                    {() => <input className={cn("neesilo-input peer", `neesilo-input--${size}`, iconLeft && `neesilo-input--${size}-left`, iconRight && `neesilo-input--${size}-right`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)} {...props} /> }
+                    {() => <input ref={ref} className={cn("neesilo-input peer", `neesilo-input--${size}`, iconLeft && `neesilo-input--${size}-left`, iconRight && `neesilo-input--${size}-right`, error ? "neesilo-input--border-error" : "neesilo-input--border", className)} {...props} /> }
                 </Input>
                 <RenderIf condition={!!iconRight}>
                 <Icon
@@ -97,4 +97,4 @@ export const InputField: React.FC<InputProps> = ({ label, error, optional, requi
             </RenderIf>
         </Field>
     );
-};
+});

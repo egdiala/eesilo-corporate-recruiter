@@ -114,3 +114,76 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.react-datepicker-popper {
+  @apply z-10 !important;
+
+  svg {
+    @apply invisible !important;
+  }
+}
+.react-datepicker {
+  @apply bg-white border-0 shadow-2xl !important;
+}
+.react-datepicker__time-box {
+  @apply flex flex-col h-96 overflow-y-hidden z-10 w-auto py-2.5 px-0 m-0 !important;
+}
+.react-datepicker__time-container,
+.react-datepicker__time,
+.react-datepicker__time-box {
+  @apply rounded-br-3xl rounded-bl-3xl !important;
+}
+.react-datepicker__time-container {
+  @apply w-fit grid justify-items-center !important;
+}
+.react-datepicker__time-list {
+  @apply flex flex-col h-full gap-1 overflow-y-scroll px-2 !important;
+}
+.react-datepicker__time-list-item {
+  @apply flex items-center w-24 justify-center text-center text-base cursor-pointer text-gray-700 hover:bg-gray-200 rounded p-2 !important;
+}
+.react-datepicker__time-list-item--selected {
+  @apply text-green-500 bg-green-50 hover:bg-green-50 !important;
+}
+.react-datepicker__aria-live {
+  @apply hidden !important;
+}
+
+.react-datepicker__header {
+  @apply bg-success-500 text-white border-b-gray-200 rounded-t-xl !important;
+}
+.react-datepicker__month {
+  @apply rounded-b-none !important;
+}
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  @apply text-white hover:text-white border-white !important;
+}
+
+.react-datepicker__navigation-icon {
+  @apply text-white fill-white before:border-white !important;
+}
+
+[aria-current="date"] {
+  @apply text-success-500;
+}
+.react-datepicker__day {
+  @apply rounded-full !important;
+}
+[tabindex="0"]:has(.react-datepicker__day--selected) {
+  @apply bg-green-50 text-green-500 !important;
+}
+.react-datepicker__day--selected[aria-selected="true"] {
+  @apply text-green-50 bg-green-500 !important;
+}
+.react-datepicker__day[aria-disabled="true"] {
+  @apply text-gray-400 font-normal hover:bg-transparent cursor-not-allowed !important;
+}
+.react-datepicker__day[aria-disabled="false"]:not(
+    .react-datepicker__day--selected
+  ) {
+  @apply text-gray-900 font-normal !important;
+}
+.react-datepicker__week > [tabindex="-1"] {
+  @apply hover:bg-green-50;
+}

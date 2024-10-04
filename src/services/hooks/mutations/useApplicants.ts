@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
-import { GET_SHORTLISTED } from "@/constants/queryKeys";
+import { GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE } from "@/constants/queryKeys";
 import { removeShortlisted, shortlistCandidate } from "@/services/apis/applicants";
 
 // eslint-disable-next-line no-unused-vars
@@ -10,6 +10,7 @@ export const useShortlistApplicant = (msg?: string, fn?: () => void) => {
     mutationFn: shortlistCandidate,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED] })
+        queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED_CANDIDATE] })
         successToast({ param: null, msg, size: "36" })
         fn?.()
     },

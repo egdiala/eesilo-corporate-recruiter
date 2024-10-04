@@ -37,6 +37,7 @@ export interface ShortlistCandidateParams extends RemoveShortlistedParams {
         date: Date | string;
         meeting_link: string;
         comment: string;
+        timezone: string;
     }
 }
 

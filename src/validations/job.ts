@@ -12,3 +12,9 @@ export const createJobSchema = Yup.object().shape({
     required_relocation: Yup.string().trim().required("Select an option"),
     expected_salary: Yup.string().trim().required("Salary is required"),
 });
+
+export const scheduleInterviewSchema = Yup.object().shape({
+    time: Yup.string().trim().required("Select a time for the interview"),
+    date: Yup.string().trim().required("Select an interview date"),
+    meeting_link: Yup.string().trim().required("Enter a meeting link"),
+});
