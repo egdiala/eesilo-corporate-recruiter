@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { cn } from "@/libs/cn";
 import type { FetchedCalendarEvent } from "@/types/account";
-import { Avatar, Button, ContentDivider } from "@/components/core";
+import { Avatar, Button, ContentDivider, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 
 interface UpcomingInterviewsProps {
     isOpen: boolean;
@@ -67,9 +67,22 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
                                             <li>
                                                 <div className="flex items-start gap-1.5 overflow-hidden text-ellipsis">
                                                     <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Meeting link:</div>
-                                                    <a href={item?.data?.meeting_link} target="_blank" className="flex-1 whitespace-pre-wrap line-clamp-1 font-medium text-sm text-blue-500">{item?.data?.meeting_link}</a>
+                                                    <RenderIf condition={!isPast(item?.event_schedule)}>
+                                                        <a href={item?.data?.meeting_link} target="_blank" className="flex-1 whitespace-pre-wrap line-clamp-1 font-medium text-sm text-blue-500">{item?.data?.meeting_link}</a>
+                                                    </RenderIf>
+                                                    <RenderIf condition={isPast(item?.event_schedule)}>
+                                                        <div className="flex items-center py-0.5 font-medium text-xs text-[#8F5F00] px-2 bg-[#FFF8DF] rounded-full w-fit">Expired</div>
+                                                    </RenderIf>
                                                 </div>
                                             </li>
+                                            <RenderIf condition={!!item?.comment}>
+                                                <li>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Comment:</div>
+                                                        <div className="font-medium text-sm text-gray-500">{item?.comment}</div>
+                                                    </div>
+                                                </li>
+                                            </RenderIf>
                                         </ul>
                                     </div>
                                 )
