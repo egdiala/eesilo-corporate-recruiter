@@ -1,5 +1,5 @@
 import React, { useMemo, type ElementType } from "react";
-import { Avatar, ContentDivider, ProgressBar } from "@/components/core";
+import { Avatar, ContentDivider, ProgressBar, RenderIf } from "@/components/core";
 import type { FetchedTalent } from "@/types/applicants";
 import { cn } from "@/libs/cn";
 
@@ -36,11 +36,13 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, className, talent, .
                             </div>
                         )
                     }
-                    <ContentDivider />
-                    <div className="grid">
-                        <ProgressBar value={69} className="w-1/2" />
-                        <span className="font-normal text-[0.625rem] leading-[1.125rem] text-gray-500">Select a job role to compare</span>
-                    </div>
+                    <RenderIf condition={!!talent?.match_count}>
+                        <ContentDivider />
+                        <div className="grid">
+                            <ProgressBar value={talent?.match_count * 10} className="w-1/2" />
+                            <span className="font-normal text-[0.625rem] leading-[1.125rem] text-gray-500">Select a job role to compare</span>
+                        </div>
+                    </RenderIf>
                 </div>
             </div>
         </Component>

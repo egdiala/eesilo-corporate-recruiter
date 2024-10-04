@@ -53,13 +53,19 @@ export const ShortlistedCandidates: React.FC = () => {
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as FetchedShortlistedCandidate
                 return (
-                    <div className="whitespace-nowrap">{item?.user_data?.specialty_data?.title}</div>
+                    <div className="whitespace-nowrap md:whitespace-normal line-clamp-1">{item?.user_data?.specialty_data?.title}</div>
                 )
             }
         },
         {
             header: () => "Note",
-            accessorKey: "note",
+            accessorKey: "interview_data.i_comment",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedShortlistedCandidate
+                return (
+                    <div className="whitespace-nowrap md:whitespace-normal line-clamp-1">{item?.interview_data?.i_comment ?? "-"}</div>
+                )
+            }
         },
         {
             header: () => "Qualification",
@@ -67,7 +73,7 @@ export const ShortlistedCandidates: React.FC = () => {
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as FetchedShortlistedCandidate
                 return (
-                    <ProgressBar value={25 * item?.priority} />
+                    <ProgressBar value={10 * item?.match_count} />
                 )
             }
         },

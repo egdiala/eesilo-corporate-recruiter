@@ -46,7 +46,8 @@ export interface FetchedTalent {
     relocation_data: {
         ready_to_relocate: boolean;
         ready_to_travel: boolean;
-    },
+    };
+    match_count: number;
     address_data: {
         address: string;
         city: string;
@@ -80,6 +81,7 @@ export interface FetchedShortlistedCandidate {
     invite_status: number;
     interview_status: number;
     offer_status: number;
+    match_count: number;
     timestamp_data: {
         shortlisted_at: Date | string;
         invite_sent_at: Date | string;
