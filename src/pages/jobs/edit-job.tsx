@@ -107,82 +107,96 @@ export const EditJobPage: React.FC = () => {
                             <InputField type="text" label="Job Title" placeholder="Job title" size="40" {...register("title")} required />
                             <TextArea label="Job Description" placeholder="Job description" rows={5} {...register("description")} required />
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <InputField type="number" label="Years of Experience" placeholder="Enter number" className="hide-number-input-arrows" size="40" {...register("year_exp")} required />
-                                <SelectInput label="Requires Travel?" options={booleanOptions} {...register("required_travel")} required />
-                                <SelectInput label="Requires Relocation?" options={booleanOptions} {...register("required_relocation")} required />
-                                <ComboBox
-                                    label="Country"
-                                    disabled={fetchingCountries}
-                                    onClose={() => setQuery((prev) => ({
-                                        ...prev,
-                                        country: "",
-                                    }))}
-                                    error={errors.country}
-                                    options={fetchedCountries ?? []} 
-                                    onChange={(value) => setQuery((prev) => ({
-                                        ...prev,
-                                        country: value,
-                                    }))} 
-                                    defaultValue={countries?.filter((country) => country.name.toLowerCase() == job?.country?.toLowerCase())?.[0]}
-                                    displayValue={(item) => item?.name}
-                                    optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("country", value?.name)}
-                                    placeholder="Country"
-                                    size="40"
-                                    required
-                                />
-                                <ComboBox
-                                    label="State"
-                                    disabled={fetchingStates}
-                                    onClose={() => setQuery((prev) => ({
-                                        ...prev,
-                                        state: "",
-                                    }))}
-                                    error={errors.state}
-                                    options={fetchedStates ?? []} 
-                                    onChange={(value) => setQuery((prev) => ({
-                                        ...prev,
-                                        state: value,
-                                    }))} 
-                                    defaultValue={states?.filter((state) => state.name.toLowerCase() == job?.state?.toLowerCase())?.[0]}
-                                    displayValue={(item) => item?.name}
-                                    optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("state", value?.name)}
-                                    placeholder="Select state"
-                                    size="40"
-                                    required
-                                />
-                                <ComboBox
-                                    label="City"
-                                    disabled={fetchingCities}
-                                    onClose={() => setQuery((prev) => ({
-                                        ...prev,
-                                        city: "",
-                                    }))}
-                                    error={errors.city}
-                                    options={fetchedCities ?? []} 
-                                    onChange={(value) => setQuery((prev) => ({
-                                        ...prev,
-                                        city: value,
-                                    }))} 
-                                    defaultValue={cities?.filter((city) => city.name.toLowerCase() == job?.city?.toLowerCase())?.[0]}
-                                    displayValue={(item) => item?.name}
-                                    optionLabel={(option) => option?.name} 
-                                    setSelected={(value) => setFieldValue("city", value?.name)}
-                                    placeholder="Select city"
-                                    size="40"
-                                    required
-                                />
-                                <InputField
-                                    type="text"
-                                    label="Annual Salary Expectation ($)"
-                                    placeholder="Enter number"
-                                    size="40"
-                                    help={<Fragment><Icon icon="ri:error-warning-fill" className="size-4 text-gray-400" />Won't be shown to candidates</Fragment>}
-                                    {...register("expected_salary")}
-                                    required
-                                />
-                                <div className="col-span-2">
+                                <div className="col-span-2 md:col-span-1">
+                                    <InputField type="number" label="Years of Experience" placeholder="Enter number" className="hide-number-input-arrows" size="40" {...register("year_exp")} required />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <SelectInput label="Requires Travel?" options={booleanOptions} {...register("required_travel")} required />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <SelectInput label="Requires Relocation?" options={booleanOptions} {...register("required_relocation")} required />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <ComboBox
+                                        label="Country"
+                                        disabled={fetchingCountries}
+                                        onClose={() => setQuery((prev) => ({
+                                            ...prev,
+                                            country: "",
+                                        }))}
+                                        error={errors.country}
+                                        options={fetchedCountries ?? []} 
+                                        onChange={(value) => setQuery((prev) => ({
+                                            ...prev,
+                                            country: value,
+                                        }))} 
+                                        defaultValue={countries?.filter((country) => country.name.toLowerCase() == job?.country?.toLowerCase())?.[0]}
+                                        displayValue={(item) => item?.name}
+                                        optionLabel={(option) => option?.name} 
+                                        setSelected={(value) => setFieldValue("country", value?.name)}
+                                        placeholder="Country"
+                                        size="40"
+                                        required
+                                    />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <ComboBox
+                                        label="State"
+                                        disabled={fetchingStates}
+                                        onClose={() => setQuery((prev) => ({
+                                            ...prev,
+                                            state: "",
+                                        }))}
+                                        error={errors.state}
+                                        options={fetchedStates ?? []} 
+                                        onChange={(value) => setQuery((prev) => ({
+                                            ...prev,
+                                            state: value,
+                                        }))} 
+                                        defaultValue={states?.filter((state) => state.name.toLowerCase() == job?.state?.toLowerCase())?.[0]}
+                                        displayValue={(item) => item?.name}
+                                        optionLabel={(option) => option?.name} 
+                                        setSelected={(value) => setFieldValue("state", value?.name)}
+                                        placeholder="Select state"
+                                        size="40"
+                                        required
+                                    />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <ComboBox
+                                        label="City"
+                                        disabled={fetchingCities}
+                                        onClose={() => setQuery((prev) => ({
+                                            ...prev,
+                                            city: "",
+                                        }))}
+                                        error={errors.city}
+                                        options={fetchedCities ?? []} 
+                                        onChange={(value) => setQuery((prev) => ({
+                                            ...prev,
+                                            city: value,
+                                        }))} 
+                                        defaultValue={cities?.filter((city) => city.name.toLowerCase() == job?.city?.toLowerCase())?.[0]}
+                                        displayValue={(item) => item?.name}
+                                        optionLabel={(option) => option?.name} 
+                                        setSelected={(value) => setFieldValue("city", value?.name)}
+                                        placeholder="Select city"
+                                        size="40"
+                                        required
+                                    />
+                                </div>
+                                <div className="col-span-2 md:col-span-1">
+                                    <InputField
+                                        type="text"
+                                        label="Annual Salary Expectation ($)"
+                                        placeholder="Enter number"
+                                        size="40"
+                                        help={<Fragment><Icon icon="ri:error-warning-fill" className="size-4 text-gray-400" />Won't be shown to candidates</Fragment>}
+                                        {...register("expected_salary")}
+                                        required
+                                    />
+                                </div>
+                                <div className="md:col-span-1 col-span-2">
                                     <Field className="neesilo-input--outer">
                                         <div className="text-sm tracking-custom flex gap-px items-center">
                                             <Label passive className="neesilo-input--label">

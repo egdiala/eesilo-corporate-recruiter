@@ -1,4 +1,4 @@
-import React, { ElementType, Fragment } from "react";
+import React, { ElementType } from "react";
 import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { RenderIf } from "@/components/core";
@@ -27,19 +27,19 @@ export const JobCard: React.FC<JobCardProps> = ({ as, job, ...props }) => {
                 <p className="font-normal text-sm text-gray-600 line-clamp-2">{job?.description}</p>
             </div>
             <hr className="border-gray-300" />
-            <div className="flex items-center gap-2.5 w-full">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {
                     statuses.map((status, index) =>
-                        <Fragment key={index}>
+                        <div className="flex items-center gap-2.5" key={index}>
                             <div className="grid gap-3.5 flex-1">
-                                <div className="flex items-center gap-1.5 w-24">
+                                <div className="flex items-center gap-1.5 md:w-24">
                                     <Icon icon={status.icon} className={cn("size-5", status.iconColor)} />
                                     <span className="font-normal text-xs text-gray-800 whitespace-nowrap">{status.label}</span>
                                 </div>
                                 <span className="font-medium text-base text-gray-800">{status.value}</span>
                             </div>
-                            <RenderIf condition={index !== (statuses.length - 1)}><div className="h-full rounded w-0 block border-r border-r-gray-300" /></RenderIf>
-                        </Fragment>
+                            <RenderIf condition={index !== (statuses.length - 1)}><div className="hidden h-full rounded w-0 lg:block border-r border-r-gray-300" /></RenderIf>
+                        </div>
                     )
                 }
             </div>

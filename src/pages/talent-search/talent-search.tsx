@@ -74,7 +74,7 @@ export const TalentSearchPage: React.FC = () => {
             })
 const filters = ["Willing to Travel", "Willing to Relocate"]
     return (
-        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container overflow-scroll">
+        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-scroll">
             <div className="bg-white rounded-2xl lg:p-8">
                 <div className="flex flex-col gap-5 border border-gray-200 rounded-xl p-4">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">

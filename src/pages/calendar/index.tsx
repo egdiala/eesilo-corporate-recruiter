@@ -47,7 +47,7 @@ export const CalendarPage: React.FC = () => {
         setOpenInterviewModal(!openInterviewModal)
     },[openInterviewModal])
     return (
-        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 view-page-container overflow-y-scroll pt-5 pb-10">
+        <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
             <div className="flex flex-col gap-0 bg-white rounded-2xl p-4 lg:p-8">
                 <header className="flex items-start gap-2.5 pb-6">
                     <h1 className="font-bold text-2xl text-gray-800">

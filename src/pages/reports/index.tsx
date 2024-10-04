@@ -18,7 +18,7 @@ export const ReportsPage: React.FC = () => {
     return (
         <Fragment>
             <RenderIf condition={!fetchingYearlyCount}>
-                <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 view-page-container overflow-y-scroll pt-5 pb-10">
+                <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
                     <div className="flex flex-col gap-0 bg-white rounded-2xl">
                         <div className="flex items-center justify-between p-8">
                             <h1 className="font-semibold text-base text-gray-900">Analytics & Reports</h1>
