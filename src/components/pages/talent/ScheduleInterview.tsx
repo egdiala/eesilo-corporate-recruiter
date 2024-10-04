@@ -14,8 +14,8 @@ import type { FetchedShortlistedCandidate } from "@/types/applicants";
 interface ScheduleInterviewProps {
     isOpen: boolean;
     close: () => void;
-    job: FetchedJob;
-    talent: FetchedShortlistedCandidate;
+    job?: FetchedJob;
+    talent?: FetchedShortlistedCandidate;
 }
 
 export const ScheduleInterview: React.FC<ScheduleInterviewProps> = ({ isOpen, close, job, talent }) => {
@@ -32,8 +32,8 @@ export const ScheduleInterview: React.FC<ScheduleInterviewProps> = ({ isOpen, cl
         onSubmit: () => {
             const { time, date, ...rest } = values
             mutate({
-                job_id: job?.job_id,
-                user_id: talent?.user_id,
+                job_id: job?.job_id as string,
+                user_id: talent?.user_id as string,
                 invite_status: "2",
                 interview_data: { ...rest, date: format(date, "yyyy-MM-dd"), time: format(time, "HH:mm"), timezone: new Date().getTimezoneOffset().toString()}
             })
