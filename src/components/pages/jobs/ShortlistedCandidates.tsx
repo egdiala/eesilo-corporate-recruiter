@@ -19,8 +19,8 @@ export const ShortlistedCandidates: React.FC = () => {
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const { value, onChangeHandler } = useDebounce(500)
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ invite_status: "0", job_id: id as string, q: value })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", invite_status: "0", job_id: id as string, q: value })
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ job_id: id as string, q: value }) // invite_status: "0",
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", job_id: id as string, q: value }) // invite_status: "0",
     const [searchParams, setSearchParams] = useSearchParams();
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,

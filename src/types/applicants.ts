@@ -82,7 +82,17 @@ export interface FetchedShortlistedCandidate {
     offer_status: number;
     timestamp_data: {
         shortlisted_at: Date | string;
-    },
+        invite_sent_at: Date | string;
+        invite_accepted_rejected_at: Date | string;
+        interview_sent_at: Date | string;
+    };
+    interview_data?: {
+        i_date: Date | string;
+        i_time: string;
+        i_schedule: Date | string;
+        i_link?: string;
+        i_comment?: string;
+    };
     createdAt: Date | string;
     updatedAt: Date | string;
     user_data: Omit<FetchedTalent, "user_id"> & { _id: string; } & Omit<SingleTalent, "total">;

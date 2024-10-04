@@ -81,10 +81,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Button type="button" theme={talent?.invite_status === 4 ? "error" : "primary"} variant="lighter" size="40">
                         <Icon icon={talent?.invite_status === 4 ? "ri:user-unfollow-line" : "ri:check-double-line"} className="size-5" />
                         { talent?.invite_status === 0 && "Shortlisted" }
-                        { talent?.invite_status === 1 && "Invite Accepted" }
+                        { ((talent?.invite_status === 1) && (talent?.interview_status === 0)) && "Invite Accepted" }
                         { talent?.invite_status === 2 && "Invite Declined" }
                         { talent?.invite_status === 3 && "Invite Sent" }
-                        { talent?.interview_status === 1 && "Interview Stage" }
+                        { ((talent?.invite_status === 1) && (talent?.interview_status === 1)) && "Interview Stage" }
                         { talent?.offer_status === 1 && "Hired" }
                         { talent?.offer_status === 2 && "Not Hired" }
                         { talent?.offer_status === 3 && "Offer Sent" }

@@ -8,6 +8,7 @@ import { tabVariants } from "@/constants/animateVariants"
 import { ScheduleInterview } from "../talent/ScheduleInterview"
 import { useShortlistApplicant } from "@/services/hooks/mutations"
 import type { FetchedShortlistedCandidate } from "@/types/applicants"
+import { format, isPast } from "date-fns"
 
 interface JobProgressProps {
     job: FetchedJob
@@ -38,6 +39,28 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
         })
     }
 
+    const interviewData = useMemo(() => {
+        if (talent?.interview_data?.i_schedule) {
+            return [
+                { label: "Date", value: format(talent?.interview_data?.i_date as string, "dd MMMM yyyy") },
+                { label: "Time", value: format(talent?.interview_data?.i_schedule as Date, "hh:mm a O") },
+                (!!talent?.interview_data?.i_link && {
+                    label: "Meeting link",
+                    value: <Fragment>
+                        <RenderIf condition={!isPast(talent?.interview_data?.i_schedule)}>
+                            <a href={talent?.interview_data?.i_link} target="_blank" className="w-96 whitespace-pre-wrap line-clamp-1 font-medium text-sm text-blue-500">{talent?.interview_data?.i_link}</a>
+                        </RenderIf>
+                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule)}>
+                            <div className="flex items-center py-0.5 font-medium text-xs text-[#8F5F00] px-2 bg-[#FFF8DF] rounded-full w-fit">Expired</div>
+                        </RenderIf>
+                    </Fragment>
+                }),
+                (!!talent?.interview_data?.i_comment && { label: "Note", value: talent?.interview_data?.i_comment })
+            ].filter((item) => item !== false)
+        }
+        return []
+    },[talent?.interview_data?.i_comment, talent?.interview_data?.i_date, talent?.interview_data?.i_link, talent?.interview_data?.i_schedule])
+
     const timeline = useMemo(() => {
         return [
             {
@@ -62,7 +85,25 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                 id: 2,
                 text: (talent?.invite_status <= 1) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : "You have scheduled an interview with this employee",
                 title: "Schedule Interview",
-                content: <RenderIf condition={(talent?.invite_status <= 1) && (talent?.interview_status === 0)}><Button type="button" theme="primary" variant="filled" size="40" onClick={toggleScheduleInvite}>Schedule Interview</Button></RenderIf>,
+                content: <div>
+                    <RenderIf condition={(talent?.invite_status <= 1) && (talent?.interview_status === 0)}>
+                        <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleScheduleInvite}>Schedule Interview</Button>
+                    </RenderIf>
+                    <RenderIf condition={((talent?.invite_status <= 1) && (talent?.interview_status !== 0))}>
+                        <ul className="space-y-1.5">
+                            {
+                                interviewData.map((item) =>
+                                <li>
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="w-24 text-gray-700 font-medium text-sm">{item?.label}:</span>
+                                        <span className="flex-1 text-gray-500 font-medium text-sm w-96 line-clamp-3">{item?.value}</span>
+                                    </div>
+                                </li>
+                                )
+                            }
+                        </ul>
+                    </RenderIf>
+                </div>,
                 done: ((talent?.invite_status <= 1) && (talent?.interview_status !== 0))
             },
             {
