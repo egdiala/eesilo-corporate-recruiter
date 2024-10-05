@@ -106,7 +106,7 @@ export const ComboBox: React.FC<ComboBoxProps<any>> = ({ label, help, error, opt
                             value={option}
                             className="group flex w-full cursor-pointer justify-between items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-primary-25"
                             >
-                            <div className="text-sm/6 text-gray-800 group-data-[selected]:text-primary-500 group-data-[selected]:font-medium">{optionLabel(option)}</div>
+                            <div className="text-sm/6 line-clamp-1 text-gray-800 group-data-[selected]:text-primary-500 group-data-[selected]:font-medium">{optionLabel(option)}</div>
                             <Icon icon="lucide:check" className="invisible size-4 text-primary-500 group-data-[selected]:visible" />
                             </ComboboxOption>
                         )}
