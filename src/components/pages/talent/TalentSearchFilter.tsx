@@ -26,8 +26,8 @@ export const TalentSearchFilter: React.FC<TalentSearchFilterProps> = ({ setFilte
             year_exp: filters?.year_exp || "",
             skills: filters?.skills || "",
             salary: filters?.salary || "",
-            travel: filters?.travel || false,
-            relocate: filters?.relocate || false
+            travel: filters?.travel || "",
+            relocate: filters?.relocate || ""
         },
         enableReinitialize: true,
         onSubmit: () => {}
@@ -68,14 +68,15 @@ export const TalentSearchFilter: React.FC<TalentSearchFilterProps> = ({ setFilte
     ]
 
     const applyFilter = () => {
-        setFilters({ ...values })
+        const { travel, relocate, ...rest } = values
+        setFilters({ ...rest, ...(travel ? { travel } : {}), ...(relocate ? { relocate } : {}) })
     }
     return (
         <Popover className="relative">
             <PopoverButton as={Button} type="button" theme="neutral" variant="stroke" size="40">
                 <Icon icon="ri:filter-3-line" className="size-5" />
             </PopoverButton>
-            <PopoverPanel anchor="bottom end" transition className="w-96 shadow-lg origin-top-right rounded-lg bg-white px-3 py-4 transition duration-300 ease-out focus:outline-none data-[closed]:scale-75 data-[closed]:opacity-0">
+            <PopoverPanel anchor="bottom end" transition className="z-10 max-w-96 shadow-lg origin-top-right rounded-lg bg-white px-3 py-4 transition duration-300 ease-out focus:outline-none data-[closed]:scale-75 data-[closed]:opacity-0">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-[#868C98] font-medium text-sm uppercase py-1 px-2">Filter by</h2>
                     <div className="grid gap-4">

@@ -2,13 +2,14 @@ import React, { Fragment, useCallback, useMemo, useState } from "react"
 import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
+import { format, isPast } from "date-fns"
 import type { FetchedJob } from "@/types/jobs"
+import { JobOfferModal } from "./JobOfferModal"
 import { Button, RenderIf } from "@/components/core"
 import { tabVariants } from "@/constants/animateVariants"
 import { ScheduleInterview } from "../talent/ScheduleInterview"
 import { useShortlistApplicant } from "@/services/hooks/mutations"
 import type { FetchedShortlistedCandidate } from "@/types/applicants"
-import { format, isPast } from "date-fns"
 
 interface JobProgressProps {
     job: FetchedJob
@@ -20,7 +21,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
     const { mutate, isPending } = useShortlistApplicant(message, () => close())
     const [toggleModals, setToggleModals] = useState({
         openScheduleInvite: false,
-        openSendJobInvite: false
+        openSendJobOffer: false
     })
 
     const toggleScheduleInvite = useCallback(() => {
@@ -29,6 +30,13 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
         openScheduleInvite: !toggleModals.openScheduleInvite,
       }))
     }, [toggleModals.openScheduleInvite])
+
+    const toggleJobOffer = useCallback(() => {
+      setToggleModals((prev) => ({
+        ...prev,
+        openSendJobOffer: !toggleModals.openSendJobOffer,
+      }))
+    }, [toggleModals.openSendJobOffer])
     
     const sendInvite = () => {
         setMessage(`Job invitation sent to ${talent?.user_data?.first_name} ${talent?.user_data?.last_name}`)
@@ -110,7 +118,11 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                 id: 3,
                 text: "Make an offer to this shortlisted candidate",
                 title: "Make Job Offer",
-                content: <Fragment></Fragment>,
+                content: <Fragment>
+                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule as string | Date)}>
+                            <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleJobOffer}>Make Job Offer</Button>
+                        </RenderIf>
+                </Fragment>,
                 done: false
             },
             {
@@ -159,6 +171,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                     ))}
                 </ul>
             </div>
+            <JobOfferModal isOpen={toggleModals.openSendJobOffer} onClose={toggleJobOffer} />
             <ScheduleInterview job={job} talent={talent} isOpen={toggleModals.openScheduleInvite} close={toggleScheduleInvite} />
         </motion.div>
     )
