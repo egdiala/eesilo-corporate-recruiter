@@ -75,15 +75,11 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
                                                     </RenderIf>
                                                 </div>
                                             </li>
-                                            <RenderIf condition={!!item?.comment}>
-                                                <li>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <div className="font-medium text-sm text-gray-700 w-[5.375rem]">Comment:</div>
-                                                        <div className="font-medium text-sm text-gray-500">{item?.comment}</div>
-                                                    </div>
-                                                </li>
-                                            </RenderIf>
                                         </ul>
+                                        <ContentDivider />
+                                        <RenderIf condition={!!item?.comment}>
+                                            <div className="font-normal text-xs text-gray-600">{item?.comment}</div>
+                                        </RenderIf>
                                     </div>
                                 )
                             }
