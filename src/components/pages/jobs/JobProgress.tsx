@@ -116,14 +116,17 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
             },
             {
                 id: 3,
-                text: "Make an offer to this shortlisted candidate",
-                title: "Make Job Offer",
+                text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : "You have made a job offer. Click here to view. ",
+                title: talent?.offer_status === 0 ? "Make Job Offer" : "Offer Made",
                 content: <Fragment>
-                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule as string | Date)}>
+                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule as string | Date) && talent?.offer_status === 0}>
                             <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleJobOffer}>Make Job Offer</Button>
                         </RenderIf>
+                        <RenderIf condition={talent?.offer_status === 3}>
+                            <div className="text-xs font-medium bg-blue-25 text-blue-500 px-2 flex rounded-full w-fit">Offer sent, wait for response</div>
+                        </RenderIf>
                 </Fragment>,
-                done: false
+                done: talent?.offer_status === 3
             },
             {
                 id: 4,
