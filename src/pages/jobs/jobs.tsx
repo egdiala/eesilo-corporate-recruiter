@@ -17,11 +17,11 @@ export const JobsPage: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { value, onChangeHandler } = useDebounce(500)
-    const { data: count, isFetching: fetchingCount } = useGetJobs<FetchedJobCount>({ page: page.toString(), item_per_page: itemsPerPage.toString(), component: "count" })
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
     const [gridView, setGridView] = useState(true)
+    const { value, onChangeHandler } = useDebounce(500)
     const [searchParams, setSearchParams] = useSearchParams();
+    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
+    const { data: count, isFetching: fetchingCount } = useGetJobs<FetchedJobCount>({ page: page.toString(), item_per_page: itemsPerPage.toString(), component: "count" })
 
     const columns = [
         {
@@ -113,7 +113,7 @@ export const JobsPage: React.FC = () => {
                                 {
                                     gridView && (
                                         <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-5">
-                                            <div className="grid grid-cols-1 md:grid-cols-2">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                 {
                                                     jobs?.map((item) =>
                                                         <JobCard key={item?.job_id} job={item!} as={Link} to={`/jobs/${item?.job_id}/view`} />

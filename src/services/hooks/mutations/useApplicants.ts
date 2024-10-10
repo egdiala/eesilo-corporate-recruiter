@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
 import { GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE } from "@/constants/queryKeys";
-import { removeShortlisted, shortlistCandidate } from "@/services/apis/applicants";
+import { removeShortlisted, shortlistCandidate, uploadOfferLetter } from "@/services/apis/applicants";
+import { Dispatch, SetStateAction } from "react";
 
-// eslint-disable-next-line no-unused-vars
 export const useShortlistApplicant = (msg?: string, fn?: () => void) => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -20,7 +20,6 @@ export const useShortlistApplicant = (msg?: string, fn?: () => void) => {
   });
 };
 
-// eslint-disable-next-line no-unused-vars
 export const useRemoveShortlisted = (msg?: string, fn?: () => void) => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -34,4 +33,24 @@ export const useRemoveShortlisted = (msg?: string, fn?: () => void) => {
         errorToast({ param: err, variant: "light" })
     },
   });
+};
+
+export const useUploadOfferLetter = (setProgress: Dispatch<SetStateAction<number>>, fn?: () => void) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: uploadOfferLetter,
+        onMutate: () => {
+          setProgress(0); // Reset progress when mutation starts
+        },
+        onSuccess: () => {
+          setProgress(100);
+          queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED] })
+          queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED_CANDIDATE] })
+          successToast({ param: null, msg: "Offer letter sent successfully!", size: "36" })
+          fn?.()
+        },
+        onError: (err: any) => {
+            errorToast({ param: err, variant: "light" })
+        },
+    });
 };

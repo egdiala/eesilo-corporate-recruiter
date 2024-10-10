@@ -19,8 +19,8 @@ export const TalentSearchPage: React.FC = () => {
     const [itemsPerPage] = useState(10)
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, ...filters })
-    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, ...filters })
+    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, page: page.toString(), item_per_page: itemsPerPage.toString(), ...filters })
+    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString(), keyword, ...filters })
 
     const handlePageChange = (page: number) => {
         // in a real page, this function would paginate the data from the backend

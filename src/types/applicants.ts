@@ -1,3 +1,5 @@
+import type { AxiosProgressEvent } from "axios";
+
 export type GetShortlistedQuery = {
     q?: string;
     job_id?: string;
@@ -27,6 +29,13 @@ export type GetTalentsQuery = {
 export interface RemoveShortlistedParams {
     job_id: string;
     user_id: string;
+}
+
+export interface UploadOfferLetterParams {
+    application_id: string;
+    file: FormData;
+    // eslint-disable-next-line no-unused-vars
+    onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
 }
 
 export interface ShortlistCandidateParams extends RemoveShortlistedParams {
@@ -74,6 +83,7 @@ export interface FetchedTalentCount {
 }
 
 export interface FetchedShortlistedCandidate {
+    application_id: string;
     business_id: string;
     user_id: string;
     job_id: string;
@@ -116,6 +126,9 @@ export interface SingleTalent extends FetchedTalent {
         createdAt: Date | string;
         updatedAt: Date | string;
         __v: number;
+    }[];
+    job_invited: {
+        job_id: string;
     }[];
     workexp_data: {
         _id: string;

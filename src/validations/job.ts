@@ -18,3 +18,12 @@ export const scheduleInterviewSchema = Yup.object().shape({
     date: Yup.string().trim().required("Select an interview date"),
     meeting_link: Yup.string().trim().required("Enter a meeting link"),
 });
+
+export const uploadJobOfferSchema = Yup.object().shape({
+    file: Yup.mixed().required("Select a file to upload").test("fileType", "Only PDF files are allowed", (value) => {
+      if (value && value instanceof File) {
+        return value.type === "text/pdf" || value.name.endsWith(".pdf");
+      }
+      return false;
+    }),
+})

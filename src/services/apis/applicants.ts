@@ -1,7 +1,7 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { GET_APPLICANT_DOCUMENT_API, GET_SHORTLISTED_CANDIDATES_API, GET_TALENTS_API } from "@/constants/api";
+import { GET_APPLICANT_DOCUMENT_API, GET_SHORTLISTED_CANDIDATES_API, GET_TALENTS_API, UPLOAD_OFFER_LETTER_API } from "@/constants/api";
 import { createQueryString } from "@/utils/createQuery";
-import type { GetDocumentQuery, GetShortlistedQuery, GetTalentsQuery, RemoveShortlistedParams, ShortlistCandidateParams } from "@/types/applicants";
+import type { GetDocumentQuery, GetShortlistedQuery, GetTalentsQuery, RemoveShortlistedParams, ShortlistCandidateParams, UploadOfferLetterParams } from "@/types/applicants";
 
 export const getTalents = async (query: GetTalentsQuery) => {
   const res = await axiosUserInstance.get(`${GET_TALENTS_API}${createQueryString(query)}`);
@@ -37,5 +37,17 @@ export const removeShortlisted = async (data: RemoveShortlistedParams) => {
 export const getApplicantDocument = async (query: GetDocumentQuery) => {
   const { user_id, ...rest } = query
   const res = await axiosUserInstance.get(`${GET_APPLICANT_DOCUMENT_API}/${user_id}${createQueryString(rest)}`);
+  return res.data;
+};
+
+export const uploadOfferLetter = async (payload: UploadOfferLetterParams) => {
+  const { file, application_id } = payload
+  const res = await axiosUserInstance.patch(`${UPLOAD_OFFER_LETTER_API}/${application_id}`, file, {
+    headers: {
+      "Accept": "application/form-data",
+      "Content-Type": "multipart/form-data"
+    },
+    onUploadProgress: payload.onUploadProgress
+  });
   return res.data;
 };

@@ -13,6 +13,9 @@ export const GET_STAFF_ADMIN = "get-staff-admin"
 // Dashboard
 export const GET_DASHBOARD_STATS = "get-dashboard-stats"
 
+// Notifications
+export const GET_NOTIFICATIONS = "get-notifications"
+
 // Jobs
 export const GET_JOBS = "get-jobs"
 export const GET_JOB_REQUIREMENTS = "get-job-requirements"

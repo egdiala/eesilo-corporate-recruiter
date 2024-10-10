@@ -1,78 +1,51 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { useDebounce } from "@/hooks/useDebounce"
 import { TalentCard } from "@/components/pages/talent"
 import { Loader } from "@/components/core/Button/Loader"
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetJobs, useGetShortlisted, useGetStatesByCountry } from "@/services/hooks/queries"
+import { useGetShortlisted } from "@/services/hooks/queries"
+import { EmployeesFilter } from "@/components/pages/employees"
+import { Link, useLocation, useSearchParams } from "react-router-dom"
 import { pageVariants, routeVariants } from "@/constants/animateVariants"
-import type { FetchedTalent } from "@/types/applicants"
-import { Button, CheckBox, ComboBox, EmptyState, InputField, RenderIf } from "@/components/core"
-import { Link } from "react-router-dom"
-import { useFormikWrapper } from "@/hooks/useFormikWrapper"
-import { Menu, MenuButton, MenuHeading, MenuItem, MenuItems, MenuSection } from "@headlessui/react"
-import { FetchedJob } from "@/types/jobs"
+import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants"
+import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams"
+import { Button, EmptyState, InputField, Pagination, RenderIf } from "@/components/core"
 
 export const EmployeesPage: React.FC = () => {
-    const [query, setQuery] = useState({
-        job: "",
-        country: "",
-        state: "",
-        city: ""
-    })
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({})
-    const { onChangeHandler } = useDebounce(500)
-    const { onChangeHandler: handleYearExp } = useDebounce(500)
+    const location = useLocation();
+    const [page, setPage] = useState(1)
+    const [itemsPerPage] = useState(10)
+    const [filters, setFilters] = useState({})
+    const { value, onChangeHandler } = useDebounce(500)
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const { values, setFieldValue } = useFormikWrapper({
-        initialValues: {
-            job_id: "",
-            country: "",
-            state: "",
-            city: "",
-            // year_exp: ""
-        },
-        onSubmit: () => {}
-    })
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedTalent[]>({ offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
 
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedTalent[]>({ offer_status: "1", ...values })
-    // const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp })
+    const handlePageChange = (page: number) => {
+        // in a real page, this function would paginate the data from the backend
+        setPage(page)
+        setPaginationParams(page, itemsPerPage, searchParams, setSearchParams)
+    };
 
-    const fetchedJobs = query.job === ""
-        ? jobs
-        : jobs?.filter((job) => {
-            return job.title.toLowerCase().includes(query.job.toLowerCase())
-            })
+    // Function to navigate to previous page
+    const prev = () => {
+        if (page > 1) {
+            handlePageChange(page - 1);
+        }
+    };
 
-    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
-    const fetchedCountries = query.country === ""
-        ? countries
-        : countries?.filter((country) => {
-            return country.name.toLowerCase().includes(query.country.toLowerCase())
-            })
+    // Function to navigate to next page
+    const next = () => {
+        if (page < count?.total!) {
+            handlePageChange(page + 1);
+        }
+    };
 
-    const selectedCountry = useMemo(() => {
-        return countries?.filter((item) => item?.name === values?.country)?.at(0)
-    },[countries, values?.country])
-
-    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
-    const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
-            return state.name.toLowerCase().includes(query.state.toLowerCase())
-            })
-
-    const selectedState = useMemo(() => {
-        return states?.filter((item) => item?.name === values?.state)?.at(0)
-    },[states, values?.state])
-
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
-    const fetchedCities = query.city === ""
-        ? cities
-        : cities?.filter((city) => {
-            return city.name.toLowerCase().includes(query.city.toLowerCase())
-            })
-const filters = ["Willing to Travel", "Willing to Relocate"]
+    useEffect(() => {
+        getPaginationParams(location, setPage, () => {})
+    }, [location, setPage])
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-scroll">
             <div className="bg-white rounded-2xl lg:p-8">
@@ -87,105 +60,30 @@ const filters = ["Willing to Travel", "Willing to Relocate"]
                                 <Icon icon="ri:search-2-line" className="size-5" />
                                 Search
                             </Button>
-                            <Menu>
-                                <MenuButton as={Button} type="button" theme="neutral" variant="stroke" size="40">
-                                    <Icon icon="ri:filter-3-line" className="size-5" />
-                                </MenuButton>
-                                <MenuItems as="div" transition className="w-48 shadow-lg origin-top-right rounded-lg bg-white px-3 py-4 transition duration-300 ease-out focus:outline-none data-[closed]:scale-75 data-[closed]:opacity-0" anchor="bottom end">
-                                    <MenuSection as="div" className="grid gap-2">
-                                        <MenuHeading className="text-[#868C98] font-medium text-xs uppercase py-1 px-2">Availability</MenuHeading>
-                                        <div className="grid gap-2">
-                                            {
-                                                filters.map((filter) =>
-                                                <MenuItem key={filter} as="div" className="flex items-center gap-2 text-gray-900 text-sm">
-                                                    <CheckBox label={filter} />
-                                                </MenuItem>
-                                                )
-                                            }
-                                        </div>
-                                    </MenuSection>
-                                </MenuItems>
-                            </Menu>
+                            <EmployeesFilter filters={filters} setFilters={setFilters} />
                         </div>
                     </div>
-                    <div className="grid md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-4">
-                        <ComboBox
-                            disabled={fetchingJobs}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                job: "",
-                            }))}
-                            options={fetchedJobs ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                job: value
-                            }))} 
-                            displayValue={(item) => item?.title}
-                            optionLabel={(option) => option?.title} 
-                            setSelected={(value) => setFieldValue("job_id", value?.job_id)}
-                            placeholder="Job Role"
-                        />
-                        <ComboBox
-                            disabled={fetchingCountries}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                country: "",
-                            }))}
-                            options={fetchedCountries ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                country: value,
-                            }))} 
-                            displayValue={(item) => item?.name}
-                            optionLabel={(option) => option?.name} 
-                            setSelected={(value) => setFieldValue("country", value?.name)}
-                            placeholder="Country"
-                        />
-                        <ComboBox
-                            disabled={fetchingStates}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                state: "",
-                            }))}
-                            options={fetchedStates ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                state: value,
-                            }))} 
-                            displayValue={(item) => item?.name}
-                            optionLabel={(option) => option?.name} 
-                            setSelected={(value) => setFieldValue("state", value?.name)}
-                            placeholder="State"
-                        />
-                        <ComboBox
-                            disabled={fetchingCities}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                city: "",
-                            }))}
-                            options={fetchedCities ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                city: value,
-                            }))} 
-                            displayValue={(item) => item?.name}
-                            optionLabel={(option) => option?.name} 
-                            setSelected={(value) => setFieldValue("city", value?.name)}
-                            placeholder="City"
-                        />
-                        <InputField type="text" placeholder="Educational qualifications" />
-                        <InputField type="text" placeholder="Skills" />
-                        <InputField type="text" placeholder="Years of experience" onChange={handleYearExp} />
-                        <InputField type="text" placeholder="Salary expectation" />
-                    </div>
-                    <RenderIf condition={!isFetching}>
+                    <RenderIf condition={!isFetching && !fetchingCount}>
                         <RenderIf condition={candidates?.length! > 0}>
                             <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid grid-cols-3 gap-5">
-                                {
-                                    candidates?.map((item) =>
-                                        <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
-                                    )
-                                }
+                                <div className="grid grid-cols-3 gap-5">
+                                    {
+                                        candidates?.map((item) =>
+                                            <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
+                                        )
+                                    }
+                                </div>
+                                <RenderIf condition={count?.total! > 0}>
+                                    <Pagination
+                                        className="px-0 py-3"
+                                        count={count?.total}
+                                        currentPage={page}
+                                        dataLength={count?.total}
+                                        totalPages={Math.ceil(count?.total! / itemsPerPage)}
+                                        prev={prev}
+                                        next={next}
+                                    />
+                                </RenderIf>
                             </motion.div>
                         </RenderIf>
                         <RenderIf condition={candidates?.length! === 0}>
@@ -194,7 +92,7 @@ const filters = ["Willing to Travel", "Willing to Relocate"]
                             </motion.div>
                         </RenderIf>
                     </RenderIf>
-                    <RenderIf condition={isFetching}>
+                    <RenderIf condition={isFetching || fetchingCount}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                     </RenderIf>
                 </div>

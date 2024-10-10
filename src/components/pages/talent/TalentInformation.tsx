@@ -11,6 +11,7 @@ import { useShortlistApplicant } from "@/services/hooks/mutations";
 import { useGetCountries, useGetJobs } from "@/services/hooks/queries";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
+import { cn } from "@/libs/cn";
 
 
 interface TalentInformationProps {
@@ -26,6 +27,9 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         openShortlistCandidate: false,
         openInvitedModal: false,
     })
+    const jobShortlists = useMemo(() => {
+        return talent?.job_invited?.map((item) => item?.job_id)
+    },[talent?.job_invited])
     const [selected, setSelected] = useState<FetchedJob | null>(null)
     const { data: countries } = useGetCountries()
     const { data: jobs } = useGetJobs<FetchedJob[]>({})
@@ -174,15 +178,19 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <div className="flex flex-col gap-4 px-5 pb-5">
                                 <InputField type="text" placeholder="Search job roles" iconRight="ri:search-2-line" onChange={(event) => setQuery((event.target as HTMLInputElement).value)} />
                                 <RenderIf condition={filteredJobs !== undefined && filteredJobs?.length > 0}>
-                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="max-h-64 overflow-y-scroll space-y-2.5">
+                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="max-h-64 overflow-y-scroll px-px space-y-2.5">
                                         {
                                             filteredJobs?.map((job) => (
                                             <Radio
+                                                value={job} 
                                                 key={job?.job_id}
-                                                value={job}
-                                                className="group relative flex cursor-pointer rounded-md border border-gray-200 py-1.5 px-2 text-gray-600 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-200 data-[checked]:border-primary-200 data-[checked]:text-gray-900 data-[checked]:bg-primary-25"
+                                                disabled={jobShortlists.includes(job?.job_id)}
+                                                className={cn("group relative flex items-center justify-between rounded-md border border-gray-200 py-1.5 px-2 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-500 data-[checked]:border-primary-500 data-[checked]:text-gray-900 data-[checked]:bg-primary-25", jobShortlists.includes(job?.job_id) ? "cursor-not-allowed text-gray-400" : "cursor-pointer text-gray-600")}
                                             >
                                                 {job?.title}
+                                                <RenderIf condition={jobShortlists.includes(job?.job_id)}>
+                                                   <span className="text-xs rounded-full bg-primary-100 text-primary-600 py-0.5 px-1">Shortlisted</span> 
+                                                </RenderIf>
                                             </Radio>
                                             ))
                                         }
@@ -210,10 +218,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                                 </div>
                                 <div className="grid gap-1 text-center">
                                     <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
-                                        Job Invitation Sent
+                                        Talent Shortlisted Successfully!
                                     </DialogTitle>
                                     <p className="text-sm text-gray-500">
-                                        You have successfully sent job invitations. Wait for response.
+                                        You have successfully shortlisted this talent.
                                     </p>
                                 </div>
                             </div>

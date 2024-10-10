@@ -94,7 +94,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                 text: (talent?.invite_status <= 1) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : "You have scheduled an interview with this employee",
                 title: "Schedule Interview",
                 content: <div>
-                    <RenderIf condition={(talent?.invite_status <= 1) && (talent?.interview_status === 0)}>
+                    <RenderIf condition={(talent?.invite_status == 1) && (talent?.interview_status === 0)}>
                         <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleScheduleInvite}>Schedule Interview</Button>
                     </RenderIf>
                     <RenderIf condition={((talent?.invite_status <= 1) && (talent?.interview_status !== 0))}>
@@ -133,7 +133,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                 done: false
             },
         ].filter((item) => item !== false)
-    }, [isPending, talent?.invite_status])
+    }, [interviewData, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status])
     
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
@@ -171,7 +171,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                     ))}
                 </ul>
             </div>
-            <JobOfferModal isOpen={toggleModals.openSendJobOffer} onClose={toggleJobOffer} />
+            <JobOfferModal applicationId={talent?.application_id} isOpen={toggleModals.openSendJobOffer} onClose={toggleJobOffer} />
             <ScheduleInterview job={job} talent={talent} isOpen={toggleModals.openScheduleInvite} close={toggleScheduleInvite} />
         </motion.div>
     )

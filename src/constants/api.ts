@@ -19,6 +19,9 @@ export const CONFIRM_PASSWORD_UPDATE_API = "business/accounts/password-confirmat
 // Dashboard
 export const GET_DASHBOARD_STATS_API = "business/jobs/dashboard-stat"
 
+// Notification
+export const GET_NOTIFICATIONS_API = "business/jobs/notification"
+
 // Jobs
 export const GET_JOBS_API = "business/jobs"
 export const GET_JOB_REQUIREMENTS_API = "business/jobs/requirement"
@@ -27,6 +30,7 @@ export const GET_JOB_REQUIREMENTS_API = "business/jobs/requirement"
 export const GET_TALENTS_API = "business/applicants"
 export const GET_SHORTLISTED_CANDIDATES_API = "business/applicants/shortlisted"
 export const GET_APPLICANT_DOCUMENT_API = "business/applicants/document"
+export const UPLOAD_OFFER_LETTER_API = "business/applicants/shortlisted"
 
 // Country
 export const COUNTRY_API = "countries"
