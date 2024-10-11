@@ -1,18 +1,22 @@
 import { useEffect, useState, type PropsWithChildren } from "react"
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion"
 import { Navigate } from "react-router-dom"
-import { setItem } from "@/utils/localStorage";
+import { setItem } from "@/utils/localStorage"
 import { isAuthenticated } from "@/utils/authUtil"
 import { Header, Sidebar } from "@/components/shared"
-import { useGetAccount } from "@/services/hooks/queries";
-import { pageVariants } from "@/constants/animateVariants";
-import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
+import { useGetAccount, useGetNotifications } from "@/services/hooks/queries"
+import { pageVariants } from "@/constants/animateVariants"
+import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
+import { NotificationCount } from "@/types/notification"
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
+    const [page] = useState(1)
+    const [itemsPerPage] = useState(10)
     const isLoggedIn = isAuthenticated();
     const [showSidebar, setShowSidebar] = useState(false)
     
     const { data: account, isSuccess } = useGetAccount()
+    const { data: notificationCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
 
     useEffect(() => {
         if (isSuccess) {
@@ -32,12 +36,13 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
         localStorage.clear();
         return <Navigate to="/auth/login" replace />;
     }
+    
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="relative bg-gray-50 isolate flex min-h-dvh w-full overflow-hidden">
-            <Sidebar admin={account!} showSidebar={showSidebar} close={() => setShowSidebar(false)} />
+            <Sidebar admin={account!} notificationCount={notificationCount!} showSidebar={showSidebar} close={() => setShowSidebar(false)} />
             <div className="relative h-full flex-1 xl:pl-60">
-                <Header setShowSidebar={() => setShowSidebar(true)} />
+                <Header notificationCount={notificationCount!} setShowSidebar={() => setShowSidebar(true)} />
                 <main className="flex-1 overflow-hidden">
                     {children}
                     <AnimatePresence mode="wait">

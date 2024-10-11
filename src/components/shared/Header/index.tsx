@@ -1,12 +1,17 @@
-import React from "react";
-import { Icon } from "@iconify/react";
-import { useRouteTitle } from "@/hooks/useRouteTitle";
+import React from "react"
+import { cn } from "@/libs/cn"
+import { Icon } from "@iconify/react"
+import { NavLink } from "react-router-dom"
+import { RenderIf } from "@/components/core"
+import { useRouteTitle } from "@/hooks/useRouteTitle"
+import type { NotificationCount } from "@/types/notification"
 
 interface HeaderProps {
     setShowSidebar: () => void;
+    notificationCount: NotificationCount;
 }
 
-export const Header: React.FC<HeaderProps> = ({ setShowSidebar }) => {
+export const Header: React.FC<HeaderProps> = ({ setShowSidebar, notificationCount }) => {
 
     const routeTitle = useRouteTitle()
     return (
@@ -22,12 +27,18 @@ export const Header: React.FC<HeaderProps> = ({ setShowSidebar }) => {
                     <Icon icon="ri:search-2-line" className="size-5 text-gray-500 group-focus:text-primary-500" />
                 </div>
             </button>
-            <button type="button" className="group grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300">
-                <div className="relative">
-                    <Icon icon="ri:notification-3-line" className="size-5 text-gray-500 group-focus:text-primary-500" />
-                    <span className="absolute top-0 right-0 bg-error-500 p-0.5 rounded border-2 border-white" />
-                </div>
-            </button>
+            <NavLink to="/notifications">
+                {({ isActive }) => (
+                    <div className="group grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300">
+                        <div className="relative">
+                            <Icon icon="ri:notification-3-line" className={cn("size-5", isActive ? "text-primary-500" : "text-gray-500")} />
+                            <RenderIf condition={notificationCount?.total > 0}>
+                                <span className="absolute top-0 right-0 bg-error-500 size-2 rounded border-2 border-white" />
+                            </RenderIf>
+                        </div>
+                    </div>
+                )}
+            </NavLink>
         </header>
     )
 }

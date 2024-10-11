@@ -24,7 +24,7 @@ export const NotificationsPage: React.FC = () => {
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-scroll">
-            <RenderIf condition={!isFetching && !fetchingCount}>
+            <RenderIf condition={notifications !== undefined}>
                 <div className="flex flex-col gap-5 bg-white rounded-2xl lg:p-8">
                     {
                         notifications?.map((notification) =>
@@ -45,7 +45,7 @@ export const NotificationsPage: React.FC = () => {
                     }
                 </div>
             </RenderIf>
-            <RenderIf condition={isFetching || fetchingCount}>
+            <RenderIf condition={(isFetching || fetchingCount) && notifications === undefined}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </motion.div>

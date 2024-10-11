@@ -36,7 +36,7 @@ export const NavItem: React.FC<NavItemProps> = ({ close, count, icon, name, to }
                     <Icon icon={icon} className={cn("size-5 transition-all duration-500 ease-out", !isActive && "group-hover:text-[#71839B]")} />
                     <span className={cn("flex-1 line-clamp-1", !isActive && "group-hover:text-[#324054]")}>{name}</span>
                     <RenderIf condition={!!count}>
-                        <div className='bg-warning-600 py-0.5 px-1.5 rounded-3xl text-white text-xs'>{count}</div>
+                        <div className='grid place-content-center bg-warning-600 py-0.5 px-2 rounded-full text-white text-xs'>{count}</div>
                     </RenderIf>
                 </div>
             )}
