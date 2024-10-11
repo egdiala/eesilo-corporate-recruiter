@@ -1,6 +1,7 @@
 import React, { Fragment, useMemo } from "react"
 import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
+import { format, isAfter, startOfToday } from "date-fns"
 import topStatus from "@/assets/top_status.svg"
 import { removeItem } from "@/utils/localStorage"
 import { Link, useNavigate } from "react-router-dom"
@@ -10,6 +11,7 @@ import companyAvatar from "@/assets/company_avatar.svg"
 import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
 import type { NotificationCount } from "@/types/notification"
+import { useGetEventCalendar } from "@/services/hooks/queries"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
 
 interface SidebarProps {
@@ -21,12 +23,24 @@ interface SidebarProps {
 
 const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCount }) => {
     const navigate = useNavigate()
+    let today = startOfToday()
+    const currentMonth = format(today, "MMM-yyyy")
+    const { data: fetchedEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
     
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
         removeItem(APP_USERDATA_STORAGE_KEY)
         navigate("/auth/login");
     }
+
+    const eventsCount = useMemo(() => {
+        const futureEvents = fetchedEvents?.filter((event) => isAfter(event?.event_schedule, today))
+        return futureEvents?.length
+    },[fetchedEvents, today])
+
+    const newAppRoutes = useMemo(() => {
+        return appRoutes.map((item) => item.name === "Calendar" ? ({ to: item.to, name: item.name, icon: item.icon, count: eventsCount }) : item)
+    },[eventsCount])
 
     const newOtherRoutes = useMemo(() => {
         return otherRoutes.map((item) => item.name === "Notifications" ? ({ to: item.to, name: item.name, icon: item.icon, count: notificationCount?.total }) : item)
@@ -37,7 +51,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
                 <img src={logoGreenWhite} className="w-full" alt="neesilo_green_logo" />
                 <div className="flex flex-1 flex-col gap-2 overflow-y-auto [&>[data-slot=section]+[data-slot=section]]:mt-6">
                     {
-                        appRoutes.map((route) => 
+                        newAppRoutes.map((route) => 
                             <NavItem key={route.name} close={close} {...route} />
                         )
                     }
