@@ -61,6 +61,8 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         setQuery("")
         setSelected(null)
     }
+
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.user_data?.avatar}`
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
             <div className="flex flex-col">
@@ -68,7 +70,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                 <div className="flex items-center px-8 justify-between -mt-9">
                     <div className="grid">
                         <div className="border-[3px] border-white rounded-full w-fit h-fit">
-                            <Avatar size="80" alt={talent?.user_data?.first_name} image={talent?.user_data?.avatar} />
+                            <Avatar size="80" alt={talent?.user_data?.first_name} image={talent?.user_data?.avatar ? imageUrl : talent?.user_data?.avatar} />
                         </div>
                         <div className="grid gap-[3px]">
                             <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.user_data?.first_name} {talent?.user_data?.last_name}</h1>

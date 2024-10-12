@@ -9,18 +9,27 @@ import { useGetNotifications } from "@/services/hooks/queries"
 import type { FetchedNotification, NotificationCount } from "@/types/notification"
 import { getPaginationParams } from "@/hooks/usePaginationParams"
 import { format, formatDistanceToNow } from "date-fns"
+import { useReadNotifications } from "@/services/hooks/mutations"
+import { cn } from "@/libs/cn"
 
 export const NotificationsPage: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const  { data: notifications, isFetching } = useGetNotifications<FetchedNotification[]>({ page: page.toString(), item_per_page: itemsPerPage.toString() })
-    const  { isFetching: fetchingCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { isFetching: fetchingCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { mutate } = useReadNotifications()
 
 
     useEffect(() => {
         getPaginationParams(location, setPage, () => {})
     }, [location, setPage])
+
+    useEffect(() => {
+        if (notifications?.some((item) => item?.status !== 1)) {
+            mutate()
+        }
+    },[notifications])
 
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-scroll">
@@ -28,7 +37,7 @@ export const NotificationsPage: React.FC = () => {
                 <div className="flex flex-col gap-5 bg-white rounded-2xl lg:p-8">
                     {
                         notifications?.map((notification) =>
-                            <div key={notification?.notification_id} className="flex items-center gap-3.5 p-4 flex-1 bg-gray-25 rounded-xl">
+                            <div key={notification?.notification_id} className={cn("flex items-center gap-3.5 p-4 flex-1 rounded-xl", notification.status === 1 ? "bg-white" : "bg-gray-25")}>
                                 <div className="grid place-content-center p-1.5 rounded-full bg-white border border-gray-200">
                                     <Icon icon="uil:bell" className="size-5 text-gray-600" />
                                 </div>

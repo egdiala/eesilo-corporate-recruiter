@@ -11,7 +11,7 @@ interface AvatarProps {
 export const Avatar: React.FC<AvatarProps> = ({ image, size, ...props }) => {
     return (
         <div style={{ width: `${size}px`, height: `${size}px` }} className={cn("rounded-full overflow-hidden")}>
-            <img src={image || blankImage} className="object-cover object-center" style={{ width: `${size}px`, height: `${size}px` }} {...props} />
+            <img src={`${image}` || blankImage} className="object-cover object-center" style={{ width: `${size}px`, height: `${size}px` }} {...props} />
         </div>
     )
 }

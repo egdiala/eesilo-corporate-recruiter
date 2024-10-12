@@ -10,6 +10,7 @@ export interface FetchedNotification {
     user_type: string;
     title: string;
     description: string;
+    status?: number;
     data: Record<string, any>;
     createdAt: Date | string;
     updatedAt: Date | string;

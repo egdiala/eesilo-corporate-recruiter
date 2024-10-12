@@ -10,13 +10,12 @@ import type { FetchedAccount } from "@/types/account"
 import companyAvatar from "@/assets/company_avatar.svg"
 import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
-import type { NotificationCount } from "@/types/notification"
 import { useGetEventCalendar } from "@/services/hooks/queries"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
 
 interface SidebarProps {
     admin: FetchedAccount;
-    notificationCount: NotificationCount;
+    notificationCount: number;
     showSidebar: boolean;
     close: () => void;
 }
@@ -43,8 +42,10 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
     },[eventsCount])
 
     const newOtherRoutes = useMemo(() => {
-        return otherRoutes.map((item) => item.name === "Notifications" ? ({ to: item.to, name: item.name, icon: item.icon, count: notificationCount?.total }) : item)
-    },[notificationCount?.total])
+        return otherRoutes.map((item) => item.name === "Notifications" ? ({ to: item.to, name: item.name, icon: item.icon, count: notificationCount }) : item)
+    }, [notificationCount])
+    
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${admin?.avatar}`
     return (
         <Fragment>
             <div className="grid gap-6">
@@ -71,7 +72,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
                 </div>
                 <Link to="/profile" className="flex items-center gap-2 p-3" onClick={close}>
                     <div className="size-10 relative">
-                        <img src={admin?.avatar ?? companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name} />
+                        <img src={admin?.avatar ? imageUrl : companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name} />
                         <RenderIf condition={admin?.status === 1}>
                             <img src={topStatus} className="absolute -top-0.5 -right-1.5" alt="top-status" />
                         </RenderIf>

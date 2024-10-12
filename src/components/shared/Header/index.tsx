@@ -4,11 +4,10 @@ import { Icon } from "@iconify/react"
 import { NavLink } from "react-router-dom"
 import { RenderIf } from "@/components/core"
 import { useRouteTitle } from "@/hooks/useRouteTitle"
-import type { NotificationCount } from "@/types/notification"
 
 interface HeaderProps {
     setShowSidebar: () => void;
-    notificationCount: NotificationCount;
+    notificationCount: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({ setShowSidebar, notificationCount }) => {
@@ -32,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ setShowSidebar, notificationCoun
                     <div className="group grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300">
                         <div className="relative">
                             <Icon icon="ri:notification-3-line" className={cn("size-5", isActive ? "text-primary-500" : "text-gray-500")} />
-                            <RenderIf condition={notificationCount?.total > 0}>
+                            <RenderIf condition={notificationCount > 0}>
                                 <span className="absolute top-0 right-0 bg-error-500 size-2 rounded border-2 border-white" />
                             </RenderIf>
                         </div>

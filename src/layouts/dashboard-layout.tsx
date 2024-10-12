@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from "react"
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Navigate } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
@@ -7,7 +7,7 @@ import { Header, Sidebar } from "@/components/shared"
 import { useGetAccount, useGetNotifications } from "@/services/hooks/queries"
 import { pageVariants } from "@/constants/animateVariants"
 import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
-import { NotificationCount } from "@/types/notification"
+import { FetchedNotification } from "@/types/notification"
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
     const [page] = useState(1)
@@ -16,7 +16,11 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
     const [showSidebar, setShowSidebar] = useState(false)
     
     const { data: account, isSuccess } = useGetAccount()
-    const { data: notificationCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: notifications } = useGetNotifications<FetchedNotification[]>({ page: page.toString(), item_per_page: itemsPerPage.toString() })
+
+    const notificationCount = useMemo(() => {
+        return notifications?.filter((item) => item?.status !== 1).length
+    },[notifications])
 
     useEffect(() => {
         if (isSuccess) {

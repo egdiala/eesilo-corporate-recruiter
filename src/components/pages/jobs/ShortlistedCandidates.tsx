@@ -33,6 +33,7 @@ export const ShortlistedCandidates: React.FC = () => {
       }))
     },[toggleModals.openShortlistCandidate])
 
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
     const columns = [
         {
             header: () => "Name",
@@ -41,7 +42,7 @@ export const ShortlistedCandidates: React.FC = () => {
                 const item = row?.original as FetchedShortlistedCandidate
                 return (
                     <div className="flex items-center gap-3">
-                        <Avatar size="40" image={item?.user_data?.avatar as string} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
+                        <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
                         <div className="whitespace-nowrap">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
                     </div>
                 )

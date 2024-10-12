@@ -20,11 +20,12 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, className, talent, .
         ]
     },[talent?.specialty_data?.specialty_main, talent?.specialty_data?.specialty_sub, talent?.specialty_data?.year_exp])
 
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
     return (
         <Component className={cn("border border-gray-200 bg-gray-25 rounded-xl overflow-hidden", className)} {...props}>
             <div className="grid gap-3.5">
                 <div className="flex items-center gap-3 bg-gray-800 py-2.5 px-4">
-                    <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image={talent?.avatar} />
+                    <Avatar size="40" alt={`${talent?.first_name}_${talent?.last_name}`} image={talent?.avatar ? imageUrl : talent?.avatar} />
                     <h1 className="font-medium text-sm text-white capitalize">{talent?.first_name} {talent?.last_name}</h1>
                 </div>
                 <div className="grid gap-2.5 px-4 pb-4">
