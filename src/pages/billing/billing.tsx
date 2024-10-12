@@ -35,11 +35,11 @@ export const BillingPage: React.FC = () => {
     
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="flex flex-col gap-0 view-page-container overflow-hidden">
-            <div className="flex-1 flex-col overflow-y-scroll view-page-container px:4 lg:px-8 pt-5 pb-10">
-                <div className="relative flex items-start gap-5 bg-white rounded-2xl p-4 lg:p-8">
-                    <div className="sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
+            <div className="flex-1 flex-col overflow-y-scroll view-page-container px-4 lg:px-8 pt-5 pb-10">
+                <div className="relative grid md:flex items-start gap-5 bg-white rounded-2xl p-4 lg:p-8">
+                    <div className="md:sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
                         <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Billing & subscription</div>
-                        <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
+                        <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll scrollbar-hide">
                         {
                             tabs.map((tab) =>
                                 <NavLink to={tab.href} key={tab.id}>

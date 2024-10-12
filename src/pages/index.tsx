@@ -32,8 +32,8 @@ export const DashboardPage: React.FC = () => {
     return (
         <Fragment>
             <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount && !fetchingTalents && !fetchingJobs}>
-                <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-8 pt-5 pb-10 view-page-container overflow-y-scroll">
-                    <div className="flex flex-col p-8 gap-6 bg-white rounded-2xl">
+                <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
+                    <div className="flex flex-col p-4 md:p-8 gap-6 bg-white rounded-2xl">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {
                                 cards.map((card) =>

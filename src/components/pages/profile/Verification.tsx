@@ -15,7 +15,7 @@ export const Verification: React.FC<VerificationProps> = () => {
                 <h2 className="flex-1 font-medium text-lg text-gray-900">Verification</h2>
             </div>
             <hr />
-            <div className="flex items-center justify-between py-3">
+            <div className="flex items-start md:items-center justify-between gap-3 py-3">
                 <span className="text-gray-500 text-sm">Employer Identification Number (EIN)</span>
                 <div className="flex items-center gap-2.5">
                     <span className="text-gray-900 text-base font-medium">09699854</span>

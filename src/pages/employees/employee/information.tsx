@@ -60,6 +60,10 @@ export const EmployeeInformationPage: React.FC = () => {
             refetch()
         }
     },[refetch, talent])
+
+    const imageUrl = useMemo(() => {
+        return `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
+    },[talent?.avatar])
     return (
         <Fragment>
             <RenderIf condition={!isFetching}>
@@ -69,7 +73,7 @@ export const EmployeeInformationPage: React.FC = () => {
                         <div className="flex items-center px-8 justify-between -mt-9">
                             <div className="grid">
                                 <div className="border-[3px] border-white rounded-full w-fit h-fit">
-                                    <Avatar size="80" alt="Burton" image="https://images.pexels.com/photos/3764571/pexels-photo-3764571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+                                    <Avatar size="80" alt="Burton" image={talent?.avatar ? imageUrl : talent?.avatar as string} />
                                 </div>
                                 <div className="grid gap-[3px]">
                                     <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>

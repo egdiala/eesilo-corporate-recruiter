@@ -20,7 +20,7 @@ export const ReportsPage: React.FC = () => {
             <RenderIf condition={!fetchingYearlyCount}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
                     <div className="flex flex-col gap-0 bg-white rounded-2xl">
-                        <div className="flex items-center justify-between p-8">
+                        <div className="flex items-center justify-between p-4 md:p-8">
                             <h1 className="font-semibold text-base text-gray-900">Analytics & Reports</h1>
                             <Button theme="primary" variant="filled" size="40">
                                 <Icon icon="ri:file-list-2-line" className="size-5" />
@@ -46,7 +46,7 @@ export const ReportsPage: React.FC = () => {
                             }
                         </div>
                         <PerformanceStats yearData={yearlyDataCount ?? []} />
-                        <div className="grid grid-cols-2 gap-6 p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-6">
                             <JobsPerformance />
                             <JobsPerformance />
                         </div>

@@ -51,7 +51,7 @@ export const BillingsMethodPage: React.FC = () => {
                             <Label className="flex-1 flex-col gap-1">
                                 <div className="flex-1 flex gap-3">
                                     <span className="font-medium text-sm text-gray-900">5334 **** **** 6272</span>
-                                    <div className="hidden group-data-[checked]:flex items-center uppercase bg-primary-100 py-0.5 px-2 text-primary-800 font-medium text-xs/3 rounded-full">Selected</div>
+                                    <div className="hidden group-data-[checked]:md:flex items-center uppercase bg-primary-100 py-0.5 px-2 text-primary-800 font-medium text-xs/3 rounded-full">Selected</div>
                                 </div>
                                 <p className="text-xs text-gray-500">Expires 09/26</p>
                             </Label>

@@ -10,7 +10,7 @@ export interface UpdateAccountParams {
         status: number;
     };
     twofactor?: {
-        is_enabled?: "1" | "2";
+        is_enabled?: "1" | "0";
         channel?: "email" | "phone";
     };
     address_data?: {

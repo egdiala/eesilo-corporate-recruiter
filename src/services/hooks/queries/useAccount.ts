@@ -1,11 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { type UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 import { getAccount, getEventCalendar, getStaffAdmin, getStaffAdmins } from "@/services/apis/account";
 import { GET_ACCOUNT, GET_EVENT_CALENDAR, GET_STAFF_ADMIN, GET_STAFF_ADMINS } from "@/constants/queryKeys";
 import type { FetchedAccount, FetchedCalendarEvent, GetCalendarEventQuery } from "@/types/account";
 import { FetchedStaffAdmin } from "@/types/settings";
 
-export const useGetAccount = () => {
+export const useGetAccount = (config?: Partial<UndefinedInitialDataOptions<any, Error, FetchedAccount, string[]>>) => {
     return useQuery({
+        ...config,
         queryKey: [GET_ACCOUNT],
         queryFn: getAccount,
         refetchOnWindowFocus: false,

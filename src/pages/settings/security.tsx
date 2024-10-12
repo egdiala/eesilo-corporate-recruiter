@@ -1,13 +1,14 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
 import { loginSchema } from "@/validations/auth"
+import { useGetAccount } from "@/services/hooks/queries"
 import { tabVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { updatePasswordSchema } from "@/validations/settings"
-import { useUpdateEmail, useUpdatePassword } from "@/services/hooks/mutations"
+import { useUpdateAccount, useUpdateEmail, useUpdatePassword } from "@/services/hooks/mutations"
 import { Button, ContentDivider, InputField, RenderIf, Toggle } from "@/components/core"
 import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
 
@@ -18,6 +19,9 @@ const channels = [
 
 export const SettingsSecurityPage: React.FC = () => {
     const navigate = useNavigate();
+    const [message, setMessage] = useState("")
+    const { mutate: updateAccount } = useUpdateAccount(message, () => setMessage(""))
+    const { data, refetch } = useGetAccount({ enabled: false })
     const { mutate: updateEmail, isPending: isUpdatingEmail } = useUpdateEmail(() => {
         setItem("change-email", "change-email")
         navigate("/settings/change-email")
@@ -69,6 +73,34 @@ export const SettingsSecurityPage: React.FC = () => {
         navigate("/settings/change-password")
     })
 
+    const toggle2fa = () => {
+        setMessage(`2Factor Authentication ${data?.twofactor?.is_enabled === 1 ? "disabled" : "enabled"} successfully!`)
+        updateAccount(
+            {
+                twofactor: {
+                    is_enabled: data?.twofactor?.is_enabled === 1 ? "0" : "1",
+                }
+            }
+        )
+    }
+
+    const toggle2faChannel = () => {
+        updateAccount(
+            {
+                twofactor: {
+                    is_enabled: "1",
+                    channel: data?.twofactor?.channel === "email" ? "phone" : "email"
+                }
+            }
+        )
+    }
+
+    useEffect(() => {
+        if (data === undefined) {
+            refetch()
+        }
+    },[])
+
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6 lg:pb-28">
             <div className="grid gap-2">
@@ -82,18 +114,18 @@ export const SettingsSecurityPage: React.FC = () => {
                         <h2 className="font-medium text-sm text-gray-900">Enable 2Factor Authentication</h2>
                         <p className="text-sm text-gray-500">Agree to receive OTP Authentication with your registered email address and phone number securely</p>
                     </div>
-                    <Toggle />
+                    <Toggle checked={data?.twofactor?.is_enabled === 1} onChange={() => toggle2fa()} />
                 </div>
                 <div className="grid gap-5">
                     <h2 className="font-medium text-sm text-gray-900">Choose OTP Channel</h2>
                     <div className="flex flex-col gap-6">
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">Email</span>
-                            <Toggle />
+                            <Toggle checked={data?.twofactor?.channel === "email"} onChange={() => toggle2faChannel()} />
                         </div>
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">Phone Number</span>
-                            <Toggle />
+                            <Toggle checked={data?.twofactor?.channel === "phone"} onChange={() => toggle2faChannel()} />
                         </div>
                     </div>
                 </div>

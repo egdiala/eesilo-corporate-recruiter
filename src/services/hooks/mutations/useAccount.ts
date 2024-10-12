@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
-import { confirmEmailUpdate, confirmPasswordUpdate, createStaffAdmin, deleteStaffAdmin, updateAccount, updateEmail, updatePassword, updateStaffAdmin, uploadLogo } from "@/services/apis/account";
 import { GET_ACCOUNT, GET_STAFF_ADMINS } from "@/constants/queryKeys";
+import { confirmEmailUpdate, confirmPasswordUpdate, createStaffAdmin, deleteStaffAdmin, updateAccount, updateEmail, updatePassword, updateStaffAdmin, uploadLogo } from "@/services/apis/account";
 
 // eslint-disable-next-line no-unused-vars
 export const useUpdateAccount = (msg?: string, fn?: () => void) => {

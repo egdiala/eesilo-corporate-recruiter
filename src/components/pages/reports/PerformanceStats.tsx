@@ -112,7 +112,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                 </Menu>
             </div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
-                <div className="flex flex-col py-5 pr-5 pl-10 gap-5">
+                <div className="flex flex-col py-4 md:py-5 pr-4 md:pr-5 pl-4 md:pl-10 gap-5">
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
@@ -134,7 +134,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                     </div>
                 </div>
                 <div className="flex-1">
-                    <ChartContainer config={chartConfig} className="min-h-auto max-h-96 w-full ml-0 pl-0">
+                    <ChartContainer config={chartConfig} className="grid min-h-auto max-h-96 w-full ml-0 pl-0">
                         <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ right: 40 }} barSize={4} barGap={8}>
                             <CartesianGrid vertical={false} />
                             <XAxis

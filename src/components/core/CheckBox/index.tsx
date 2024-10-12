@@ -60,13 +60,13 @@ interface CheckboxProps {
  */
 export const CheckBox: React.FC<CheckboxProps> = ({ as, disabled, passive = false, label, ...props }) => {
     return (
-        <Field as={as} disabled={disabled} className="flex items-center gap-2">
+        <Field as={as} disabled={disabled} className="flex items-start lg:items-center gap-2">
             <Checkbox as={as} disabled={disabled} {...props} className="p-0.5 group grid transition duration-500 ease-out place-content-center size-4 rounded ring-1 ring-gray-200 data-[focus]:ring-offset-2 data-[checked]:ring-primary-500 data-[checked]:border-primary-500 data-[checked]:bg-primary-500 data-[checked]:hover:bg-primary-700 data-[checked]:hover:border-primary-700 data-[indeterminate]:ring-primary-500 data-[indeterminate]:border-primary-500 data-[indeterminate]:bg-primary-500 data-[focus]:bg-primary-800 data-[focus]:border-primary-800 data-[disabled]:shadow-md shadow-gray-300 data-[disabled]:bg-gray-200 data-[disabled]:border-gray-300 border border-gray-200 outline-none outline-0 ring-inset" style={{ boxShadow: "0px 2px 2px 0px rgba(15, 15, 16, 0.08) inset"}}>
                 <Icon icon="ri:check-line" className="hidden size-3 text-white group-data-[checked]:block" />
                 <Icon icon="ri:subtract-line" className="hidden size-3 text-white group-data-[indeterminate]:block" />
             </Checkbox>
             <RenderIf condition={!!label}>
-                <Label passive={passive}>{label}</Label>
+                <Label passive={passive} className="-mt-1 lg:mt-0 flex-1">{label}</Label>
             </RenderIf>
         </Field>
     )

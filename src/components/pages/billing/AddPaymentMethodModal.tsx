@@ -14,8 +14,8 @@ export const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({ is
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={onClose}>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                 <div className="flex min-h-full items-end md:items-center justify-center p-4">
-                    <DialogPanel transition className="flex flex-col gap-6 w-full max-w-[49.75rem] p-8 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
-                        <div className="flex flex-col gap-1 p-4 justify-between">
+                    <DialogPanel transition className="flex flex-col gap-6 w-full max-w-[49.75rem] p-4 lg:p-8 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                        <div className="flex flex-col gap-1 lg:p-4 justify-between">
                             <div className="flex items-center">
                                 <DialogTitle as="h1" className="flex-1 text-lg font-medium text-gray-900">
                                     Upcoming Interviews
@@ -29,7 +29,7 @@ export const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({ is
                         <div className="flex flex-col p-4 gap-4 border border-gray-200 rounded-xl">
                             <h2 className="font-medium text-base text-gray-900">Card Details</h2>
                             <ContentDivider />
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <InputField label="Card Number" placeholder="0000 0000 0000 0000" iconRight="ri:bank-card-line" type="text" required />
                                 <InputField label="Name on Card" placeholder="Name on Card" type="text" required />
                                 <InputField label="Expiry Date" placeholder="DD / MM / YYYY" type="text" required />

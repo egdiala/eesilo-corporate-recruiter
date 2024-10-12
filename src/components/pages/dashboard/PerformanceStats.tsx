@@ -82,7 +82,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
 
     return (
         <div className="flex flex-col">
-            <div className="flex items-center justify-between p-5">
+            <div className="flex items-center justify-between md:p-5">
                 <h3 className="font-semibold text-base text-gray-00">Performance</h3>
                 <Menu>
                     <MenuButton className="inline-flex items-center gap-2 rounded-md p-0 focus:outline-none data-[focus]:outline-0">
@@ -110,7 +110,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
             </div>
             <div className="flex items-center justify-end uppercase font-medium text-xs text-primary-500">Generate Report</div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
-                <div className="flex flex-col p-5 gap-5">
+                <div className="flex flex-col md:p-5 gap-5">
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
@@ -132,7 +132,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                     </div>
                 </div>
                 <div className="flex-1">
-                    <ChartContainer config={chartConfig} className="min-h-auto max-h-96 w-full ml-0 pl-0">
+                    <ChartContainer config={chartConfig} className="min-h-auto max-h-96 w-full -ml-5 md:ml-0 pl-0">
                         <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ left: -20 }} barSize={4} barGap={8}>
                             <CartesianGrid vertical={false} />
                             <XAxis
