@@ -209,7 +209,7 @@ export const CreateJobPage: React.FC = () => {
                                         required
                                     />
                                 </div>
-                                <div className="md:col-span-1 col-span-2">
+                                <div className="md:col-span-1 lg:col-span-2 col-span-2">
                                     <Field className="neesilo-input--outer">
                                         <div className="text-sm tracking-custom flex gap-px items-center">
                                             <Label passive className="neesilo-input--label">
