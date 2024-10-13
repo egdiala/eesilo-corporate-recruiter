@@ -1,7 +1,7 @@
 export type GetNotificationQuery = {
     page?: string;
     item_per_page?: string;
-    component?: "count";
+    component?: "count" | "count-unread";
 }
 
 export interface FetchedNotification {
