@@ -22,8 +22,8 @@ interface SidebarProps {
 
 const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCount }) => {
     let today = startOfToday()
-    const currentMonth = format(today, "MMM-yyyy")
-    const { data: fetchedEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+    const currentMonth = format(today, "yyyy-MM")
+    const { data: fetchedEvents } = useGetEventCalendar({ year_month: currentMonth })
     
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
@@ -32,8 +32,12 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
     }
 
     const eventsCount = useMemo(() => {
-        const futureEvents = fetchedEvents?.filter((event) => isAfter(event?.event_schedule, today))
-        return futureEvents?.length
+        if (fetchedEvents !== undefined) {
+            const futureEvents = fetchedEvents?.filter((event) => isAfter(event?.event_schedule, today))
+            return futureEvents?.length
+        } else {
+            return 0
+        }
     },[fetchedEvents, today])
 
     const newAppRoutes = useMemo(() => {

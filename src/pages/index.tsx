@@ -39,7 +39,7 @@ export const DashboardPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {
                                 cards.map((card) =>
-                                    <div className={cn(card.background, "rounded-xl p-5 flex flex-col gap-9")}>
+                                    <div key={card?.label} className={cn(card.background, "rounded-xl p-5 flex flex-col gap-9")}>
                                         <div className="flex items-center gap-3.5">
                                             <Icon icon={card.icon} className={card.iconClass} />
                                             <span className="font-medium text-base text-gray-600">{card.label}</span>
