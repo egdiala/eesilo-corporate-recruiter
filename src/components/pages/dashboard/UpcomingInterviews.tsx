@@ -31,7 +31,7 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ intervie
                                 <Avatar size="40" alt="user" image={interview?.user_data?.avatar ? `${imageUrl}${interview?.user_data?.avatar}` : interview?.user_data?.avatar} />
                                 <div className="grid gap-1">
                                     <h1 className="font-medium text-sm text-gray-900">Interview Call with {capitalizeWords(interview?.user_data?.first_name)}</h1>
-                                    <p className="text-sm text-gray-600">Zoom Call</p>
+                                    <p className="text-sm text-gray-600">Online Call</p>
                                 </div>
                             </div>
                             <span className="text-sm text-gray-600 capitalize">{formatDistanceToNow(interview?.interview_data?.i_schedule, { addSuffix: true })}, {format(interview?.interview_data?.i_schedule, "p")}</span>

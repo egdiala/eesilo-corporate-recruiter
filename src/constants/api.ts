@@ -1,5 +1,6 @@
 // Auth
 export const LOGIN_API = "business/auths/login"
+export const TWO_FA_LOGIN_API = "business/auths/twofactor-login"
 export const REGISTER_API = "business/auths/registration-link"
 export const CONFIRM_REGISTER_LINK_API = "business/auths/confirm-link"
 export const SET_PASSWORD_LINK_API = "business/auths/set-password"

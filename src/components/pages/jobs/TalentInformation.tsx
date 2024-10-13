@@ -86,10 +86,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         { ((talent?.invite_status === 1) && (talent?.interview_status === 0)) && "Invite Accepted" }
                         { talent?.invite_status === 2 && "Invite Declined" }
                         { talent?.invite_status === 3 && "Invite Sent" }
-                        { ((talent?.invite_status === 1) && (talent?.interview_status === 1)) && "Interview Stage" }
+                        { ((talent?.invite_status === 1) && (talent?.interview_status === 1) && (talent?.offer_status === 0)) && "Interview Stage" }
                         { talent?.offer_status === 1 && "Hired" }
                         { talent?.offer_status === 2 && "Not Hired" }
-                        { talent?.offer_status === 3 && "Offer Sent" }
+                        { (talent?.offer_status === 3) && "Offer Sent" }
                     </Button>
                 </div>
             </div>

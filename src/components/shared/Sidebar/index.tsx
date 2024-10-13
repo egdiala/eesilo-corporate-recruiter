@@ -1,13 +1,13 @@
 import React, { Fragment, useMemo } from "react"
 import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
-import { format, isAfter, startOfToday } from "date-fns"
+import { Link } from "react-router-dom"
 import topStatus from "@/assets/top_status.svg"
 import { removeItem } from "@/utils/localStorage"
-import { Link, useNavigate } from "react-router-dom"
 import { NavItem, RenderIf } from "@/components/core"
 import type { FetchedAccount } from "@/types/account"
 import companyAvatar from "@/assets/company_avatar.svg"
+import { format, isAfter, startOfToday } from "date-fns"
 import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
 import { useGetEventCalendar } from "@/services/hooks/queries"
@@ -21,7 +21,6 @@ interface SidebarProps {
 }
 
 const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCount }) => {
-    const navigate = useNavigate()
     let today = startOfToday()
     const currentMonth = format(today, "MMM-yyyy")
     const { data: fetchedEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
@@ -29,7 +28,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
         removeItem(APP_USERDATA_STORAGE_KEY)
-        navigate("/auth/login");
+        location.reload()
     }
 
     const eventsCount = useMemo(() => {

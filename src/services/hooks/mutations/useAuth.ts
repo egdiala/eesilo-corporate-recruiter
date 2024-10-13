@@ -3,8 +3,9 @@ import { setItem } from "@/utils/localStorage";
 import { axiosInit } from "@/services/axiosInit";
 import { errorToast, successToast } from "@/utils/createToast";
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
-import { confirmRegistrationLink, forgotPassword, login, register, setPassword } from "@/services/apis/auth";
-import { User } from "@/types/auth";
+import { confirmRegistrationLink, forgotPassword, login, register, setPassword, twoFaLogin } from "@/services/apis/auth";
+import type { TwoFaLogin, User } from "@/types/auth";
+import { axiosUserInstance } from "@/services/axiosInstance";
 
 
 function onLoginSuccess(responseData: any) {
@@ -15,9 +16,30 @@ function onLoginSuccess(responseData: any) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export const useLogin = (fn?: (v: User) => void) => {
+export const useLogin = (fn?: (v: User | TwoFaLogin) => void) => {
   return useMutation({
     mutationFn: login,
+    onSuccess: (response: any) => {
+      axiosUserInstance.defaults.withCredentials = true;
+      if (response?.data) {
+        onLoginSuccess(response?.data)
+        successToast({ param: null, msg: "Logged in successfully" })
+        fn?.(response?.data);
+      }
+      if (response?.action) {
+        fn?.(response);
+      }
+    },
+    onError: (err: any) => {
+      errorToast({ param: err, variant: "light" })
+    },
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+export const use2FaLogin = (fn?: (v: User) => void) => {
+  return useMutation({
+    mutationFn: twoFaLogin,
     onSuccess: (response: any) => {
       onLoginSuccess(response?.data)
       successToast({ param: null, msg: "Logged in successfully" })

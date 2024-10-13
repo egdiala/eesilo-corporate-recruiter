@@ -3,6 +3,11 @@ export type LoginType = {
     password: string;
 }
 
+export type TwoFaLoginType = {
+    email_otp?: string;
+    phone_otp?: string;
+}
+
 export interface User {
     phone_prefix: string;
     phonenumber_verified: boolean;
@@ -25,4 +30,10 @@ export interface User {
     createdAt: Date | string;
     updatedAt: Date | string;
     user_id: string;
+}
+
+export interface TwoFaLogin {
+    action: string;
+    channel: string[];
+    code: string;
 }

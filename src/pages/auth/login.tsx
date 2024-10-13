@@ -7,17 +7,29 @@ import { routeVariants } from "@/constants/animateVariants"
 import { Button, InputField, OtpInput } from "@/components/core"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { loginSchema } from "@/validations/auth"
-import { useLogin } from "@/services/hooks/mutations"
+import { use2FaLogin, useLogin } from "@/services/hooks/mutations"
+import type { TwoFaLogin, User } from "@/types/auth"
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate()
     const [step, setStep] = useState("login")
+    const [channel, setChannel] = useState("login")
+    const [otpError, setOtpError] = useState("")
     const newPass = getItem<string>("newPass")
     const [otp, setOtp] = useState<string>("")
     const [countdown, setCountdown] = useState<number>(30)
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
-    const { mutate: login, isPending } = useLogin((data) => {
-        if (data?.twofactor.is_enabled === 0) {
+    const { mutate: twoFaLogin, isPending: isAuthenticating, error, isError } = use2FaLogin((data) => handleSuccessfulLogin(data as User))
+    const { mutateAsync: login, isPending } = useLogin((data) => {
+        handleSuccessfulLogin(data as User)
+        if ((data as TwoFaLogin)?.action) {
+            setChannel((data as TwoFaLogin)?.channel[0])
+            setStep("2fa")
+        }
+    })
+
+    const handleSuccessfulLogin = (data: User) => {
+        if (data?.twofactor?.is_enabled === 0) {
             navigate("/")
         }
         if (data?.onboarding_stage) {
@@ -27,7 +39,7 @@ export const LoginPage: React.FC = () => {
                 proceed()
             }
         }
-    })
+    }
 
     useEffect(() => {
         let interval: any;
@@ -61,8 +73,10 @@ export const LoginPage: React.FC = () => {
     })
 
     const handleResendClick = () => {
-        setIsButtonDisabled(true);
-        setCountdown(30); // Reset the timer
+        login(loginForm.values).then(() => {
+            setIsButtonDisabled(true);
+            setCountdown(30); // Reset the timer
+        })
     };
 
     const formatCountdown = (countdown: number) => {
@@ -70,10 +84,32 @@ export const LoginPage: React.FC = () => {
         return `${seconds}s`;
     };
 
+    useEffect(() => {
+        if (isError) {
+            setOtpError(error?.response?.data?.msg)
+            setOtp("")
+        }
+    },[isError])
+
+    useEffect(() => {
+        if (otp.length > 0) {
+            setOtpError("")
+        }
+    },[otp.length])
+
     const proceed = () => {
         removeItem("newPass")
         setCountdown(30)
         setStep("2fa")
+    }
+
+    const handle2Fa = () => {
+        if (channel === "email") {
+            twoFaLogin({ email_otp: otp })
+        } else {
+            twoFaLogin({ phone_otp: otp })
+        }
+        
     }
 
     return (
@@ -114,12 +150,12 @@ export const LoginPage: React.FC = () => {
                             <p className="font-medium text-base text-gray-500 text-center">Please input the OPT code that was sent to your email address</p>
                         </div>
                         <div className="grid gap-4 w-full">
-                            <OtpInput value={otp} onChange={(v: any) => setOtp(v)} />
-                            <Button type="button" theme="neutral" variant="ghost" size="40" disabled={isButtonDisabled} onClick={handleResendClick} block>
+                            <OtpInput value={otp} onChange={(v: any) => setOtp(v)} error={otpError} />
+                            <Button type="button" theme="neutral" variant="ghost" size="40" disabled={isAuthenticating || isPending || isButtonDisabled} loading={isPending} onClick={handleResendClick} block>
                                 <span className="text-gray-500">Resend { isButtonDisabled && `code (${formatCountdown(countdown)})` }</span>
                             </Button>
                         </div>
-                        <Button type="button" theme="primary" variant="filled" size="40" block>Continue</Button>
+                        <Button type="button" theme="primary" variant="filled" size="40" disabled={isAuthenticating || (otp.length < 4)} loading={isAuthenticating} onClick={() => handle2Fa()} block>Continue</Button>
                     </motion.div>
                     )
                 }

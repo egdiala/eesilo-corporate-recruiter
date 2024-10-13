@@ -1,9 +1,14 @@
-import type { LoginType } from "@/types/auth";
+import type { LoginType, TwoFaLoginType } from "@/types/auth";
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { CONFIRM_REGISTER_LINK_API, FORGOT_PASSWORD_API, LOGIN_API, REGISTER_API, SET_PASSWORD_LINK_API } from "@/constants/api";
+import { CONFIRM_REGISTER_LINK_API, FORGOT_PASSWORD_API, LOGIN_API, REGISTER_API, SET_PASSWORD_LINK_API, TWO_FA_LOGIN_API } from "@/constants/api";
 
 export const login = async (data: LoginType) => {
   const res = await axiosUserInstance.post(LOGIN_API, data);
+  return res.data;
+};
+
+export const twoFaLogin = async (data: TwoFaLoginType) => {
+  const res = await axiosUserInstance.post(TWO_FA_LOGIN_API, data);
   return res.data;
 };
 
