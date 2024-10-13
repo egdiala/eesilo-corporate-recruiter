@@ -6,6 +6,7 @@ export const axiosUserInstance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true
 });
 
 export const axiosJobInstance: AxiosInstance = axios.create({
