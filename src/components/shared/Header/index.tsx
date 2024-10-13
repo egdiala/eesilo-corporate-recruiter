@@ -21,14 +21,18 @@ export const Header: React.FC<HeaderProps> = ({ setShowSidebar, notificationCoun
                 </div>
             </button>
             <div className="flex-1 font-semibold text-lg md:text-xl line-clamp-1 text-gray-900">{routeTitle}</div>
-            <button type="button" className="group grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300">
-                <div className="relative">
-                    <Icon icon="ri:search-2-line" className="size-5 text-gray-500 group-focus:text-primary-500" />
-                </div>
-            </button>
+            <NavLink to="/talent">
+                {({ isActive }) => (
+                    <div className={cn("group grid place-content-center size-10 rounded-lg transition ease-out duration-300", isActive ? "bg-gray-100" : "bg-white")}>
+                        <div className="relative">
+                            <Icon icon="ri:search-2-line" className={cn("size-5", isActive ? "text-primary-500" : "text-gray-500")} />
+                        </div>
+                    </div>
+                )}
+            </NavLink>
             <NavLink to="/notifications">
                 {({ isActive }) => (
-                    <div className="group grid place-content-center size-10 rounded-lg hover:bg-gray-100 transition ease-out duration-300">
+                    <div className={cn("group grid place-content-center size-10 rounded-lg transition ease-out duration-300", isActive ? "bg-gray-100" : "bg-white")}>
                         <div className="relative">
                             <Icon icon="ri:notification-3-line" className={cn("size-5", isActive ? "text-primary-500" : "text-gray-500")} />
                             <RenderIf condition={notificationCount > 0}>

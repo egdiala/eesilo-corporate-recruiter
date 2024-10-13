@@ -119,14 +119,20 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                 text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : "You have made a job offer. Click here to view. ",
                 title: talent?.offer_status === 0 ? "Make Job Offer" : "Offer Made",
                 content: <Fragment>
-                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule as string | Date) && talent?.offer_status === 0}>
-                            <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleJobOffer}>Make Job Offer</Button>
-                        </RenderIf>
                         <RenderIf condition={talent?.offer_status === 3}>
                             <div className="text-xs font-medium bg-blue-25 text-blue-500 px-2 flex rounded-full w-fit">Offer sent, wait for response</div>
                         </RenderIf>
+                        <RenderIf condition={talent?.offer_status === 1}>
+                            <div className="text-xs font-medium bg-success-25 text-success-600 px-2 flex rounded-full w-fit">Your offer has been accepted</div>
+                        </RenderIf>
+                        <RenderIf condition={talent?.offer_status === 2}>
+                            <div className="text-xs font-medium bg-error-50 text-error-700 px-2 flex rounded-full w-fit">Your offer has been rejected</div>
+                        </RenderIf>
+                        <RenderIf condition={isPast(talent?.interview_data?.i_schedule as string | Date) && ((talent?.offer_status === 0) || (talent?.offer_status === 2))}>
+                            <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleJobOffer}>Make {talent?.offer_status === 2 ? "Another" : "Job"} Offer</Button>
+                        </RenderIf>
                 </Fragment>,
-                done: talent?.offer_status === 3
+                done: talent?.offer_status !== 0
             },
             {
                 id: 4,
