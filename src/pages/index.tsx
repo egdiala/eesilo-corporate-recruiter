@@ -10,9 +10,10 @@ import { TalentCard } from "@/components/pages/talent";
 import type { FetchedTalent } from "@/types/applicants";
 import { Loader } from "@/components/core/Button/Loader";
 import { pageVariants } from "@/constants/animateVariants";
-import { useGetDashboardStats, useGetJobs, useGetTalents } from "@/services/hooks/queries";
+import { useGetDashboardStats, useGetJobs, useGetNotifications, useGetTalents } from "@/services/hooks/queries";
 import type { InterviewDataCountType, JobDataCountType, JobYearlyCountType } from "@/types/dashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
+import type { FetchedNotification } from "@/types/notification";
 
 export const DashboardPage: React.FC = () => {
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
@@ -20,6 +21,7 @@ export const DashboardPage: React.FC = () => {
     const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count" })
     const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
+    const { data: notifications, isFetching: fetchingNotifications } = useGetNotifications<FetchedNotification[]>({ status: "0" })
     const cards = useMemo(() => {
         return [
             { icon: "ri:briefcase-4-line", iconClass: "text-warning-500 size-8", background: "bg-warning-25", label: "Job Posts", value: dataCount?.total_job },
@@ -31,7 +33,7 @@ export const DashboardPage: React.FC = () => {
 
     return (
         <Fragment>
-            <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount && !fetchingTalents && !fetchingJobs}>
+            <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount && !fetchingTalents && !fetchingJobs && !fetchingNotifications}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
                     <div className="flex flex-col p-4 md:p-8 gap-6 bg-white rounded-2xl">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -77,12 +79,12 @@ export const DashboardPage: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                             <UpcomingInterviews interviews={interviewCount!} />
-                            <RecentJobUpdates />
+                            <RecentJobUpdates notifications={notifications!} />
                         </div>
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={fetchingDataCount || fetchingInterviewCount || fetchingYearlyCount || fetchingTalents || fetchingJobs}>
+            <RenderIf condition={fetchingDataCount || fetchingInterviewCount || fetchingYearlyCount || fetchingTalents || fetchingJobs || fetchingNotifications}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

@@ -1,6 +1,7 @@
 export type GetNotificationQuery = {
     page?: string;
     item_per_page?: string;
+    status?: "0" | "1";
     component?: "count" | "count-unread";
 }
 
