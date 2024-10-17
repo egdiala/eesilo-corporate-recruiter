@@ -32,7 +32,7 @@ const chartConfig = {
   },
   rejected: {
     label: "Rejected",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-6))",
   },
   hired: {
     label: "Hired",
@@ -125,7 +125,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                         </div>
                         <div className="flex flex-col gap-3">
                             <span className="font-medium text-sm text-[#475569]">Total Rejected</span>
-                            <h4 className="font-semibold text-3xl text-success-500">{totalSums?.total_rejected}</h4>
+                            <h4 className="font-semibold text-3xl text-[#EF4444]">{totalSums?.total_rejected}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
                             <span className="font-medium text-sm text-[#475569]">Total Hired</span>

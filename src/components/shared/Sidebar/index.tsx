@@ -12,6 +12,7 @@ import logoGreenWhite from "@/assets/logo_green_white.svg"
 import { appRoutes, otherRoutes } from "@/constants/routes"
 import { useGetEventCalendar } from "@/services/hooks/queries"
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
+import { useLogout } from "@/services/hooks/mutations"
 
 interface SidebarProps {
     admin: FetchedAccount;
@@ -24,6 +25,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
     let today = startOfToday()
     const currentMonth = format(today, "yyyy-MM")
     const { data: fetchedEvents } = useGetEventCalendar({ year_month: currentMonth })
+    const { mutate, isPending } = useLogout(() => logOut())
     
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
@@ -68,7 +70,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
                             <NavItem key={route.name} close={close} {...route} />
                         )
                     }
-                    <button type="button" className="flex items-center p-3 gap-4 text-warning-400" onClick={() => logOut()}>
+                    <button type="button" className="flex items-center p-3 gap-4 text-warning-400" disabled={isPending} onClick={() => mutate()}>
                         <Icon icon="uil:sign-out-alt" className="size-5" />
                         <span className="font-medium text-base">Logout</span>
                     </button>

@@ -3,7 +3,7 @@ import { setItem } from "@/utils/localStorage";
 import { axiosInit } from "@/services/axiosInit";
 import { errorToast, successToast } from "@/utils/createToast";
 import { APP_TOKEN_STORAGE_KEY, APP_USERDATA_STORAGE_KEY } from "@/constants/utils";
-import { confirmRegistrationLink, forgotPassword, login, register, setPassword, twoFaLogin } from "@/services/apis/auth";
+import { confirmRegistrationLink, forgotPassword, login, logout, register, setPassword, twoFaLogin } from "@/services/apis/auth";
 import type { TwoFaLogin, User } from "@/types/auth";
 import { axiosUserInstance } from "@/services/axiosInstance";
 
@@ -101,6 +101,20 @@ export const useForgotPassword = (fn?: (v: string) => void) => {
     },
     onError: (err: any) => {
         errorToast({ param: err, variant: "light" })
+    },
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+export const useLogout = (fn?: () => void) => {
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+        successToast({ param: null, msg: "Logged out successfully" })
+        fn?.();
+    },
+    onError: (err: any) => {
+      errorToast({ param: err, variant: "light" })
     },
   });
 };
