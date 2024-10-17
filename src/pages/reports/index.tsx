@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { Button, RenderIf } from "@/components/core"
@@ -9,7 +9,8 @@ import { JobsPerformance, PerformanceStats } from "@/components/pages/reports"
 import { useGetDashboardStats } from "@/services/hooks/queries"
 
 export const ReportsPage: React.FC = () => {
-    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count" })
+    const [performanceFilters] = useState({ year: new Date().getFullYear().toString() })
+    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count", ...performanceFilters })
     const stats = [
         { label: "Jobs Posted", value: "854", percentage: "24 %" },
         { label: "Invitations", value: "1,278", percentage: "24 %" },
