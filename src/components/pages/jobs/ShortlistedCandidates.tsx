@@ -43,7 +43,7 @@ export const ShortlistedCandidates: React.FC = () => {
                 return (
                     <div className="flex items-center gap-3">
                         <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
-                        <div className="whitespace-nowrap">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
+                        <div className="whitespace-nowrap capitalize">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
                     </div>
                 )
             }
@@ -106,16 +106,28 @@ export const ShortlistedCandidates: React.FC = () => {
                 return (
                     <Fragment>
                         <RenderIf condition={item?.invite_status === 0}>
-                            <div className="font-medium text-xs text-warning-600">Shortlisted</div>
+                            <div className="whitespace-nowrap font-medium text-xs text-warning-600">Shortlisted</div>
                         </RenderIf>
-                        <RenderIf condition={item?.invite_status === 1}>
-                            <div className="font-medium text-xs text-blue-500">Accepted</div>
+                        <RenderIf condition={(item?.invite_status === 1) && (item?.interview_status === 0)}>
+                            <div className="whitespace-nowrap font-medium text-xs text-blue-500">Accepted</div>
+                        </RenderIf>
+                        <RenderIf condition={(item?.invite_status === 1) && (item?.interview_status === 1) && (item?.offer_status === 0)}>
+                            <div className="whitespace-nowrap font-medium text-xs text-blue-500">Interviewing</div>
                         </RenderIf>
                         <RenderIf condition={item?.invite_status === 2}>
-                            <div className="font-medium text-xs text-error-600">Rejected</div>
+                            <div className="whitespace-nowrap font-medium text-xs text-error-600">Rejected</div>
                         </RenderIf>
                         <RenderIf condition={item?.invite_status === 3}>
-                            <div className="font-medium text-xs text-success-500">Invited</div>
+                            <div className="whitespace-nowrap font-medium text-xs text-success-500">Invited</div>
+                        </RenderIf>
+                        <RenderIf condition={(item?.offer_status === 3)}>
+                            <div className="whitespace-nowrap font-medium text-xs text-blue-500">Offer Sent</div>
+                        </RenderIf>
+                        <RenderIf condition={item?.offer_status === 1}>
+                            <div className="whitespace-nowrap font-medium text-xs text-success-500">Hired</div>
+                        </RenderIf>
+                        <RenderIf condition={item?.offer_status === 2}>
+                            <div className="whitespace-nowrap font-medium text-xs text-error-600">Not Hired</div>
                         </RenderIf>
                     </Fragment>
                 )

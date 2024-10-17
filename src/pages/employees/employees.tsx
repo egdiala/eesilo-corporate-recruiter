@@ -20,8 +20,8 @@ export const EmployeesPage: React.FC = () => {
     const { value, onChangeHandler } = useDebounce(500)
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedTalent[]>({ offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedTalent[]>({ invite_status: "3", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", invite_status: "3", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
 
     const handlePageChange = (page: number) => {
         // in a real page, this function would paginate the data from the backend

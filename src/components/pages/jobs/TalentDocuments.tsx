@@ -1,19 +1,51 @@
 import React, { Fragment } from "react";
 import { motion } from "framer-motion";
-import { RenderIf } from "@/components/core";
-import { FetchedShortlistedCandidate } from "@/types/applicants";
+import { NestedTable, RenderIf } from "@/components/core";
 import emptyState from "@/assets/empty_state.webp";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
 import { useGetApplicantDocument } from "@/services/hooks/queries";
-
+import type { DocumentData, FetchedApplicantDocument, FetchedShortlistedCandidate } from "@/types/applicants";
+import { format } from "date-fns";
 
 interface TalentDocumentsProps {
     talent: FetchedShortlistedCandidate
 }
 
 export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
-    const { isFetching } = useGetApplicantDocument({ user_id: talent?.user_id })
+    const { data: talentDocuments, isFetching } = useGetApplicantDocument<FetchedApplicantDocument[]>({ user_id: talent?.user_id })
+
+    const columns = [
+        {
+            header: "Document Name",
+            accessorKey: "docname",
+        },
+        {
+            header: "Date",
+            accessorKey: "createdAt",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as DocumentData
+                console.log(item)
+                return (
+                    <div>{format(item?.createdAt, "iii. ii. MMM. yy")}</div>
+                )
+            }
+        },
+        {
+            accessorKey: "year_awarded",
+            header: "Grade",
+        },
+        {
+            accessorKey: "not_expired",
+            header: "Status",
+            cell: () => <div>Status</div>
+        },
+        {
+            accessorKey: "description",
+            header: "Action",
+            cell: () => <button>View</button>,
+        },
+    ];
     return (
         <Fragment>
             <RenderIf condition={!isFetching}>
@@ -22,13 +54,23 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                         <h1 className="font-medium text-lg text-gray-900">Documents</h1>
                         <p className="text-base text-gray-500">Access and view documents of this candidate.</p>
                     </div>
-                    <div className="flex flex-col items-center gap-2 py-14 flex-1">
-                        <img src={emptyState} alt="emptyState" className="size-24" />
-                        <div className="grid gap-1 text-center">
-                            <h2 className="font-medium text-base text-gray-900">No documents found</h2>
-                            <p className="text-sm text-gray-600">This talent has no documents</p>
+                    <RenderIf condition={(talentDocuments !== undefined) && (talentDocuments?.length > 0)}>
+                        <NestedTable
+                            data={talentDocuments ?? []}
+                            columns={columns}
+                            groupAccessor={(item) => item.group_name}
+                            dataAccessor={(item) => item.data}
+                        />
+                    </RenderIf>
+                    <RenderIf condition={talentDocuments?.length === 0}>
+                        <div className="flex flex-col items-center gap-2 py-14 flex-1">
+                            <img src={emptyState} alt="emptyState" className="size-24" />
+                            <div className="grid gap-1 text-center">
+                                <h2 className="font-medium text-base text-gray-900">No documents found</h2>
+                                <p className="text-sm text-gray-600">This talent has no documents</p>
+                            </div>
                         </div>
-                    </div>
+                    </RenderIf>
                 </motion.div>
             </RenderIf>
             <RenderIf condition={isFetching}>

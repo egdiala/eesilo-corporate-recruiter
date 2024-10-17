@@ -162,3 +162,23 @@ export type GetDocumentQuery = {
     item_per_page?: string;
     component?: "count" | "view";
 }
+
+export interface DocumentData {
+        docat_id: string;
+        user_id: string;
+        docname: string;
+        doctype: string;
+        year_awarded: number;
+        year_expired: number;
+        not_expired: boolean;
+        description: string;
+        createdAt: Date | string;
+        updatedAt: Date | string;
+        document_id: string;
+    }
+
+export interface FetchedApplicantDocument {
+    user_id: string;
+    data: DocumentData[];
+    group_name: string;
+}
