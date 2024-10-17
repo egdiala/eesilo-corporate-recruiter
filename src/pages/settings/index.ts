@@ -1,6 +1,5 @@
 export * from "./change-email"
 export * from "./change-password"
-export * from "./notifications"
 export * from "./security"
 export * from "./settings"
 export * from "./staff-access"

@@ -20,11 +20,6 @@ export const SettingsPage: React.FC = () => {
             },
             {
                 id: 2,
-                label: "Notifications",
-                href: "/settings/notifications"
-            },
-            {
-                id: 3,
                 label: "Staff & Access Control",
                 href: "/settings/staff-access"
             }

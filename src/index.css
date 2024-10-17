@@ -164,8 +164,9 @@ body {
   @apply text-white fill-white before:border-white !important;
 }
 
-[aria-current="date"] {
-  @apply text-success-500;
+[aria-current="date"],
+.react-datepicker__year-text--selected {
+  @apply text-success-500 bg-transparent;
 }
 .react-datepicker__day {
   @apply rounded-full !important;
@@ -186,4 +187,14 @@ body {
 }
 .react-datepicker__week > [tabindex="-1"] {
   @apply hover:bg-green-50;
+}
+
+.react-datepicker-year-header {
+  @apply whitespace-nowrap px-10 !important;
+}
+.react-datepicker__year-text {
+  @apply flex-1 p-1 text-base hover:bg-green-50 hover:text-green-500 ease-out duration-300 transition-all !important;
+}
+.react-datepicker__year-wrapper > [tabindex="0"] {
+  @apply text-success-500 bg-success-50;
 }

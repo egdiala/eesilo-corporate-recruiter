@@ -1,10 +1,13 @@
 import React, { useMemo } from "react";
 import { Icon } from "@iconify/react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { format, getYear, startOfYear } from "date-fns";
+import DatePicker from "react-datepicker";
 import { JobYearlyCountType } from "@/types/dashboard";
-import { format } from "date-fns";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Loader } from "@/components/core/Button/Loader";
+import { AnimatePresence, motion } from "framer-motion";
+import { pageVariants } from "@/constants/animateVariants";
 
 const chartData = [
   { month: "January", invited: 0, accepted: 0, rejected: 0, hired: 0 },
@@ -40,11 +43,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-interface PerformanceStatsProps {
-    yearData: JobYearlyCountType[]
+interface Filter {
+    year: string;
 }
 
-export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) => {
+interface PerformanceStatsProps {
+    yearData: JobYearlyCountType[]
+    // eslint-disable-next-line no-unused-vars
+    setFilters: (v: Filter) => void;
+    filters: Filter;
+    loading: boolean;
+}
+
+export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ filters, loading, setFilters, yearData }) => {
 
     const updatedChartData = useMemo(() => {
         return chartData.map(data => {
@@ -83,32 +94,35 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
     return (
         <div className="flex flex-col">
             <div className="flex items-center justify-between md:p-5">
-                <h3 className="font-semibold text-base text-gray-00">Performance</h3>
-                <Menu>
-                    <MenuButton className="inline-flex items-center gap-2 rounded-md p-0 focus:outline-none data-[focus]:outline-0">
-                        <span className="font-medium text-base text-gray-600">2024</span>
-                        <Icon icon="ri:arrow-down-s-line" className="size-6 text-gray-900" />
-                    </MenuButton>
-
-                    <MenuItems
-                    transition
-                    anchor="bottom end"
-                    className="w-20 origin-top-right rounded-xl shadow bg-white p-1 text-sm/6 text-gray-600 transition duration-300 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
-                    >
-                        <MenuItem>
-                            <button className="group flex w-full items-center justify-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
-                            2023
+                <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-base text-gray-00">Performance</h3>
+                    <AnimatePresence mode="popLayout">
+                        {
+                            loading && (
+                                <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
+                                    <Loader className="spinner size-3.5 text-primary-500" />
+                                </motion.div>
+                            )
+                        }
+                    </AnimatePresence>
+                </div>
+                <div className="grid relative">
+                    <DatePicker
+                        selected={startOfYear(filters?.year)}
+                        onChange={(date) => setFilters({ year: getYear(date as Date).toString() })}
+                        minDate={startOfYear("2024")}
+                        popperPlacement="bottom-end"
+                        showYearPicker
+                        dateFormat="yyyy"
+                        customInput={
+                            <button type="button" className="inline-flex items-center gap-2 rounded-md p-0 focus:outline-none data-[focus]:outline-0">
+                                <span className="font-medium text-base text-gray-600">{filters?.year}</span>
+                                <Icon icon="ri:arrow-down-s-line" className="size-6 text-gray-900" />
                             </button>
-                        </MenuItem>
-                        <MenuItem>
-                            <button className="group flex w-full items-center justify-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-gray-100">
-                            2024
-                            </button>
-                        </MenuItem>
-                    </MenuItems>
-                </Menu>
+                        }
+                    />
+                </div>
             </div>
-            <div className="flex items-center justify-end uppercase font-medium text-xs text-primary-500">Generate Report</div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
                 <div className="flex flex-col md:p-5 gap-5">
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>

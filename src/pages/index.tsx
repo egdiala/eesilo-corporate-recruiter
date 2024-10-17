@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { cn } from "@/libs/cn";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
@@ -10,15 +10,17 @@ import { TalentCard } from "@/components/pages/talent";
 import type { FetchedTalent } from "@/types/applicants";
 import { Loader } from "@/components/core/Button/Loader";
 import { pageVariants } from "@/constants/animateVariants";
-import { useGetDashboardStats, useGetJobs, useGetNotifications, useGetTalents } from "@/services/hooks/queries";
+import type { FetchedNotification } from "@/types/notification";
 import type { InterviewDataCountType, JobDataCountType, JobYearlyCountType } from "@/types/dashboard";
 import { PerformanceStats, RecentJobUpdates, UpcomingInterviews } from "@/components/pages/dashboard";
-import type { FetchedNotification } from "@/types/notification";
+import { useGetDashboardStats, useGetJobs, useGetNotifications, useGetTalents } from "@/services/hooks/queries";
 
 export const DashboardPage: React.FC = () => {
+    const [allLoading, setAllLoading] = useState(true)
+    const [performanceFilters, setPerformanceFilters] = useState({ year: new Date().getFullYear().toString() })
     const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
     const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<InterviewDataCountType[]>({ component: "job-interview-count" })
-    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count" })
+    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count", ...performanceFilters })
     const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
     const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
     const { data: notifications, isFetching: fetchingNotifications } = useGetNotifications<FetchedNotification[]>({ status: "0" })
@@ -31,9 +33,21 @@ export const DashboardPage: React.FC = () => {
         ]
     },[dataCount?.total_employee, dataCount?.total_invited, dataCount?.total_job, dataCount?.total_shortlisted])
 
+    const isFetchingAll = useMemo(() => {
+        const loadingStates = [fetchingDataCount, fetchingInterviewCount, fetchingYearlyCount, fetchingTalents, fetchingJobs, fetchingNotifications]
+
+        return loadingStates.some((item) => item)
+    }, [fetchingDataCount, fetchingInterviewCount, fetchingYearlyCount, fetchingTalents, fetchingJobs, fetchingNotifications])
+
+    useEffect(() => {
+        if (!isFetchingAll) {
+            setAllLoading(false)
+        }
+    },[isFetchingAll])
+
     return (
         <Fragment>
-            <RenderIf condition={!fetchingDataCount && !fetchingInterviewCount && !fetchingYearlyCount && !fetchingTalents && !fetchingJobs && !fetchingNotifications}>
+            <RenderIf condition={!allLoading}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
                     <div className="flex flex-col p-4 md:p-8 gap-6 bg-white rounded-2xl">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -62,7 +76,7 @@ export const DashboardPage: React.FC = () => {
                             }
                             </div>
                         </div>
-                        <PerformanceStats yearData={yearlyDataCount ?? []} />
+                        <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
                         <hr className="border-gray-200" />
                         <div className="grid gap-6">
                             <div className="flex items-center justify-between">
@@ -84,7 +98,7 @@ export const DashboardPage: React.FC = () => {
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={fetchingDataCount || fetchingInterviewCount || fetchingYearlyCount || fetchingTalents || fetchingJobs || fetchingNotifications}>
+            <RenderIf condition={allLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

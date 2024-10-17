@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import money from "@/assets/money.png";
 import { pageVariants } from "@/constants/animateVariants";
 import { Button, CheckBox, ContentDivider, Toggle } from "@/components/core";
+import { useGetSubscription } from "@/services/hooks/queries";
 
 export const BillingPlansPage: React.FC = () => {
+    useGetSubscription({})
     return (
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="">
             <div className="flex flex-col gap-6 bg-white rounded-2xl">

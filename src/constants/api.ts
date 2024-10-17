@@ -16,6 +16,14 @@ export const CONFIRM_EMAIL_UPDATE_API = "business/accounts/email-confirmation"
 export const UPDATE_PASSWORD_API = "business/accounts/password-update"
 export const CONFIRM_PASSWORD_UPDATE_API = "business/accounts/password-confirmation"
 
+// Applicants
+export const GET_TALENTS_API = "business/applicants"
+export const GET_SHORTLISTED_CANDIDATES_API = "business/applicants/shortlisted"
+export const GET_APPLICANT_DOCUMENT_API = "business/applicants/document"
+export const UPLOAD_OFFER_LETTER_API = "business/applicants/shortlisted"
+
+// Country
+export const COUNTRY_API = "countries"
 
 // Dashboard
 export const GET_DASHBOARD_STATS_API = "business/jobs/dashboard-stat"
@@ -27,11 +35,5 @@ export const GET_NOTIFICATIONS_API = "business/jobs/notification"
 export const GET_JOBS_API = "business/jobs"
 export const GET_JOB_REQUIREMENTS_API = "business/jobs/requirement"
 
-// Applicants
-export const GET_TALENTS_API = "business/applicants"
-export const GET_SHORTLISTED_CANDIDATES_API = "business/applicants/shortlisted"
-export const GET_APPLICANT_DOCUMENT_API = "business/applicants/document"
-export const UPLOAD_OFFER_LETTER_API = "business/applicants/shortlisted"
-
-// Country
-export const COUNTRY_API = "countries"
+// Subscription
+export const GET_SUBSCRIPTION_API = "business/accounts/subscription"
