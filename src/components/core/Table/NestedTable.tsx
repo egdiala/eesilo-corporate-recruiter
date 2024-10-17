@@ -42,7 +42,7 @@ export const NestedTable = <T,>({
   };
 
   return (
-    <div className="lg:w-full lg:left-auto lg:relative lg:right-auto rounded-t-xl left-0 right-0 overflow-x-scroll scrollbar-hide">
+    <div className="w-full lg:left-auto lg:relative lg:right-auto rounded-t-xl left-0 right-0 overflow-x-scroll scrollbar-hide">
       {data.map((groupItem, index) => {
         const groupName = groupAccessor(groupItem);
         const nestedData = dataAccessor(groupItem);
@@ -58,6 +58,9 @@ export const NestedTable = <T,>({
         });
 
         const isExpanded = expandedGroups.includes(groupName);
+        const expandedProps = {
+            colSpan: columns.length
+        }
 
         return (
             <table key={groupName} className="table-auto w-full">
@@ -68,8 +71,8 @@ export const NestedTable = <T,>({
                             headerGroup.headers.map((header, idx) => (
                                 <Fragment key={idx}>
                                     <RenderIf condition={idx === 0}>
-                                        <th className="text-left text-gray-800 font-semibold text-sm px-3 py-2" style={{ width: "40%" }}>
-                                            <div className="flex items-center gap-0.5">
+                                        <th colSpan={columns.length} className="text-left text-gray-800 font-semibold text-sm px-3 py-2 md:w-[40%]">
+                                            <div className="flex items-center whitespace-nowrap gap-0.5 w-40 md:w-auto">
                                                 <Icon icon="ri:arrow-up-s-fill" className={cn("size-5 text-gray-600 transform transition-transform duration-300 ease-linear", isExpanded ? "rotate-180" : "rotate-0")} />
                                                 {groupName}
                                             </div>
@@ -77,7 +80,7 @@ export const NestedTable = <T,>({
                                     </RenderIf>
                                     <RenderIf condition={(idx !== 0)}>
                                         <th key={header.id} className="text-left text-gray-600 font-normal text-sm px-3 py-2">
-                                            <RenderIf condition={index === 0}>
+                                            <RenderIf condition={true}>
                                                 {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                             </RenderIf>
                                         </th>
@@ -94,7 +97,7 @@ export const NestedTable = <T,>({
                             {table.getRowModel().rows.map((row) => (
                                 <tr key={row.id}>
                                     {row.getVisibleCells().map((cell, idx) => (
-                                        <td key={cell.id} style={{ width: idx === 0 ? "40%" : "auto" }} className="text-left py-2.5 pl-3 pr-5 text-gray-900 text-sm font-normal">
+                                        <td key={cell.id} {...(idx === 0 ? expandedProps : {})} className="text-left py-2.5 pl-3 pr-5 text-gray-900 text-sm font-normal">
                                             {renderRow ? renderRow(cell.getContext()) : flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}

@@ -45,6 +45,11 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
             header: "Action",
             cell: () => <button>View</button>,
         },
+        {
+            accessorKey: "description",
+            header: "Action",
+            cell: () => <button>View</button>,
+        },
     ];
     return (
         <Fragment>
@@ -55,12 +60,14 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                         <p className="text-base text-gray-500">Access and view documents of this candidate.</p>
                     </div>
                     <RenderIf condition={(talentDocuments !== undefined) && (talentDocuments?.length > 0)}>
-                        <NestedTable
-                            data={talentDocuments ?? []}
-                            columns={columns}
-                            groupAccessor={(item) => item.group_name}
-                            dataAccessor={(item) => item.data}
-                        />
+                        <div className="grid w-full">
+                            <NestedTable
+                                data={talentDocuments ?? []}
+                                columns={columns}
+                                groupAccessor={(item) => item.group_name}
+                                dataAccessor={(item) => item.data}
+                            />
+                        </div>
                     </RenderIf>
                     <RenderIf condition={talentDocuments?.length === 0}>
                         <div className="flex flex-col items-center gap-2 py-14 flex-1">
