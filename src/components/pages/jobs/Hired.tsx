@@ -5,17 +5,18 @@ import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
 import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
 import { useGetShortlisted } from "@/services/hooks/queries";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import { FetchedEmployee } from "@/types/employee";
 
 
 export const Hired: React.FC = () => {
+    const { id: jobId } = useParams()
     const navigate = useNavigate()
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1" })
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1", job_id: jobId })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`

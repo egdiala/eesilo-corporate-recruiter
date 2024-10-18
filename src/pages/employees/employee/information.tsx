@@ -70,16 +70,16 @@ export const EmployeeInformationPage: React.FC = () => {
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="bg-primary-25 w-full h-32 rounded-lg"></div>
-                        <div className="flex items-center px-8 justify-between -mt-9">
+                        <div className="flex items-center px-4 md:px-8 justify-between -mt-9">
                             <div className="grid">
                                 <div className="border-[3px] border-white rounded-full w-fit h-fit">
                                     <Avatar size="80" alt="Burton" image={talent?.avatar ? imageUrl : talent?.avatar as string} />
                                 </div>
                                 <div className="grid gap-[3px]">
-                                    <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
+                                    <h1 className="font-medium text-xl text-gray-900 capitalize line-clamp-1">{talent?.first_name} {talent?.last_name}</h1>
                                     <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
                                     <div className="flex items-center gap-1.5">
-                                        <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
+                                        <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
                                     </div>
                                 </div>
                             </div>

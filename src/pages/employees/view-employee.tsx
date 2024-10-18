@@ -52,10 +52,10 @@ export const ViewEmployeePage: React.FC = () => {
                             <h1 className="text-lg text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                         </div>
                         <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
-                            <div className="relative flex items-start gap-5 bg-white rounded-2xl p-4 lg:p-8">
-                                <div className="sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
+                            <div className="relative grid md:flex md:items-start gap-5 bg-white rounded-2xl p-4 lg:p-8">
+                                <div className="md:sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
                                     <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Profile menu</div>
-                                    <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
+                                    <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll scrollbar-hide">
                                     {
                                         tabs.map((tab) =>
                                             <NavLink to={tab.href} key={tab.id}>

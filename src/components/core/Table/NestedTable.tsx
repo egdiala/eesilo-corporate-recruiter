@@ -91,15 +91,15 @@ export const NestedTable = <T,>({
                 </thead>
                 <AnimatePresence mode="popLayout">
                     {isExpanded && (
-                        <motion.tbody>
-                            {table.getRowModel().rows.map((row) => (
-                                <tr key={row.id}>
+                        <motion.tbody animate transition={{ type: "spring", bounce: 0, duration: 0.5 }}>
+                            {table.getRowModel().rows.map((row, id) => (
+                                <motion.tr transition={{ duration: 0.2, delay: 0.2 * id }} key={row.id}>
                                     {row.getVisibleCells().map((cell, idx) => (
                                         <td key={cell.id} {...(idx === 0 ? expandedProps : {})} className="text-left py-2.5 pl-3 pr-5 text-gray-900 text-sm font-normal">
                                             {renderRow ? renderRow(cell.getContext()) : flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                </tr>
+                                </motion.tr>
                             ))}
                         </motion.tbody>
                     )}

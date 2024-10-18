@@ -32,7 +32,7 @@ export const BillingPlansPage: React.FC = () => {
                         <Toggle checked />
                         <span className="font-medium text-xs text-black">Yearly</span>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div className="flex flex-col border border-gray-200 bg-white rounded-2xl">
                             <div className="pb-8 px-8 pt-[3.75rem] grid gap-4 justify-items-center">
                                 <div className="grid gap-2 justify-items-center">
