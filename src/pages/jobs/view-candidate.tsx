@@ -47,9 +47,9 @@ export const ViewJobCandidatePage: React.FC = () => {
                         </div>
                         <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
                             <TabGroup as="section" className="relative grid md:flex flex-col md:flex-row items-start gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-                                <TabList className="sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden scrollbar-hide border border-gray-200 rounded-2xl md:max-w-72 w-full">
+                                <TabList className="md:sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden scrollbar-hide border border-gray-200 rounded-2xl md:max-w-72 w-full">
                                     <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Profile menu</div>
-                                    <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll">
+                                    <div className="flex md:flex-col flex-row gap-2 overflow-x-scroll scrollbar-hide">
                                     {
                                         tabs.map((tab) =>
                                             <Tab key={tab.id} className="flex whitespace-nowrap rounded-lg p-2 text-sm font-medium text-gray-500 focus:outline-none data-[selected]:bg-primary-500 data-[selected]:text-white data-[hover]:bg-gray-100 data-[hover]:text-gray-900 data-[focus]:outline-0 transition duration-500 ease-out">{tab.label}</Tab>
@@ -65,7 +65,7 @@ export const ViewJobCandidatePage: React.FC = () => {
                                         <TalentDocuments talent={candidate!} />
                                     </TabPanel>
                                     <TabPanel as={AnimatePresence} mode="popLayout">
-                                        <JobProgress job={job!} talent={candidate!} />
+                                        <JobProgress switchTab={setSelectedIndex} job={job!} talent={candidate!} />
                                     </TabPanel>
                                 </TabPanels>
                             </TabGroup>

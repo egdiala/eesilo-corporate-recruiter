@@ -2,23 +2,26 @@ import React, { useMemo, type ElementType } from "react";
 import { Avatar, ContentDivider, ProgressBar, RenderIf } from "@/components/core";
 import type { FetchedTalent } from "@/types/applicants";
 import { cn } from "@/libs/cn";
+import { FetchedEmployee } from "@/types/employee";
 
 interface TalentCardProps {
     as?: ElementType | "div"
-    talent: FetchedTalent
+    talent: FetchedTalent | FetchedEmployee["user_data"]
+    activeRoles?: number;
     [x: string]: any;
 }
 
-export const TalentCard: React.FC<TalentCardProps> = ({ as, className, talent, ...props }) => {
+export const TalentCard: React.FC<TalentCardProps> = ({ as, className, activeRoles, talent, ...props }) => {
     const Component = as === undefined ? "div" : as;
 
     const infos = useMemo(() => {
         return [
             { label: "Specialty", value: talent?.specialty_data?.specialty_main },
             { label: "Sub-specialty", value: talent?.specialty_data?.specialty_sub },
-            { label: "Years of Experience", value: talent?.specialty_data?.year_exp }
-        ]
-    },[talent?.specialty_data?.specialty_main, talent?.specialty_data?.specialty_sub, talent?.specialty_data?.year_exp])
+            (!activeRoles && { label: "Years of Experience", value: talent?.specialty_data?.year_exp }),
+            (activeRoles && { label: "Active Job Roles", value: activeRoles })
+        ].filter((item) => (item !== false) && (item !== 0))
+    },[activeRoles, talent?.specialty_data?.specialty_main, talent?.specialty_data?.specialty_sub, talent?.specialty_data?.year_exp])
 
     const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
     return (
@@ -31,16 +34,16 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, className, talent, .
                 <div className="grid gap-2.5 px-4 pb-4">
                     {
                         infos.map((info) =>
-                            <div key={info.label}>
-                                <span className="text-xs text-gray-400">{info.label}</span>
-                                <h4 className="text-xs text-black">{info.value}</h4>
+                            <div key={info?.label}>
+                                <span className="text-xs text-gray-400">{info?.label}</span>
+                                <h4 className="text-xs text-black">{info?.value}</h4>
                             </div>
                         )
                     }
-                    <RenderIf condition={!!talent?.match_count}>
+                    <RenderIf condition={!!(talent as FetchedTalent)?.match_count}>
                         <ContentDivider />
                         <div className="grid">
-                            <ProgressBar value={talent?.match_count * 10} className="w-1/2" />
+                            <ProgressBar value={(talent as FetchedTalent)?.match_count * 10} className="w-1/2" />
                             <span className="font-normal text-[0.625rem] leading-[1.125rem] text-gray-500">Select a job role to compare</span>
                         </div>
                     </RenderIf>

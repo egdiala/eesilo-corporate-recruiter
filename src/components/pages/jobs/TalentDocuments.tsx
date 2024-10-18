@@ -25,9 +25,8 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
             accessorKey: "createdAt",
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as DocumentData
-                console.log(item)
                 return (
-                    <div>{format(item?.createdAt, "iii. ii. MMM. yy")}</div>
+                    <div className="whitespace-nowrap">{format(item?.createdAt, "iii. ii. MMM. yy")}</div>
                 )
             }
         },
@@ -39,11 +38,6 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
             accessorKey: "not_expired",
             header: "Status",
             cell: () => <div>Status</div>
-        },
-        {
-            accessorKey: "description",
-            header: "Action",
-            cell: () => <button>View</button>,
         },
         {
             accessorKey: "description",

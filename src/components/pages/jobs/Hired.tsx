@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
-import { Button, InputField, RenderIf, Table } from "@/components/core";
+import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
 import { useGetShortlisted } from "@/services/hooks/queries";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
+import { FetchedEmployee } from "@/types/employee";
 
 
 export const Hired: React.FC = () => {
@@ -14,17 +15,28 @@ export const Hired: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted<any[]>({ offer_status: "1" })
+    const { data: candidates, isFetching } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1" })
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
 
     const columns = [
         {
             header: () => "Name",
             accessorKey: "name",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as FetchedEmployee
+                return (
+                    <div className="flex items-center gap-3">
+                        <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
+                        <div className="whitespace-nowrap capitalize">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
+                    </div>
+                )
+            }
         },
         {
-            header: () => "Specialty",
-            accessorKey: "specialty",
+            header: () => "Date Accepted",
+            accessorKey: "user_data.specialty_data.specialty_main",
         },
         {
             header: () => "Note",

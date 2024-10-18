@@ -14,9 +14,10 @@ import type { FetchedShortlistedCandidate } from "@/types/applicants"
 interface JobProgressProps {
     job: FetchedJob
     talent: FetchedShortlistedCandidate
+    switchTab: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
+export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent }) => {
     const [message, setMessage] = useState("")
     const { mutate, isPending } = useShortlistApplicant(message, () => close())
     const [toggleModals, setToggleModals] = useState({
@@ -102,9 +103,9 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
                             {
                                 interviewData.map((item) =>
                                 <li>
-                                    <div className="flex items-center gap-1.5">
+                                    <div className="flex md:items-center gap-1.5">
                                         <span className="w-24 text-gray-700 font-medium text-sm">{item?.label}:</span>
-                                        <span className="flex-1 text-gray-500 font-medium text-sm w-96 line-clamp-3">{item?.value}</span>
+                                        <span className="flex-1 text-gray-500 font-medium text-sm md:w-96 line-clamp-3">{item?.value}</span>
                                     </div>
                                 </li>
                                 )
@@ -116,7 +117,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
             },
             {
                 id: 3,
-                text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : "You have made a job offer. Click here to view. ",
+                text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : <>You have made a job offer. <a href={talent?.offer_letter_link} target="_blank" className="font-medium text-primary-500">Click here</a> to view.</>,
                 title: talent?.offer_status === 0 ? "Make Job Offer" : "Offer Made",
                 content: <Fragment>
                         <RenderIf condition={talent?.offer_status === 3}>
@@ -136,13 +137,13 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, talent }) => {
             },
             {
                 id: 4,
-                text: "To view this employees documents, you need to make a request.",
-                title: "Request Document Access",
+                text: talent?.offer_status > 1 ? "To view this employees documents, you need to make a request." : <>To view this employees documents, you need to make a request in the <button type="button" className="font-medium text-primary-500" onClick={() => switchTab(1)}>documents</button> tab.</>,
+                title: talent?.offer_status > 1 ? "Request Document Access" : "Access Documents",
                 content: <Fragment></Fragment>,
-                done: false
+                done: talent?.offer_status === 1
             },
         ].filter((item) => item !== false)
-    }, [interviewData, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status])
+    }, [interviewData, isPending, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status, talent?.offer_status])
     
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">

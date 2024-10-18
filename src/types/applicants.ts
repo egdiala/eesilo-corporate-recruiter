@@ -91,6 +91,7 @@ export interface FetchedShortlistedCandidate {
     invite_status: number;
     interview_status: number;
     offer_status: number;
+    offer_letter_link: string;
     match_count: number;
     timestamp_data: {
         shortlisted_at: Date | string;

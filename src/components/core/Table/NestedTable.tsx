@@ -30,7 +30,7 @@ export const NestedTable = <T,>({
   dataAccessor,
   renderRow,
 }: NestedTableProps<T>) => {
-  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(data.length > 0 ? [groupAccessor(data[0])] : []);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const toggleGroupExpansion = (groupName: string) => {
@@ -42,7 +42,7 @@ export const NestedTable = <T,>({
   };
 
   return (
-    <div className="w-full lg:left-auto lg:relative lg:right-auto rounded-t-xl left-0 right-0 overflow-x-scroll scrollbar-hide">
+    <div className="grid w-full lg:left-auto lg:relative lg:right-auto rounded-t-xl left-0 right-0 overflow-x-scroll scrollbar-hide">
       {data.map((groupItem, index) => {
         const groupName = groupAccessor(groupItem);
         const nestedData = dataAccessor(groupItem);
@@ -64,14 +64,14 @@ export const NestedTable = <T,>({
 
         return (
             <table key={groupName} className="table-auto w-full">
-                <thead onClick={() => toggleGroupExpansion(groupName)} className="bg-gray-200">
+                <thead className="bg-gray-200">
                 {(
                     <tr className={cn(index === 0 ? "rounded-t-xl" : "rounded-t-none")}>
                         {table.getHeaderGroups().map((headerGroup) =>
                             headerGroup.headers.map((header, idx) => (
                                 <Fragment key={idx}>
                                     <RenderIf condition={idx === 0}>
-                                        <th colSpan={columns.length} className="text-left text-gray-800 font-semibold text-sm px-3 py-2 md:w-[40%]">
+                                        <th onClick={() => toggleGroupExpansion(groupName)} colSpan={columns.length} className="cursor-pointer text-left text-gray-800 font-semibold text-sm px-3 py-2 md:w-[40%]">
                                             <div className="flex items-center whitespace-nowrap gap-0.5 w-40 md:w-auto">
                                                 <Icon icon="ri:arrow-up-s-fill" className={cn("size-5 text-gray-600 transform transition-transform duration-300 ease-linear", isExpanded ? "rotate-180" : "rotate-0")} />
                                                 {groupName}
@@ -79,10 +79,8 @@ export const NestedTable = <T,>({
                                         </th>
                                     </RenderIf>
                                     <RenderIf condition={(idx !== 0)}>
-                                        <th key={header.id} className="text-left text-gray-600 font-normal text-sm px-3 py-2">
-                                            <RenderIf condition={true}>
-                                                {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                                            </RenderIf>
+                                        <th key={header.id} className={cn("text-left font-normal text-sm px-3 py-2", index === 0 ? "text-gray-600" : "text-gray-200")}>
+                                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                         </th>
                                     </RenderIf>
                                 </Fragment>

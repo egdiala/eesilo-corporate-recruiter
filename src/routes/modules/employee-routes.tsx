@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { EmployeeActiveRolesPage, EmployeeDocumentsPage, EmployeeInformationPage, EmployeeJobProgressPage, EmployeesPage, ViewEmployeePage } from "@/pages/employees";
+import { EmployeeActiveRolesPage, EmployeeDocumentsPage, EmployeeInformationPage, EmployeesPage, ViewEmployeePage } from "@/pages/employees";
 
 const EmployeeRoutes = () => {
     return (
@@ -9,7 +9,6 @@ const EmployeeRoutes = () => {
                 <Route path="active-roles" element={<EmployeeActiveRolesPage />} />
                 <Route path="documents" element={<EmployeeDocumentsPage />} />
                 <Route path="information" element={<EmployeeInformationPage />} />
-                <Route path="job-progress" element={<EmployeeJobProgressPage />} />
             </Route>
         </Routes>
     );

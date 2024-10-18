@@ -27,11 +27,6 @@ export const ViewEmployeePage: React.FC = () => {
             },
             {
                 id: 3,
-                label: "Job Progress",
-                href: `/employees/view/${talentId}/job-progress`
-            },
-            {
-                id: 4,
                 label: "Active Job Roles",
                 href: `/employees/view/${talentId}/active-roles`
             },
