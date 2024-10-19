@@ -45,7 +45,7 @@ export const ViewEmployeePage: React.FC = () => {
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
                     <div className="flex flex-col gap-0 view-page-container overflow-hidden">
                         <div className="flex items-center gap-2.5 py-5 px-8 border-b border-b-gray-200 bg-white">
-                            <Button type="button" theme="neutral" variant="ghost" size="40" onClick={() => navigate("/talent")}>
+                            <Button type="button" theme="neutral" variant="ghost" size="40" onClick={() => navigate("/employees")}>
                                 <Icon icon="ri:arrow-left-s-line" className="size-5" />
                                 Back
                             </Button>

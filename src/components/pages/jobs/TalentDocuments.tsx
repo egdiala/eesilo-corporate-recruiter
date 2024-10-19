@@ -26,7 +26,7 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as DocumentData
                 return (
-                    <div className="whitespace-nowrap">{format(item?.createdAt, "iii. ii. MMM. yy")}</div>
+                    <div className="whitespace-nowrap">{format(item?.createdAt, "iii. dd. MMM. yy")}</div>
                 )
             }
         },

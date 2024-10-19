@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { Link, useLocation, useSearchParams } from "react-router-dom"
@@ -71,7 +71,9 @@ export const TalentSearchPage: React.FC = () => {
                                 <div className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 grid">
                                     {
                                         candidates?.map((item) =>
-                                            <TalentCard key={item?.user_id} talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
+                                            <Fragment key={item?.user_id}>
+                                                <TalentCard talent={item!} as={Link} to={`/talent/${item?.user_id}/view`} />
+                                            </Fragment>
                                         )
                                     }
                                 </div>

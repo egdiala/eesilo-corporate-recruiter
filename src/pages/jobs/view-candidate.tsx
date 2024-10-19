@@ -1,6 +1,6 @@
 import React, { Fragment, useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { Button, RenderIf } from "@/components/core"
 import { useGetJob, useGetShortlistedCandidate } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
@@ -58,13 +58,13 @@ export const ViewJobCandidatePage: React.FC = () => {
                                     </div>
                                 </TabList>
                                 <TabPanels className="flex-1">
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <TalentInformation talent={candidate!} />
                                     </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <TalentDocuments talent={candidate!} />
                                     </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <JobProgress switchTab={setSelectedIndex} job={job!} talent={candidate!} />
                                     </TabPanel>
                                 </TabPanels>

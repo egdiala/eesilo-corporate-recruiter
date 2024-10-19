@@ -16,7 +16,7 @@ export const useGetShortlisted = <T>(query: GetShortlistedQuery) => {
 export const useGetShortlistedCandidate = <T>(query: GetShortlistedQuery & { talentId: string }) => {
     return useQuery({
         enabled: !!query.talentId,
-        queryKey: [GET_SHORTLISTED_CANDIDATE, query.talentId],
+        queryKey: [GET_SHORTLISTED_CANDIDATE, query],
         queryFn: () => getShortlistedCandidate(query),
         select: (res) => res?.data as T,
         retry: false,

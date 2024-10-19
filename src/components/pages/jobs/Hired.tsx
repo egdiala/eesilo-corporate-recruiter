@@ -1,13 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
 import { Icon } from "@iconify/react";
+import { motion } from "framer-motion";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
-import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
 import { useGetShortlisted } from "@/services/hooks/queries";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import type { FetchedJobCount, HiredCandidate } from "@/types/jobs";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
-import { FetchedEmployee } from "@/types/employee";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Avatar, Button, InputField, ProgressBar, RenderIf, Table } from "@/components/core";
 
 
 export const Hired: React.FC = () => {
@@ -16,7 +17,8 @@ export const Hired: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1", job_id: jobId })
+    const { data: candidates, isFetching } = useGetShortlisted<HiredCandidate[]>({ offer_status: "1", job_id: jobId, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
@@ -26,7 +28,7 @@ export const Hired: React.FC = () => {
             header: () => "Name",
             accessorKey: "name",
             cell: ({ row }: { row: any; }) => {
-                const item = row?.original as FetchedEmployee
+                const item = row?.original as HiredCandidate
                 return (
                     <div className="flex items-center gap-3">
                         <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
@@ -37,29 +39,28 @@ export const Hired: React.FC = () => {
         },
         {
             header: () => "Date Accepted",
-            accessorKey: "user_data.specialty_data.specialty_main",
+            accessorKey: "timestamp_data.offer_made_at",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as HiredCandidate
+                return (
+                    <div className="whitespace-nowrap capitalize">{format(item?.timestamp_data?.offer_made_at, "dd MMM. yyyy")}</div>
+                )
+            }
         },
         {
-            header: () => "Note",
+            header: () => "Active Days",
             accessorKey: "note",
         },
         {
             header: () => "Qualification",
             accessorKey: "qualification",
-        },
-        {
-            header: () => "Priority",
-            accessorKey: "total_pending",
-        },
-        {
-            header: () => "Status",
-            accessorKey: "status",
-        },
-        {
-            header: () => "Action",
-            accessorKey: "status",
-            enableSorting: false
-        },
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as HiredCandidate
+                return (
+                    <ProgressBar value={10 * item?.match_count} />
+                )
+            }
+        }
     ];
 
     const handlePageChange = (page: number) => {
@@ -73,33 +74,31 @@ export const Hired: React.FC = () => {
     }, [location, setPage])
 
     return (
-        <Fragment>
-            <RenderIf condition={!isFetching}>
-                <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
-                    <div className="flex items-center justify-between">
-                        <h2 className="font-medium text-gray-900 text-base">Active Employees</h2>
-                        <div className="flex items-center gap-5 flex-1 max-w-96">
-                            <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" />
-                            <Button theme="neutral" variant="stroke" size="36">
-                                <Icon icon="ri:filter-3-line" className="size-5" />
-                            </Button>
-                        </div>
-                    </div>
-                    <Table
-                        columns={columns}
-                        data={candidates ?? []}
-                        page={page}
-                        perPage={itemsPerPage}
-                        totalCount={candidates?.length}
-                        onPageChange={handlePageChange}
-                        emptyStateText="No items to be found here."
-                        onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
-                    />
-                </motion.div>
+        <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+                <h2 className="font-medium text-gray-900 text-base">Active Employees</h2>
+                <div className="flex items-center gap-5 flex-1 max-w-96">
+                    <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" />
+                    <Button theme="neutral" variant="stroke" size="36">
+                        <Icon icon="ri:filter-3-line" className="size-5" />
+                    </Button>
+                </div>
+            </div>
+            <RenderIf condition={!isFetching && !fetchingCount}>
+                <Table
+                    columns={columns}
+                    data={candidates ?? []}
+                    page={page}
+                    perPage={itemsPerPage}
+                    totalCount={count?.total}
+                    onPageChange={handlePageChange}
+                    emptyStateText="No items to be found here."
+                    onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                />
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isFetching || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
-        </Fragment>
+        </motion.div>
     )
 }

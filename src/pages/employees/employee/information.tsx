@@ -2,19 +2,22 @@ import React, { Fragment, useCallback, useEffect, useMemo, useState } from "reac
 import { format } from "date-fns";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 import type { FetchedJob } from "@/types/jobs";
 import emptyState from "@/assets/empty_state.webp";
 import { capitalizeWords } from "@/utils/capitalize";
-import type { SingleTalent } from "@/types/applicants";
+import type { ActiveJobRole } from "@/types/employee";
+import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
-import { useGetCountries, useGetJobs, useGetTalent } from "@/services/hooks/queries";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
-import { Loader } from "@/components/core/Button/Loader";
+import { useGetCountries, useGetJobs, useGetShortlistedCandidate } from "@/services/hooks/queries";
+import { cn } from "@/libs/cn";
 
 
 export const EmployeeInformationPage: React.FC = () => {
-    const { data: talent, refetch, isFetching } = useGetTalent<SingleTalent>("")
+    const { id } = useParams()
+    const { data: talent, refetch, isFetching } = useGetShortlistedCandidate<ActiveJobRole>({ talentId: id as string })
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
         openInvitedModal: false,
@@ -32,8 +35,8 @@ export const EmployeeInformationPage: React.FC = () => {
         })
     
     const country = useMemo(() => {
-        return countries?.find((item) => item.iso2.toLowerCase() === talent?.address_data?.country_code?.toLowerCase())
-    }, [countries, talent?.address_data?.country_code])
+        return countries?.find((item) => item.iso2.toLowerCase() === (talent?.user_data?.address_data?.country_code || "+1")?.toLowerCase())
+    }, [countries, talent?.user_data?.address_data?.country_code])
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -62,8 +65,8 @@ export const EmployeeInformationPage: React.FC = () => {
     },[refetch, talent])
 
     const imageUrl = useMemo(() => {
-        return `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
-    },[talent?.avatar])
+        return `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.user_data?.avatar}`
+    },[talent?.user_data?.avatar])
     return (
         <Fragment>
             <RenderIf condition={!isFetching}>
@@ -73,13 +76,13 @@ export const EmployeeInformationPage: React.FC = () => {
                         <div className="flex items-center px-4 md:px-8 justify-between -mt-9">
                             <div className="grid">
                                 <div className="border-[3px] border-white rounded-full w-fit h-fit">
-                                    <Avatar size="80" alt="Burton" image={talent?.avatar ? imageUrl : talent?.avatar as string} />
+                                    <Avatar size="80" alt="Burton" image={talent?.user_data?.avatar ? imageUrl : talent?.user_data?.avatar as string} />
                                 </div>
                                 <div className="grid gap-[3px]">
-                                    <h1 className="font-medium text-xl text-gray-900 capitalize line-clamp-1">{talent?.first_name} {talent?.last_name}</h1>
-                                    <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
+                                    <h1 className="font-medium text-xl text-gray-900 capitalize line-clamp-1">{talent?.user_data?.first_name} {talent?.user_data?.last_name}</h1>
+                                    <p className="text-sm text-gray-400">{talent?.user_data?.specialty_data?.specialty_main} / {talent?.user_data?.specialty_data?.specialty_sub}</p>
                                     <div className="flex items-center gap-1.5">
-                                        <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
+                                        <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +118,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                 <img src={emptyState} alt="emptyState" className="size-24" />
                                 <div className="grid gap-1 text-center">
                                     <h2 className="font-medium text-base text-gray-900">No Educational Information</h2>
-                                    <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name as string ?? "")} has no educational qualification at this moment</p>
+                                    <p className="text-sm text-gray-600">{capitalizeWords(talent?.user_data?.first_name as string ?? "")} has no educational qualification at this moment</p>
                                 </div>
                             </div>
                         </RenderIf>
@@ -143,7 +146,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                 <img src={emptyState} alt="emptyState" className="size-24" />
                                 <div className="grid gap-1 text-center">
                                     <h2 className="font-medium text-base text-gray-900">No Work Experience</h2>
-                                    <p className="text-sm text-gray-600">{capitalizeWords(talent?.first_name as string ?? "")} has no work experience at this moment</p>
+                                    <p className="text-sm text-gray-600">{capitalizeWords(talent?.user_data?.first_name as string ?? "")} has no work experience at this moment</p>
                                 </div>
                             </div>
                         </RenderIf>
@@ -156,11 +159,11 @@ export const EmployeeInformationPage: React.FC = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col gap-1.5">
                                 <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to travel?</h3>
-                                <p className="text-xs text-gray-900 capitalize">{talent?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>
+                                <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>
                             </div>
                             <div className="flex flex-col gap-1.5">
                                 <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to relocate?</h3>
-                                <p className="text-xs text-gray-900 capitalize">{talent?.relocation_data?.ready_to_relocate ? "Yes" : "No"}</p>
+                                <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_relocate ? "Yes" : "No"}</p>
                             </div>
                         </div>
                     </div>
@@ -185,9 +188,13 @@ export const EmployeeInformationPage: React.FC = () => {
                                                     <Radio
                                                         key={job?.job_id}
                                                         value={job}
-                                                        className="group relative flex cursor-pointer rounded-md border border-gray-200 py-1.5 px-2 text-gray-600 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-200 data-[checked]:border-primary-200 data-[checked]:text-gray-900 data-[checked]:bg-primary-25"
+                                                        disabled={job?.job_id === talent?.job_id}
+                                                        className={cn("group relative flex items-center justify-between rounded-md border border-gray-200 py-1.5 px-2 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-500 data-[checked]:border-primary-500 data-[checked]:text-gray-900 data-[checked]:bg-primary-25", (job?.job_id === talent?.job_id) ? "cursor-not-allowed text-gray-400" : "cursor-pointer text-gray-600")}
                                                     >
                                                         {job?.title}
+                                                        <RenderIf condition={job?.job_id === talent?.job_id}>
+                                                            <span className="text-xs rounded-full bg-primary-100 text-primary-600 py-0.5 px-1">Shortlisted</span> 
+                                                        </RenderIf>
                                                     </Radio>
                                                     ))
                                                 }

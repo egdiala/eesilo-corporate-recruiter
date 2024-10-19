@@ -98,10 +98,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:graduation-cap-line" className="size-6 text-primary-500" />
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
-                <RenderIf condition={!!talent?.user_data?.education_data}>
+                <RenderIf condition={talent?.education_data?.length > 0}>
                     <div className="grid grid-cols-2 gap-4">
                         {
-                            talent?.user_data?.education_data?.map((education) =>
+                            talent?.education_data?.map((education) =>
                                 <div key={education._id} className="flex flex-col gap-2.5">
                                     <div className="grid gap-1.5">
                                         <h3 className="font-medium text-sm text-gray-900">{education?.school_name}</h3>
@@ -117,7 +117,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.user_data?.education_data}>
+                <RenderIf condition={talent?.user_data?.education_data?.length === 0}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
@@ -132,10 +132,10 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
-                <RenderIf condition={!!talent?.user_data?.workexp_data}>
+                <RenderIf condition={talent?.workexp_data.length > 0}>
                     <div className="grid grid-cols-2 gap-4">
                         {
-                            talent?.user_data?.workexp_data?.map((work) =>
+                            talent?.workexp_data?.map((work) =>
                                 <div className="flex flex-col gap-1.5" key={work?._id}>
                                     <h3 className="font-medium text-sm text-gray-900 capitalize">{work?.job_title}</h3>
                                     <p className="text-xs text-gray-900 capitalize">{work?.company}</p>
@@ -145,7 +145,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.user_data?.education_data}>
+                <RenderIf condition={talent?.user_data?.education_data?.length === 0}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">

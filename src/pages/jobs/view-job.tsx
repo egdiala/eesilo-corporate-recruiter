@@ -1,13 +1,13 @@
 import React, { Fragment, useMemo, useState } from "react"
 import { Icon } from "@iconify/react"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { Button, RenderIf } from "@/components/core"
 import { useGetJob } from "@/services/hooks/queries"
 import { Loader } from "@/components/core/Button/Loader"
 import { useNavigate, useParams } from "react-router-dom"
 import { pageVariants } from "@/constants/animateVariants"
-import { Hired, JobInformation, SearchCandidates, ShortlistedCandidates } from "@/components/pages/jobs"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
+import { Hired, JobInformation, SearchCandidates, ShortlistedCandidates } from "@/components/pages/jobs"
 
 export const ViewJobPage: React.FC = () => {
     const { id: jobId } = useParams()
@@ -60,16 +60,16 @@ export const ViewJobPage: React.FC = () => {
                                     </div>
                                 </TabList>
                                 <TabPanels className="flex-1">
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <JobInformation job={job!} />
                                     </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <Hired />
                                     </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <ShortlistedCandidates />
                                     </TabPanel>
-                                    <TabPanel as={AnimatePresence} mode="popLayout">
+                                    <TabPanel>
                                         <SearchCandidates />
                                     </TabPanel>
                                 </TabPanels>
