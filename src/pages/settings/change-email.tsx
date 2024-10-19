@@ -45,7 +45,7 @@ export const ChangeEmailPage: React.FC = () => {
                     </Button>
                     <h1 className="text-lg text-gray-900">Change Email</h1>
                 </div>
-                <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
+                <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px-4 lg:px-8 pt-5 pb-10">
                     <div className="bg-white rounded-2xl p-4 lg:p-8">
                         <AnimatePresence mode="popLayout">
                             <motion.form variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-[27.25rem] w-full mx-auto">

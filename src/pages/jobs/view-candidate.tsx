@@ -38,14 +38,14 @@ export const ViewJobCandidatePage: React.FC = () => {
             <RenderIf condition={!isFetching && !fetchingCandidate}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
                     <div className="flex flex-col gap-0 view-page-container overflow-hidden">
-                        <div className="flex items-center gap-2.5 py-5 px-8 border-b border-b-gray-200 bg-white">
+                        <div className="flex items-center gap-2.5 py-5 px-4 md:px-8 border-b border-b-gray-200 bg-white">
                             <Button type="button" theme="neutral" variant="ghost" size="40" onClick={() => navigate(`/jobs/${jobId}/view`)}>
                                 <Icon icon="ri:arrow-left-s-line" className="size-5" />
                                 Back
                             </Button>
                             <h1 className="text-lg text-gray-900">{job?.title}</h1>
                         </div>
-                        <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
+                        <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px-4 lg:px-8 pt-5 pb-10">
                             <TabGroup as="section" className="relative grid md:flex flex-col md:flex-row items-start gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
                                 <TabList className="md:sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-hidden scrollbar-hide border border-gray-200 rounded-2xl md:max-w-72 w-full">
                                     <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Profile menu</div>

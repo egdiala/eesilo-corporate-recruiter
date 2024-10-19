@@ -47,7 +47,7 @@ export const ViewJobPage: React.FC = () => {
                             </Button>
                             <h1 className="text-lg text-gray-900">{job?.title}</h1>
                         </div>
-                        <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px:4 lg:px-8 pt-5 pb-10">
+                        <div className="flex-1 flex-col overflow-y-scroll view-subpage-container px-4 lg:px-8 pt-5 pb-10">
                             <TabGroup as="section" className="relative flex flex-col md:flex-row md:items-start gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
                                 <TabList className="md:sticky top-0 flex flex-col h-fit gap-2 p-2.5 overflow-x-hidden border border-gray-200 rounded-2xl max-w-96 md:max-w-72 w-full">
                                     <div className="flex px-2 pt-1.5 pb-1 font-medium text-xs text-gray-400 uppercase">Profile menu</div>
