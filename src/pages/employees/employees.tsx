@@ -66,7 +66,7 @@ export const EmployeesPage: React.FC = () => {
                     <RenderIf condition={!isFetching && !fetchingCount}>
                         <RenderIf condition={candidates?.length! > 0}>
                             <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-5">
-                                <div className="grid grid-cols-3 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                     {
                                         candidates?.map((item) =>
                                             <TalentCard key={item?.user_id} activeRoles={item?.active_job_count} talent={item?.user_data!} as={Link} to={`/employees/view/${item?.user_id}/information`} />
