@@ -23,13 +23,12 @@ export const EmployeeActiveRolesPage: React.FC = () => {
                             <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                             <h2 className="font-medium text-base text-gray-900">Active Job Roles</h2>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {
                                 activeJobs?.map((work) =>
                                     <div className="flex flex-col gap-1.5" key={work?.job_id}>
                                         <h3 className="font-medium text-sm text-gray-900 capitalize">{work?.job_data?.title}</h3>
-                                        <p className="text-xs text-gray-900 capitalize">{work?.job_data?.title}</p>
-                                        <span className="text-xs text-gray-500">{format(work?.timestamp_data?.offer_made_at, "MMMM yyyy")} - Present</span>
+                                        <span className="text-xs text-gray-500">{format(work?.timestamp_data?.offer_made_at, "MMMM yyyy")}</span>
                                     </div>
                                 )
                             }

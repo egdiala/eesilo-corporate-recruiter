@@ -76,7 +76,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.user_data?.first_name} {talent?.user_data?.last_name}</h1>
                             <p className="text-sm text-gray-400">{talent?.user_data?.specialty_data?.specialty_main} / {talent?.user_data?.specialty_data?.specialty_sub}</p>
                             <div className="flex items-center gap-1.5">
-                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
+                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
                 <RenderIf condition={talent?.education_data?.length > 0}>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.education_data?.map((education) =>
                                 <div key={education._id} className="flex flex-col gap-2.5">
@@ -133,7 +133,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
                 <RenderIf condition={talent?.workexp_data.length > 0}>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.workexp_data?.map((work) =>
                                 <div className="flex flex-col gap-1.5" key={work?._id}>
@@ -160,7 +160,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:map-pin-user-line" className="size-6 text-blue-500" />
                     <h2 className="font-medium text-base text-gray-900">Other Information</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                         <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to travel?</h3>
                         <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>

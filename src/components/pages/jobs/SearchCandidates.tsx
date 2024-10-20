@@ -94,9 +94,9 @@ export const SearchCandidates: React.FC = () => {
 
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
-            <div className="flex items-center justify-between">
+            <div className="grid w-full gap-5 lg:gap-0 lg:flex lg:items-center lg:justify-between">
                 <h2 className="font-medium text-gray-900 text-base">Invite New Candidates</h2>
-                <div className="flex items-center gap-5 flex-1 max-w-96">
+                <div className="flex items-center gap-5 flex-1 lg:max-w-96">
                     <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                     <Button theme="neutral" variant="stroke" size="36">
                         <Icon icon="ri:filter-3-line" className="size-5" />

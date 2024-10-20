@@ -96,7 +96,7 @@ export const JobsPage: React.FC = () => {
                             <div className="flex-1 md:max-w-80">
                                 <InputField placeholder="Search Jobs" type="text" size="40" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                             </div>
-                            <div className="flex items-center justify-end gap-5">
+                            <div className="flex flex-row-reverse md:flex-row items-center justify-end gap-5">
                                 <Button type="button" theme="neutral" variant="stroke" size="40" onClick={() => setGridView(!gridView)}>
                                     <Icon icon={gridView ? "ri:list-unordered" : "ri:layout-grid-line"} className="size-5" />
                                 </Button>

@@ -8,6 +8,7 @@ import { NestedTable, RenderIf } from "@/components/core";
 import { tabVariants } from "@/constants/animateVariants";
 import { useGetApplicantDocument } from "@/services/hooks/queries";
 import { DocumentData, FetchedApplicantDocument } from "@/types/applicants";
+import { Icon } from "@iconify/react";
 
 
 export const EmployeeDocumentsPage: React.FC = () => {
@@ -30,19 +31,28 @@ export const EmployeeDocumentsPage: React.FC = () => {
             }
         },
         {
-            accessorKey: "year_awarded",
             header: "Grade",
+            accessorKey: "year_awarded",
         },
         {
-            accessorKey: "not_expired",
             header: "Status",
+            accessorKey: "not_expired",
             cell: () => <div>Status</div>
         },
         {
             accessorKey: "description",
             header: "Action",
-            cell: () => <button>View</button>,
-        },
+            cell: ({ parentData }: { row: any; parentData?: { has_permission: boolean } }) => {
+                // const item = row.original as DocumentData;
+                const hasPermission = parentData?.has_permission;
+
+                return (
+                    <button type="button" disabled={!hasPermission} className="text-xs text-gray-500 disabled:text-gray-300">
+                        View
+                    </button>
+                );
+            }
+        }
     ];
     return (
         <Fragment>
@@ -57,8 +67,16 @@ export const EmployeeDocumentsPage: React.FC = () => {
                             <NestedTable
                                 data={talentDocuments ?? []}
                                 columns={columns}
-                                groupAccessor={(item) => item.group_name}
                                 dataAccessor={(item) => item.data}
+                                groupAccessor={(item) => item.group_name}
+                                checkPermission={(groupItem) => groupItem.has_permission}
+                                parentAccessor={(item) => ({ has_permission: item.has_permission })}
+                                renderHeader={() => (
+                                    <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200">
+                                        <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
+                                        <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
+                                    </button>
+                                )}
                             />
                         </div>
                     </RenderIf>

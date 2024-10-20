@@ -20,7 +20,13 @@ interface NestedTableProps<T> {
   // eslint-disable-next-line no-unused-vars
   dataAccessor: (item: T) => any[]; // Function to get the nested data array
   // eslint-disable-next-line no-unused-vars
-  renderRow?: (row: any) => React.ReactNode; // Optional custom row rendering
+  renderRow?: (row: any, parentData?: T) => React.ReactNode; // Optional custom row rendering
+  // eslint-disable-next-line no-unused-vars
+  renderHeader?: (groupItem: T) => React.ReactNode; // Optional header content rendering
+  // eslint-disable-next-line no-unused-vars
+  checkPermission?: (groupItem: T) => boolean; // Function to check permissions
+  // eslint-disable-next-line no-unused-vars
+  parentAccessor?: (item: T) => any; // Function to get parent-level data like has_permission
 }
 
 export const NestedTable = <T,>({
@@ -29,6 +35,9 @@ export const NestedTable = <T,>({
   groupAccessor,
   dataAccessor,
   renderRow,
+  renderHeader,
+  checkPermission,
+  parentAccessor,
 }: NestedTableProps<T>) => {
   const [expandedGroups, setExpandedGroups] = useState<string[]>(data.length > 0 ? [groupAccessor(data[0])] : []);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -46,6 +55,8 @@ export const NestedTable = <T,>({
       {data.map((groupItem, index) => {
         const groupName = groupAccessor(groupItem);
         const nestedData = dataAccessor(groupItem);
+        const hasPermission = checkPermission ? checkPermission(groupItem) : true;
+        const parentData = parentAccessor ? parentAccessor(groupItem) : undefined;
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const table = useReactTable({
@@ -86,6 +97,11 @@ export const NestedTable = <T,>({
                                 </Fragment>
                             ))
                         )}
+                        <RenderIf condition={!!renderHeader && !hasPermission}>
+                            <th className="text-right px-3 py-2">
+                                <div className="flex justify-end">{renderHeader ? renderHeader(groupItem) : null}</div>
+                            </th>
+                        </RenderIf>
                     </tr>
                 )}
                 </thead>
@@ -96,7 +112,7 @@ export const NestedTable = <T,>({
                                 <motion.tr transition={{ duration: 0.2, delay: 0.2 * id }} key={row.id}>
                                     {row.getVisibleCells().map((cell, idx) => (
                                         <td key={cell.id} {...(idx === 0 ? expandedProps : {})} className="text-left py-2.5 pl-3 pr-5 text-gray-900 text-sm font-normal">
-                                            {renderRow ? renderRow(cell.getContext()) : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {renderRow ? renderRow(cell.getContext(), parentData) : flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
                                 </motion.tr>
@@ -110,5 +126,3 @@ export const NestedTable = <T,>({
     </div>
   );
 };
-
-export default NestedTable;

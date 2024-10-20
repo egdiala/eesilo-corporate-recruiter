@@ -93,7 +93,7 @@ export const CalendarPage: React.FC = () => {
                                                 key={day.toString()}
                                                 className={cn(
                                                 isSameMonth(day, today) ? "text-gray-500" : "text-gray-400",
-                                                "flex flex-col justify-between bg-white relative p-3 h-28 border-r-gray-200 border-r border-b",
+                                                "flex flex-col justify-between bg-white relative p-3 text-base h-28 border-r-gray-200 border-r border-b",
                                                 dayIdx === 0 && colStartClasses[getDay(day)]
                                                 )}
                                             >
@@ -153,7 +153,7 @@ export const CalendarPage: React.FC = () => {
                                                     isEqual(day, selectedDay) && "flex h-6 w-6 items-center justify-center rounded-full",
                                                     isEqual(day, selectedDay) && isToday(day) && "bg-primary-500",
                                                     isEqual(day, selectedDay) && !isToday(day) && "bg-warning-600",
-                                                    "ml-auto",
+                                                    "ml-auto text-sm",
                                                 )}
                                                 >
                                                 {format(day, "d")}
@@ -164,11 +164,11 @@ export const CalendarPage: React.FC = () => {
                                                         <RenderIf key={item?._id} condition={isEqual(format(day, "yyyy-MM-dd"), item?.data?.date)}>
                                                             <ol>
                                                                 <li>
-                                                                    <button type="button" className="group flex w-fit bg-blue-50 px-2 py-0.5 rounded-full" onClick={() => {
+                                                                    <button type="button" className="group flex w-fit bg-blue-50 px-1 py-0.5 rounded-full" onClick={() => {
                                                                         setEventsToView(events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))!)
                                                                         toggleInterviewModal()
                                                                     }}>
-                                                                        <div className="flex-auto truncate text-sm font-medium text-blue-800 group-hover:text-indigo-600">
+                                                                        <div className="flex-auto truncate text-xs font-medium text-blue-800 group-hover:text-indigo-600">
                                                                             {events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date)).length} <span className="sr-only sm:not-sr-only">Interview{events?.filter((singleEvent) => isEqual(format(day, "yyyy-MM-dd"), singleEvent?.data?.date))?.length! > 1 ? "s" : ""}</span>
                                                                         </div>
                                                                     </button>

@@ -9,6 +9,7 @@ import type { FetchedJobCount, HiredCandidate } from "@/types/jobs";
 import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Avatar, Button, InputField, ProgressBar, RenderIf, Table } from "@/components/core";
+import { useDebounce } from "@/hooks/useDebounce";
 
 
 export const Hired: React.FC = () => {
@@ -17,8 +18,9 @@ export const Hired: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const { data: candidates, isFetching } = useGetShortlisted<HiredCandidate[]>({ offer_status: "1", job_id: jobId, page: page.toString(), item_per_page: itemsPerPage.toString() })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId })
+    const { value, onChangeHandler } = useDebounce(500)
+    const { data: candidates, isFetching } = useGetShortlisted<HiredCandidate[]>({ offer_status: "1", job_id: jobId, page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
+    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId, q: value })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
@@ -75,10 +77,10 @@ export const Hired: React.FC = () => {
 
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
+            <div className="grid w-full gap-5 lg:gap-0 lg:flex lg:items-center lg:justify-between">
                 <h2 className="font-medium text-gray-900 text-base">Active Employees</h2>
-                <div className="flex items-center gap-5 flex-1 max-w-96">
-                    <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" />
+                <div className="flex items-center gap-5 flex-1 lg:max-w-96">
+                    <InputField type="text" placeholder="Search employees" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                     <Button theme="neutral" variant="stroke" size="36">
                         <Icon icon="ri:filter-3-line" className="size-5" />
                     </Button>
@@ -92,8 +94,8 @@ export const Hired: React.FC = () => {
                     perPage={itemsPerPage}
                     totalCount={count?.total}
                     onPageChange={handlePageChange}
-                    emptyStateText="No items to be found here."
-                    onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
+                    emptyStateText="No employees were found here."
+                    onClick={({ original }) => navigate(`/employees/view/${original?.user_id}/information`)}
                 />
             </RenderIf>
             <RenderIf condition={isFetching || fetchingCount}>

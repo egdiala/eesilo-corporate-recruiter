@@ -52,15 +52,17 @@ export const EmployeesPage: React.FC = () => {
                 <div className="flex flex-col gap-5 border border-gray-200 rounded-xl p-4">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                         <h2 className="font-medium text-base text-gray-900">All your hired employees</h2>
-                        <div className="flex items-center justify-end gap-5 flex-1">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-5 flex-1">
                             <div className="flex-1 lg:max-w-80">
                                 <InputField placeholder="Input Keyword" type="text" size="40" iconRight="ri:search-2-line" onChange={onChangeHandler} />
                             </div>
-                            <Button type="button" theme="primary" variant="filled" size="40">
-                                <Icon icon="ri:search-2-line" className="size-5" />
-                                Search
-                            </Button>
-                            <EmployeesFilter filters={filters} setFilters={setFilters} />
+                            <div className="flex items-center justify-end gap-5">
+                                <Button type="button" theme="primary" variant="filled" size="40" block>
+                                    <Icon icon="ri:search-2-line" className="size-5" />
+                                    Search
+                                </Button>
+                                <EmployeesFilter filters={filters} setFilters={setFilters} />
+                            </div>
                         </div>
                     </div>
                     <RenderIf condition={!isFetching && !fetchingCount}>

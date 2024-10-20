@@ -73,7 +73,7 @@ export const EmployeeInformationPage: React.FC = () => {
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="bg-primary-25 w-full h-32 rounded-lg"></div>
-                        <div className="grid gap-3 md:flex items-center px-4 md:px-8 justify-between -mt-9">
+                        <div className="flex items-center px-8 justify-between -mt-9">
                             <div className="grid">
                                 <div className="border-[3px] border-white rounded-full w-fit h-fit">
                                     <Avatar size="80" alt="Burton" image={talent?.user_data?.avatar ? imageUrl : talent?.user_data?.avatar as string} />
@@ -86,7 +86,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleShortlistCandidate}>Shortlist for another job</Button>
+                            <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleShortlistCandidate}>Shortlist <span className="sr-only lg:not-sr-only">for another job</span></Button>
                         </div>
                     </div>
                     <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">

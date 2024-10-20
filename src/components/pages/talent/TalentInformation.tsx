@@ -71,7 +71,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
             <div className="flex flex-col">
                 <div className="bg-primary-25 w-full h-32 rounded-lg"></div>
-                <div className="grid gap-3 md:flex items-center px-8 justify-between -mt-9">
+                <div className="flex items-center px-8 justify-between -mt-9">
                     <div className="grid">
                         <div className="border-[3px] border-white rounded-full w-fit h-fit">
                             <Avatar size="80" alt={talent?.first_name} image={talent?.avatar ? imageUrl : talent?.avatar} />
@@ -80,11 +80,11 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
                             <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
                             <div className="flex items-center gap-1.5">
-                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
+                                <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
                             </div>
                         </div>
                     </div>
-                    <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleShortlistCandidate}>Shortlist this candidate</Button>
+                    <Button type="button" theme="primary" variant="filled" size="40" onClick={toggleShortlistCandidate}>Shortlist <span className="sr-only lg:not-sr-only">this candidate</span></Button>
                 </div>
             </div>
             <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">
@@ -93,7 +93,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
                 <RenderIf condition={!!talent?.education_data}>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.education_data?.map((education) =>
                                 <div key={education._id} className="flex flex-col gap-2.5">
@@ -127,7 +127,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
                 <RenderIf condition={!!talent?.workexp_data}>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.workexp_data?.map((work) =>
                                 <div className="flex flex-col gap-1.5" key={work?._id}>
@@ -154,7 +154,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:map-pin-user-line" className="size-6 text-blue-500" />
                     <h2 className="font-medium text-base text-gray-900">Other Information</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                         <h3 className="font-medium text-sm text-gray-900 capitalize">Willing to travel?</h3>
                         <p className="text-xs text-gray-900 capitalize">{talent?.relocation_data?.ready_to_travel ? "Yes" : "No"}</p>
