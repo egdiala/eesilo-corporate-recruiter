@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
-import { GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE } from "@/constants/queryKeys";
-import { removeShortlisted, shortlistCandidate, uploadOfferLetter } from "@/services/apis/applicants";
+import { GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE, GET_TALENT } from "@/constants/queryKeys";
+import { removeShortlisted, requestDocumentAccess, shortlistCandidate, uploadOfferLetter } from "@/services/apis/applicants";
 import { Dispatch, SetStateAction } from "react";
 
 export const useShortlistApplicant = (msg?: string, fn?: () => void) => {
@@ -53,4 +53,20 @@ export const useUploadOfferLetter = (setProgress: Dispatch<SetStateAction<number
             errorToast({ param: err, variant: "light" })
         },
     });
+};
+
+export const useRequestDocumentAccess = (msg?: string, fn?: () => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: requestDocumentAccess,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [GET_TALENT] })
+        queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED_CANDIDATE] })
+        successToast({ param: null, msg, size: "36" })
+        fn?.()
+    },
+    onError: (err: any) => {
+        errorToast({ param: err, variant: "light" })
+    },
+  });
 };

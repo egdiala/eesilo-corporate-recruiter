@@ -1,7 +1,7 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { GET_APPLICANT_DOCUMENT_API, GET_SHORTLISTED_CANDIDATES_API, GET_TALENTS_API, UPLOAD_OFFER_LETTER_API } from "@/constants/api";
 import { createQueryString } from "@/utils/createQuery";
-import type { GetDocumentQuery, GetShortlistedQuery, GetTalentsQuery, RemoveShortlistedParams, ShortlistCandidateParams, UploadOfferLetterParams } from "@/types/applicants";
+import { GET_APPLICANT_DOCUMENT_API, GET_SHORTLISTED_CANDIDATES_API, GET_TALENTS_API, UPLOAD_OFFER_LETTER_API } from "@/constants/api";
+import type { GetDocumentQuery, GetShortlistedQuery, GetTalentsQuery, RemoveShortlistedParams, RequestDocumentParams, ShortlistCandidateParams, UploadOfferLetterParams } from "@/types/applicants";
 
 export const getTalents = async (query: GetTalentsQuery) => {
   const res = await axiosUserInstance.get(`${GET_TALENTS_API}${createQueryString(query)}`);
@@ -37,6 +37,11 @@ export const removeShortlisted = async (data: RemoveShortlistedParams) => {
 export const getApplicantDocument = async (query: GetDocumentQuery) => {
   const { user_id, ...rest } = query
   const res = await axiosUserInstance.get(`${GET_APPLICANT_DOCUMENT_API}/${user_id}${createQueryString(rest)}`);
+  return res.data;
+};
+
+export const requestDocumentAccess = async (payload: RequestDocumentParams) => {
+  const res = await axiosUserInstance.post(GET_APPLICANT_DOCUMENT_API, payload);
   return res.data;
 };
 

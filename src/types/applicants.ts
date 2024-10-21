@@ -199,6 +199,11 @@ export type GetDocumentQuery = {
     component?: "count" | "view";
 }
 
+export interface RequestDocumentParams {
+    cat_id: string;
+    user_id: string;
+}
+
 export interface DocumentData {
     docat_id: string;
     user_id: string;

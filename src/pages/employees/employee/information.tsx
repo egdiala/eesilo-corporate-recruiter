@@ -1,9 +1,11 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { cn } from "@/libs/cn";
 import { format } from "date-fns";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import type { FetchedJob } from "@/types/jobs";
+import { SingleTalent } from "@/types/applicants";
 import emptyState from "@/assets/empty_state.webp";
 import { capitalizeWords } from "@/utils/capitalize";
 import type { ActiveJobRole } from "@/types/employee";
@@ -11,12 +13,12 @@ import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
-import { useGetCountries, useGetJobs, useGetShortlistedCandidate } from "@/services/hooks/queries";
-import { cn } from "@/libs/cn";
+import { useGetCountries, useGetJobs, useGetShortlistedCandidate, useGetTalent } from "@/services/hooks/queries";
 
 
 export const EmployeeInformationPage: React.FC = () => {
     const { id } = useParams()
+    const { data: candidate, isFetching: isFetchingCandidate } = useGetTalent<SingleTalent>("")
     const { data: talent, refetch, isFetching } = useGetShortlistedCandidate<ActiveJobRole>({ talentId: id as string })
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
@@ -58,6 +60,13 @@ export const EmployeeInformationPage: React.FC = () => {
         setSelected(null)
     }
 
+    const candidateJobs = useMemo(() => {
+        if (candidate === undefined) {
+            return []
+        }
+        return candidate?.job_invited?.map((item) => item?.job_id)
+    },[candidate])
+
     useEffect(() => {
         if (talent === undefined) {
             refetch()
@@ -69,7 +78,7 @@ export const EmployeeInformationPage: React.FC = () => {
     },[talent?.user_data?.avatar])
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isFetching && !isFetchingCandidate}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="bg-primary-25 w-full h-32 rounded-lg"></div>
@@ -188,11 +197,11 @@ export const EmployeeInformationPage: React.FC = () => {
                                                     <Radio
                                                         key={job?.job_id}
                                                         value={job}
-                                                        disabled={job?.job_id === talent?.job_id}
-                                                        className={cn("group relative flex items-center justify-between rounded-md border border-gray-200 py-1.5 px-2 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-500 data-[checked]:border-primary-500 data-[checked]:text-gray-900 data-[checked]:bg-primary-25", (job?.job_id === talent?.job_id) ? "cursor-not-allowed text-gray-400" : "cursor-pointer text-gray-600")}
+                                                        disabled={candidateJobs?.includes(job?.job_id)}
+                                                        className={cn("group relative flex items-center justify-between rounded-md border border-gray-200 py-1.5 px-2 transition duration-300 ease-out focus:outline-none data-[focus]:border-primary-500 data-[checked]:border-primary-500 data-[checked]:text-gray-900 data-[checked]:bg-primary-25", (candidateJobs?.includes(job?.job_id)) ? "cursor-not-allowed text-gray-400" : "cursor-pointer text-gray-600")}
                                                     >
                                                         {job?.title}
-                                                        <RenderIf condition={job?.job_id === talent?.job_id}>
+                                                        <RenderIf condition={candidateJobs?.includes(job?.job_id)}>
                                                             <span className="text-xs rounded-full bg-primary-100 text-primary-600 py-0.5 px-1">Shortlisted</span> 
                                                         </RenderIf>
                                                     </Radio>
@@ -245,7 +254,7 @@ export const EmployeeInformationPage: React.FC = () => {
                     </Dialog>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isFetching || isFetchingCandidate}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

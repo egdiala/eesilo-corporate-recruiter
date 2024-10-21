@@ -24,6 +24,7 @@ export const GET_JOB_REQUIREMENTS = "get-job-requirements"
 export const GET_SHORTLISTED = "get-shortlisted"
 export const GET_SHORTLISTED_CANDIDATE = "get-shortlisted-candidate"
 export const GET_TALENTS = "get-talents"
+export const GET_TALENT = "get-talent"
 
 // Subscription
 export const GET_SUBSCRIPTION = "get-subscription"
