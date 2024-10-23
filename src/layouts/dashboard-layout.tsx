@@ -10,8 +10,10 @@ import type { NotificationCount } from "@/types/notification"
 import { APP_USERDATA_STORAGE_KEY } from "@/constants/utils"
 import { useMetadataConfig } from "@/hooks/useMetadataConfig"
 import { useGetAccount, useGetNotifications } from "@/services/hooks/queries"
+import { useAxiosInterceptor } from "@/services/axiosInstance"
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
+    useAxiosInterceptor();
     const metadata = useMetadataConfig()
     const isLoggedIn = isAuthenticated();
     const [showSidebar, setShowSidebar] = useState(false)

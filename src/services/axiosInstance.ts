@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { axiosInit } from "./axiosInit";
+import { useLogout } from "./hooks/mutations";
+import { useEffect } from "react";
 
 export const axiosUserInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_NEESILO_USER_SERVICE_URL,
@@ -23,6 +25,32 @@ export const axiosCountryInstance: AxiosInstance = axios.create({
     "X-CSCAPI-KEY": import.meta.env.VITE_COUNTRY_API_KEY
   },
 });
+
+export const useAxiosInterceptor = () => {
+  const logoutMutation = useLogout(() => {
+    // Optionally, redirect user after logout
+    window.location.href = "/auth/login";
+  });
+
+  useEffect(() => {
+    const interceptor = axiosUserInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Trigger the logout mutation if a 401 occurs
+          logoutMutation.mutate();
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axiosUserInstance.interceptors.response.eject(interceptor);
+    };
+  }, [logoutMutation]);
+
+  return axiosUserInstance;
+};
 
 const token = localStorage.getItem("token") as string;
 
