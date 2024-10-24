@@ -76,7 +76,10 @@ export const DashboardPage: React.FC = () => {
                             }
                             </div>
                         </div>
-                        <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
+                        <div className="grid">
+                            <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
+                        </div>
+                        
                         <hr className="border-gray-200" />
                         <div className="grid gap-6">
                             <div className="flex items-center justify-between">

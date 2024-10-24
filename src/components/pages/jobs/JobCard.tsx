@@ -21,7 +21,7 @@ export const JobCard: React.FC<JobCardProps> = ({ as, job, ...props }) => {
 
     const Component = as === undefined ? "div" : as;
     return (
-        <Component className="grid gap-5 bg-gray-25 border border-blue-25 p-5 rounded-xl" {...props}>
+        <Component className="grid gap-5 bg-gray-25 border border-blue-25 p-5 rounded-xl w-full" {...props}>
             <div className="grid gap-2.5">
                 <h1 className="font-semibold text-base text-gray-900">{job?.title}</h1>
                 <p className="font-normal text-sm text-gray-600 line-clamp-2">{job?.description}</p>
