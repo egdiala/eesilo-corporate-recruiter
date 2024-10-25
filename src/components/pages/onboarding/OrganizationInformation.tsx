@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
 import { useFormikWrapper } from "@/hooks/useFormikWrapper";
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding";
-import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
-import { Button, ComboBox, InputField, PhoneInput } from "@/components/core";
+import { useUpdateAccount, useUploadLogo } from "@/services/hooks/mutations/useAccount";
+import { Button, ComboBox, ImageUpload, InputField, PhoneInput } from "@/components/core";
 import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
 
 export const OrganizationInformation: React.FC = () => {
     const { mutate, isPending } = useUpdateAccount("Organization information added successfully")
+    const { mutateAsync: uploadLogo, isPending: isUploading } = useUploadLogo()
     const [query, setQuery] = useState({
         country: "",
         state: "",
@@ -32,11 +33,12 @@ export const OrganizationInformation: React.FC = () => {
             state: "",
             city: "",
             address: "",
-            zip_code: ""
+            zip_code: "",
+            file: "" as unknown,
         },
         validationSchema: onboardOrganizationInfoSchema,
         onSubmit: () => {
-            const { name, phone_number, website } = values
+            const { name, phone_number, website, file } = values
             const address_data = {
                 country: values.country,
                 country_code: selectedCountry?.phonecode,
@@ -45,7 +47,20 @@ export const OrganizationInformation: React.FC = () => {
                 address: values.address,
                 zip_code: values.zip_code
             }
-            mutate({ address_data, name, phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""), website, phone_prefix: selectedCountry?.phonecode })
+            if ((file as File)?.size > 0) {
+                const formData = new FormData();
+                formData.append("file", values.file as File);
+                uploadLogo(formData).then(() => mutate({
+                    address_data,
+                    name,
+                    phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""),
+                    website,
+                    phone_prefix: selectedCountry?.phonecode
+                }))
+            } else {
+                mutate({ address_data, name, phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""), website, phone_prefix: selectedCountry?.phonecode })
+            }
+            
         },
     })
 
@@ -85,6 +100,7 @@ export const OrganizationInformation: React.FC = () => {
                 <p className="text-base text-gray-400">Provide basic information about your organization.</p>
             </div>
             <hr />
+            <ImageUpload image={null} onReset={() => setFieldValue("file", "" as unknown)} size="64" type="company" setFile={(file) => setFieldValue("file", file)} showActions />
             <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} required />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
@@ -156,7 +172,7 @@ export const OrganizationInformation: React.FC = () => {
                 <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
             </div>
             <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
-            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid} block>Save and continue</Button>
+            <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending || isUploading} disabled={isUploading || isPending || !isValid} block>Save and continue</Button>
         </motion.form>
     )
 }

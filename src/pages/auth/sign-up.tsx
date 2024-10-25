@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
 import { PasswordStrength } from "@/components/shared"
 import { AnimatePresence, motion } from "framer-motion"
-import { useConfirmRegistrationLink, useRegister, useSetPassword } from "@/services/hooks/mutations"
+import { useRegister, useSetPassword } from "@/services/hooks/mutations"
 import { routeVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, CheckBox, InputField } from "@/components/core"
@@ -21,7 +21,7 @@ export const SignUpPage: React.FC = () => {
         setSearchParams({ step: "confirm-email" })
         setStep("confirm-email")
     })
-    const { mutate: confirmLink, isPending: isConfirming } = useConfirmRegistrationLink(() => setStep("create-password"))
+
     const { mutate: setPassword, isPending: isSettingPassword } = useSetPassword(() => backToLogin())
     
     const registerForm = useFormikWrapper({
@@ -105,7 +105,7 @@ export const SignUpPage: React.FC = () => {
                             </div>
                             <div className="grid gap-1">
                                 <h1 className="font-medium text-base text-gray-900 text-center">Confirmation email sent</h1>
-                                <p className="text-sm text-gray-500 text-center">A confirmation link has been sen to your email address. Click on the <button type="button" onClick={() => confirmLink({link})} disabled={isConfirming}>link</button> to proceed.</p>
+                                <p className="text-sm text-gray-500 text-center">A confirmation link has been sen to your email address. Click on the link to proceed.</p>
                             </div>
                         </div>
                     </motion.div>

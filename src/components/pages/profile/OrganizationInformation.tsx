@@ -143,7 +143,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         </Button>
                     </div>
                     <hr />
-                    <ImageUpload image={imageUrl} onReset={() => setFieldValue("file", account?.avatar || "" as unknown, true)} size="64" type="company" setFile={(file) => setFieldValue("file", file, true)} showActions />
+                    <ImageUpload image={account?.avatar ? imageUrl : null} onReset={() => setFieldValue("file", account?.avatar || "" as unknown, true)} size="64" type="company" setFile={(file) => setFieldValue("file", file, true)} showActions />
                     <InputField label="Organization’s Name" placeholder="Organisation name" size="40" type="text" {...register("name")} disabled={account?.status === 1} readOnly={account?.status === 1} required />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <PhoneInput label="Telephone Number" placeholder="(555) 000-0000" size="40" defaultCountry={phoneNumber?.country?.iso2} value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
@@ -231,7 +231,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         </Button>
                     </div>
                     <hr />
-                    <ImageUpload image={imageUrl} size="64" type="company" titleText="Company Logo" />
+                    <ImageUpload image={account?.avatar ? imageUrl : null} size="64" type="company" titleText="Company Logo" />
                     {
                         information.map((info) =>
                             <div key={info.label} className="flex items-center justify-between py-3">

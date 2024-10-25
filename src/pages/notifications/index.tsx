@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
-import { RenderIf } from "@/components/core"
+import { EmptyState, RenderIf } from "@/components/core"
 import { useLocation } from "react-router-dom"
 import { Loader } from "@/components/core/Button/Loader"
 import { pageVariants } from "@/constants/animateVariants"
@@ -35,23 +35,28 @@ export const NotificationsPage: React.FC = () => {
         <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-scroll">
             <RenderIf condition={notifications !== undefined}>
                 <div className="flex flex-col gap-5 bg-white rounded-2xl lg:p-8">
-                    {
-                        notifications?.map((notification) =>
-                            <div key={notification?.notification_id} className={cn("flex items-center gap-3.5 p-4 flex-1 rounded-xl", notification.status === 1 ? "bg-white" : "bg-gray-25")}>
-                                <div className="grid place-content-center p-1.5 rounded-full bg-white border border-gray-200">
-                                    <Icon icon="uil:bell" className="size-5 text-gray-600" />
+                    <RenderIf condition={notifications?.length! > 0}>
+                        {
+                            notifications?.map((notification) =>
+                                <div key={notification?.notification_id} className={cn("flex items-center gap-3.5 p-4 flex-1 rounded-xl", notification.status === 1 ? "bg-white" : "bg-gray-25")}>
+                                    <div className="grid place-content-center p-1.5 rounded-full bg-white border border-gray-200">
+                                        <Icon icon="uil:bell" className="size-5 text-gray-600" />
+                                    </div>
+                                    <div className="grid gap-1 flex-1">
+                                        <h2 className="font-medium text-sm text-gray-900">{notification?.title}</h2>
+                                        <p className="text-xs text-gray-600">{notification?.description}</p>
+                                    </div>
+                                    <div className="flex items-end flex-col text-right text-xs text-gray-600">
+                                        <span>{formatDistanceToNow(notification?.createdAt, { addSuffix: true })}</span>
+                                        <p className="lowercase">{format(notification?.createdAt, "p")}</p>
+                                    </div>
                                 </div>
-                                <div className="grid gap-1 flex-1">
-                                    <h2 className="font-medium text-sm text-gray-900">{notification?.title}</h2>
-                                    <p className="text-xs text-gray-600">{notification?.description}</p>
-                                </div>
-                                <div className="flex items-end flex-col text-right text-xs text-gray-600">
-                                    <span>{formatDistanceToNow(notification?.createdAt, { addSuffix: true })}</span>
-                                    <p className="lowercase">{format(notification?.createdAt, "p")}</p>
-                                </div>
-                            </div>
-                        )
-                    }
+                            )
+                        }
+                    </RenderIf>
+                    <RenderIf condition={notifications?.length! === 0}>
+                        <EmptyState emptyStateText="You don't have any notifications" />
+                    </RenderIf>
                 </div>
             </RenderIf>
             <RenderIf condition={(isFetching || fetchingCount) && notifications === undefined}>

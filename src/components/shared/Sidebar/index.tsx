@@ -77,13 +77,13 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
                 </div>
                 <Link to="/profile" className="flex items-center gap-2 p-3" onClick={close}>
                     <div className="size-10 relative">
-                        <img src={admin?.avatar ? imageUrl : companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name} />
+                        <img src={admin?.avatar ? imageUrl : companyAvatar} className="size-10 rounded-full object-cover" alt={admin?.name ?? "User"} />
                         <RenderIf condition={admin?.status === 1}>
                             <img src={topStatus} className="absolute -top-0.5 -right-1.5" alt="top-status" />
                         </RenderIf>
                     </div>
                     <div className="flex-1 grid gap-1">
-                        <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">{admin?.name}</h3>
+                        <h3 className="font-medium text-sm/4 text-white line-clamp-1 capitalize">{admin?.name ?? "User"}</h3>
                         <span className="font-medium text-xs text-gray-300 line-clamp-1 capitalize">Company</span>
                     </div>
                 </Link>
