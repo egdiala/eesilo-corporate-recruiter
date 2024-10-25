@@ -1,13 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useState } from "react";
+import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { NestedTable, RenderIf } from "@/components/core";
+import { Icon } from "@iconify/react";
 import emptyState from "@/assets/empty_state.webp";
 import { Loader } from "@/components/core/Button/Loader";
+import { NestedTable, RenderIf } from "@/components/core";
 import { tabVariants } from "@/constants/animateVariants";
 import { useGetApplicantDocument } from "@/services/hooks/queries";
-import type { DocumentData, FetchedApplicantDocument, FetchedShortlistedCandidate } from "@/types/applicants";
-import { format } from "date-fns";
-import { Icon } from "@iconify/react";
+import { DocumentAccessModal, DocumentRequestSendModal } from "../employees";
+import type { DocumentData, FetchedApplicantDocument, FetchedShortlistedCandidate, RequestDocumentParams } from "@/types/applicants";
 
 interface TalentDocumentsProps {
     talent: FetchedShortlistedCandidate
@@ -15,6 +16,26 @@ interface TalentDocumentsProps {
 
 export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
     const { data: talentDocuments, isFetching } = useGetApplicantDocument<FetchedApplicantDocument[]>({ user_id: talent?.user_id })
+    const [toggleModals, setToggleModals] = useState({
+        openSendRequest: false,
+        openRequestSent: false,
+        item: null as RequestDocumentParams | null
+    })
+
+    const toggleSendRequest = useCallback((item: RequestDocumentParams | null = null) => {
+        setToggleModals((prev) => ({
+            ...prev,
+            item: item,
+            openSendRequest: !toggleModals.openSendRequest,
+        }))
+    },[toggleModals.openSendRequest])
+
+    const toggleRequestSent = useCallback(() => {
+        setToggleModals((prev) => ({
+            ...prev,
+            openRequestSent: !toggleModals.openRequestSent,
+        }))
+    },[toggleModals.openRequestSent])
 
     const columns = [
         {
@@ -72,12 +93,15 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                                 groupAccessor={(item) => item.group_name}
                                 checkPermission={(groupItem) => groupItem.has_permission}
                                 parentAccessor={(item) => ({ has_permission: item.has_permission })}
-                                renderHeader={() => (
-                                    <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200">
-                                        <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
-                                        <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
-                                    </button>
-                                )}
+                                renderHeader={(groupItem) => {
+                                    const item = groupItem.data[0];
+                                    return (
+                                        <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleSendRequest({ docat_id: item?.docat_id, user_id: item?.user_id })}>
+                                            <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
+                                            <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
+                                        </button>
+                                    )
+                                }}
                             />
                         </div>
                     </RenderIf>
@@ -91,6 +115,11 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                         </div>
                     </RenderIf>
                 </motion.div>
+                <DocumentAccessModal isOpen={toggleModals.openSendRequest} onClose={toggleSendRequest} params={toggleModals.item as RequestDocumentParams} onSuccess={() => {
+                    toggleSendRequest(null);
+                    toggleRequestSent()
+                }} />
+                <DocumentRequestSendModal isOpen={toggleModals.openRequestSent} onClose={toggleRequestSent} />
             </RenderIf>
             <RenderIf condition={isFetching}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>

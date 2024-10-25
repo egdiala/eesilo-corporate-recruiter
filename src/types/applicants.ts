@@ -200,7 +200,7 @@ export type GetDocumentQuery = {
 }
 
 export interface RequestDocumentParams {
-    cat_id: string;
+    docat_id: string;
     user_id: string;
 }
 

@@ -46,8 +46,8 @@ export const RecentJobUpdates: React.FC<RecentJobUpdatesProps> = ({ notification
                 <div className="flex flex-col items-center gap-2 py-14">
                     <img src={emptyState} alt="emptyState" className="size-24" />
                     <div className="grid gap-1 text-center">
-                        <h2 className="font-medium text-base text-gray-900">You have no uploaded documents</h2>
-                        <p className="text-sm text-gray-600">Upload your documents to get them verified</p>
+                        <h2 className="font-medium text-base text-gray-900">You have no job updates</h2>
+                        <p className="text-sm text-gray-600">Post a job to get updates about it.</p>
                     </div>
                 </div>
             </RenderIf>

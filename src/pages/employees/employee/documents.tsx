@@ -95,7 +95,7 @@ export const EmployeeDocumentsPage: React.FC = () => {
                                 renderHeader={(groupItem) => {
                                     const item = groupItem.data[0];
                                     return (
-                                        <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleSendRequest({ cat_id: item?.docat_id, user_id: item?.user_id })}>
+                                        <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleSendRequest({ docat_id: item?.docat_id, user_id: item?.user_id })}>
                                             <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
                                             <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
                                         </button>
