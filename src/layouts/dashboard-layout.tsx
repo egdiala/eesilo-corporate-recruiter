@@ -53,7 +53,6 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                 <meta property="og:description" content={metadata.openGraph.description} />
                 <meta property="og:type" content={metadata.openGraph.type} />
                 <meta property="og:url" content={metadata.openGraph.url} />
-                <meta property="og:image" media="" content={metadata.openGraph.image} />
             </Helmet>
 
             <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="relative bg-gray-50 isolate flex min-h-dvh w-full overflow-hidden">

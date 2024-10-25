@@ -23,7 +23,6 @@ const AuthLayout = ({ children }: PropsWithChildren) => {
                 <meta property="og:description" content={metadata.openGraph.description} />
                 <meta property="og:type" content={metadata.openGraph.type} />
                 <meta property="og:url" content={metadata.openGraph.url} />
-                <meta property="og:image" media="" content={metadata.openGraph.image} />
             </Helmet>
 
             <div className='w-full h-screen overflow-hidden'>
