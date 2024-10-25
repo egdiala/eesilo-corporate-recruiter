@@ -123,30 +123,30 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ filters, loa
                     />
                 </div>
             </div>
-            <div className="flex flex-col xl:flex-row xl:items-start gap-5 xl:gap-0">
+            <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
                 <div className="flex flex-col md:p-5 gap-5">
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Invited</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Invited</span>
                             <h4 className="font-semibold text-3xl text-blue-500">{totalSums?.total_invited}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Accepted</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Accepted</span>
                             <h4 className="font-semibold text-3xl text-success-500">{totalSums?.total_accepted}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Rejected</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Rejected</span>
                             <h4 className="font-semibold text-3xl text-[#EF4444]">{totalSums?.total_rejected}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Hired</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Hired</span>
                             <h4 className="font-semibold text-3xl text-warning-500">{totalSums?.total_offer}</h4>
                         </div>
                     </div>
                 </div>
-                <div className="grid flex-1">
-                    <ChartContainer config={chartConfig} className="min-h-auto h-[400px] w-full -ml-5 md:ml-0 pl-0">
+                <div className="flex-1">
+                    <ChartContainer config={chartConfig} className="min-h-auto max-h-96 xl:h-[400px] w-full -ml-5 md:ml-0 pl-0">
                         <BarChart accessibilityLayer data={updatedChartData} width={5} margin={{ left: -20 }} barSize={4} barGap={8}>
                             <CartesianGrid vertical={false} />
                             <XAxis

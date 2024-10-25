@@ -76,9 +76,9 @@ export const DashboardPage: React.FC = () => {
                             }
                             </div>
                         </div>
-                        <div className="grid">
+                        {/* <div className="grid"> */}
                             <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
-                        </div>
+                        {/* </div> */}
                         
                         <hr className="border-gray-200" />
                         <div className="grid gap-6">
