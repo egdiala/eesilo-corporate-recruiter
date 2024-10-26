@@ -36,3 +36,7 @@ export const changePasswordSchema = Yup.object().shape({
 export const forgotPasswordSchema = Yup.object().shape({
   email: EmailSchema,
 });
+
+export const codeSchema = Yup.object().shape({
+  code: Yup.string().required("Code is required"),
+});

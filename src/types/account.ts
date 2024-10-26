@@ -34,6 +34,10 @@ export interface FetchedAccount extends User, Omit<UpdateAccountParams, "ein_id"
     avatar: string;
 }
 
+export type ConfirmPhoneType = {
+    code: string;
+}
+
 export type GetCalendarEventQuery = {
     year_month: string // Format is YYYY-MM
 }

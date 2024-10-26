@@ -17,6 +17,7 @@ export const UPDATE_EMAIL_API = "business/accounts/email-update"
 export const CONFIRM_EMAIL_UPDATE_API = "business/accounts/email-confirmation"
 export const UPDATE_PASSWORD_API = "business/accounts/password-update"
 export const CONFIRM_PASSWORD_UPDATE_API = "business/accounts/password-confirmation"
+export const CONFIRM_PHONE_UPDATE_API = "business/accounts/phone-number-confirmation"
 
 // Applicants
 export const GET_TALENTS_API = "business/applicants"

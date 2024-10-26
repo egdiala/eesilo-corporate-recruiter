@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react"
+import { cn } from "@/libs/cn"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom"
 import { setItem } from "@/utils/localStorage"
-import { loginSchema } from "@/validations/auth"
+import { codeSchema, loginSchema } from "@/validations/auth"
 import { useGetAccount } from "@/services/hooks/queries"
 import { tabVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { updatePasswordSchema } from "@/validations/settings"
-import { useUpdateAccount, useUpdateEmail, useUpdatePassword } from "@/services/hooks/mutations"
 import { Button, ContentDivider, InputField, RenderIf, Toggle } from "@/components/core"
+import { useConfirmPhoneUpdate, useResendOTP, useUpdateAccount, useUpdateEmail, useUpdatePassword } from "@/services/hooks/mutations"
 import { Dialog, DialogPanel, DialogTitle, Field, Fieldset, Label, Legend, Radio, RadioGroup } from "@headlessui/react"
-import { cn } from "@/libs/cn"
 
 const channels = [
     { label: "Email", value: "email" },
@@ -22,6 +22,8 @@ export const SettingsSecurityPage: React.FC = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState("")
     const { mutate: updateAccount } = useUpdateAccount(message, () => setMessage(""))
+    const { mutate: verifyPhone, isPending: isVerifyingPhone } = useConfirmPhoneUpdate("Phone number verified successfully", () => toggleVerifyPhoneOtp())
+    const { mutateAsync, isPending } = useResendOTP(message)
     const { data, refetch } = useGetAccount({ enabled: false })
     const { mutate: updateEmail, isPending: isUpdatingEmail } = useUpdateEmail(() => {
         setItem("change-email", "change-email")
@@ -31,7 +33,8 @@ export const SettingsSecurityPage: React.FC = () => {
     const [toggleModals, setToggleModals] = useState({
         openChangeEmail: false,
         openChangePassword: false,
-        openVerifyPhone: false
+        openVerifyPhone: false,
+        openVerifyPhoneOtp: false,
     })
 
     const toggleChangeEmail = useCallback(() => {
@@ -55,6 +58,13 @@ export const SettingsSecurityPage: React.FC = () => {
       }))
     }, [toggleModals.openVerifyPhone])
 
+    const toggleVerifyPhoneOtp = useCallback(() => {
+      setToggleModals((prev) => ({
+        ...prev,
+        openVerifyPhoneOtp: !toggleModals.openVerifyPhoneOtp,
+      }))
+    }, [toggleModals.openVerifyPhoneOtp])
+
     const { handleSubmit, isValid, register, values } = useFormikWrapper({
         initialValues: {
             email: "",
@@ -63,6 +73,16 @@ export const SettingsSecurityPage: React.FC = () => {
         validationSchema: loginSchema,
         onSubmit: () => {
             updateEmail(values)
+        }
+    })
+
+    const { handleSubmit: handlePhoneSubmit, isValid: isPhoneValid, register: registerPhone, values: phoneValues } = useFormikWrapper({
+        initialValues: {
+            code: "",
+        },
+        validationSchema: codeSchema,
+        onSubmit: () => {
+            verifyPhone(phoneValues)
         }
     })
 
@@ -104,6 +124,15 @@ export const SettingsSecurityPage: React.FC = () => {
         )
     }
 
+    const handlePhoneVerify = () => {
+        setMessage("A code has been sent to your phone number")
+        mutateAsync({ email: data?.email as string, request_type: "update-phone" }).then(() => {
+            setMessage("")
+            toggleVerifyPhone()
+            toggleVerifyPhoneOtp()
+        })
+    }
+
     useEffect(() => {
         if (data === undefined) {
             refetch()
@@ -137,7 +166,9 @@ export const SettingsSecurityPage: React.FC = () => {
                                 <span className="text-sm text-gray-500">
                                     Phone Number (+{data?.phone_prefix}{data?.phone_number}) <span className={cn(data?.phonenumber_verified ? "text-primary-500" : "text-error-600")}>{data?.phonenumber_verified ? "VERIFIED" : "UNVERIFIED"}</span>
                                 </span>
-                                <button type="button" onClick={() => toggleVerifyPhone()} className="bg-gray-50 border border-gray-300 rounded-full py-1 px-5 text-sm font-medium text-gray-700">Verify</button>
+                                <RenderIf condition={!data?.phonenumber_verified}>
+                                    <button type="button" onClick={() => toggleVerifyPhone()} className="bg-gray-50 border border-gray-300 rounded-full py-1 px-5 text-sm font-medium text-gray-700">Verify</button>
+                                </RenderIf>
                             </div>
                             <Toggle checked={data?.twofactor?.channel === "phone"} onChange={() => toggle2faChannel()} />
                         </div>
@@ -236,7 +267,7 @@ export const SettingsSecurityPage: React.FC = () => {
             <Dialog open={toggleModals.openVerifyPhone} as="div" className="relative z-10 focus:outline-none" onClose={toggleVerifyPhone}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">
-                        <DialogPanel as="form" onSubmit={handleSubmit} transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                        <DialogPanel transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
                             <div className="flex flex-col gap-1 py-4 pl-5 pr-4 border-b border-b-gray-200">
                                 <div className="flex items-center w-full gap-2 justify-between">
                                     <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
@@ -251,8 +282,36 @@ export const SettingsSecurityPage: React.FC = () => {
                                 </p>
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
-                                <Button type="button" theme="neutral" variant="stroke" size="36" disabled={isUpdatingEmail} block onClick={toggleVerifyPhone}>Cancel</Button>
-                                <Button type="submit" theme="primary" variant="filled" size="36" loading={isUpdatingEmail} disabled={isUpdatingEmail} block>Ok, Proceed</Button>
+                                <Button type="button" theme="neutral" variant="stroke" size="36" disabled={isPending} block onClick={toggleVerifyPhone}>Cancel</Button>
+                                <Button type="button" theme="primary" variant="filled" size="36" loading={isPending} disabled={isPending} onClick={handlePhoneVerify} block>Ok, Proceed</Button>
+                            </div>
+                        </DialogPanel>
+                    </div>
+                </div>
+            </Dialog>
+            <Dialog open={toggleModals.openVerifyPhoneOtp} as="div" className="relative z-10 focus:outline-none" onClose={toggleVerifyPhoneOtp}>
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
+                    <div className="flex min-h-full items-end md:items-center justify-center p-4">
+                        <DialogPanel as="form" onSubmit={handlePhoneSubmit} transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                            <div className="flex flex-col gap-1 py-4 pl-5 pr-4 border-b border-b-gray-200">
+                                <div className="flex items-center w-full gap-2 justify-between">
+                                    <DialogTitle as="h1" className="flex-1 text-base font-medium text-gray-900">
+                                        Verify Phone Number
+                                    </DialogTitle>
+                                    <button type="button" className="p-0.5 rounded-md hover:bg-gray-100 transition duration-500 ease-out" onClick={toggleVerifyPhoneOtp}>
+                                        <Icon icon="ri:close-line" className="size-5 text-gray-500" />
+                                    </button>
+                                </div>
+                                <p className="text-sm text-gray-500">
+                                    Enter the code sent to +{data?.phone_prefix}{data?.phone_number}
+                                </p>
+                            </div>
+                            <div className="grid gap-5 p-4">
+                                <InputField label="OTP Code" placeholder="• • • • • • • • • •" size="40" type="password" {...registerPhone("code")} required />
+                            </div>
+                            <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
+                                <Button type="button" theme="neutral" variant="stroke" size="36" disabled={isVerifyingPhone} block onClick={toggleVerifyPhoneOtp}>Cancel</Button>
+                                <Button type="submit" theme="primary" variant="filled" size="36" loading={isVerifyingPhone} disabled={!isPhoneValid || isVerifyingPhone} block>Verify</Button>
                             </div>
                         </DialogPanel>
                     </div>
