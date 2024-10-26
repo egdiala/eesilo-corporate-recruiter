@@ -18,7 +18,6 @@ const routeMetadata = {
     "/help": { title: "Help & Support", description: "Get help with using Neesilo" },
     "/profile": { title: "Profile", description: "View your profile page." },
     "/auth/login": { title: "Login", description: "Enter your details to access Neesilo", },
-    "/auth/welcome": { title: "Welcome", description: "Choose how you would like to proceed", },
     "/auth/sign-up": { title: "Sign Up", description: "Complete the form to get started with Neesilo", },
     "/auth/forgot-password": { title: "Forgot Password", description: "Recover your Neesilo account here." }
 };

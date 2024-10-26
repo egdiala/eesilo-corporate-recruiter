@@ -149,18 +149,6 @@ export const useMetadataConfig = () => {
             type: "website",
           },
         },
-        "/auth/welcome": {
-          title: "Welcome",
-          description: "Choose how you would like to proceed",
-          keywords: "jobs, photography, design, auth, welcome",
-          openGraph: {
-            title: "Welcome",
-            description: "Choose how you would like to proceed",
-            url: "/jobs",
-            image: "https://neesilo-corporate-recruiter.vercel.app/og_image.png",
-            type: "website",
-          },
-        },
         "/auth/sign-up": {
           title: "Sign Up",
           description: "Complete the form to get started with Neesilo",
