@@ -12,7 +12,7 @@ import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom"
 export const ViewEmployeePage: React.FC = () => {
     const { id: talentId } = useParams()
     const navigate = useNavigate()
-    const { data: talent, isFetching } = useGetTalent<SingleTalent>(talentId as string)
+    const { data: talent, isLoading } = useGetTalent<SingleTalent>(talentId as string)
     const tabs = useMemo(() => {
         return [
             {
@@ -34,14 +34,14 @@ export const ViewEmployeePage: React.FC = () => {
     }, [talentId])
     
     useEffect(() => {
-    if (!talent?.user_id && !isFetching) {
+    if (!talent?.user_id && !isLoading) {
       navigate("/employees")
     }
-    },[isFetching, navigate, talent?.user_id])
+    },[isLoading, navigate, talent?.user_id])
     
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
                     <div className="flex flex-col gap-0 view-page-container overflow-hidden">
                         <div className="flex items-center gap-2.5 py-5 px-4 md:px-8 border-b border-b-gray-200 bg-white">
@@ -79,7 +79,7 @@ export const ViewEmployeePage: React.FC = () => {
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

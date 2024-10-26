@@ -18,12 +18,12 @@ import { useGetDashboardStats, useGetJobs, useGetNotifications, useGetTalents } 
 export const DashboardPage: React.FC = () => {
     const [allLoading, setAllLoading] = useState(true)
     const [performanceFilters, setPerformanceFilters] = useState({ year: new Date().getFullYear().toString() })
-    const { data: dataCount, isFetching: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
-    const { data: interviewCount, isFetching: fetchingInterviewCount } = useGetDashboardStats<InterviewDataCountType[]>({ component: "job-interview-count" })
-    const { data: yearlyDataCount, isFetching: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count", ...performanceFilters })
-    const { data: talents, isFetching: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
-    const { data: notifications, isFetching: fetchingNotifications } = useGetNotifications<FetchedNotification[]>({ status: "0" })
+    const { data: dataCount, isLoading: fetchingDataCount } = useGetDashboardStats<JobDataCountType>({ component: "job-data-count" })
+    const { data: interviewCount, isLoading: fetchingInterviewCount } = useGetDashboardStats<InterviewDataCountType[]>({ component: "job-interview-count" })
+    const { data: yearlyDataCount, isLoading: fetchingYearlyCount } = useGetDashboardStats<JobYearlyCountType[]>({ component: "job-yearly-count", ...performanceFilters })
+    const { data: talents, isLoading: fetchingTalents } = useGetTalents<FetchedTalent[]>({ item_per_page: "3" })
+    const { data: jobs, isLoading: fetchingJobs } = useGetJobs<FetchedJob[]>({ item_per_page: "2" })
+    const { data: notifications, isLoading: fetchingNotifications } = useGetNotifications<FetchedNotification[]>({ status: "0" })
     const cards = useMemo(() => {
         return [
             { icon: "ri:briefcase-4-line", iconClass: "text-warning-500 size-8", background: "bg-warning-25", label: "Job Posts", value: dataCount?.total_job },
@@ -33,17 +33,17 @@ export const DashboardPage: React.FC = () => {
         ]
     },[dataCount?.total_employee, dataCount?.total_invited, dataCount?.total_job, dataCount?.total_shortlisted])
 
-    const isFetchingAll = useMemo(() => {
+    const isLoadingAll = useMemo(() => {
         const loadingStates = [fetchingDataCount, fetchingInterviewCount, fetchingYearlyCount, fetchingTalents, fetchingJobs, fetchingNotifications]
 
         return loadingStates.some((item) => item)
     }, [fetchingDataCount, fetchingInterviewCount, fetchingYearlyCount, fetchingTalents, fetchingJobs, fetchingNotifications])
 
     useEffect(() => {
-        if (!isFetchingAll) {
+        if (!isLoadingAll) {
             setAllLoading(false)
         }
-    },[isFetchingAll])
+    },[isLoadingAll])
 
     return (
         <Fragment>

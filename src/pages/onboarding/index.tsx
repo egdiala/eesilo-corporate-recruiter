@@ -14,7 +14,7 @@ import { ContactPerson, OrganizationInformation, Verification } from "@/componen
 export const OnboardingPage: React.FC = () => {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    const { data: account, isFetching } = useGetAccount()
+    const { data: account, isLoading } = useGetAccount()
     const stages = useMemo(() => {
         return ["bio_data", "contact_person", "eid_number"]
     },[])
@@ -48,7 +48,7 @@ export const OnboardingPage: React.FC = () => {
     
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="flex flex-col max-w-7xl w-full mx-auto">
                     <header className="flex flex-col md:flex-row items-center gap-3 px-[1.125rem] md:px-8 py-3 md:py-5 border-b border-gray-200">
                         <div className="grid p-0 place-content-center">
@@ -112,7 +112,7 @@ export const OnboardingPage: React.FC = () => {
                     </Dialog>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

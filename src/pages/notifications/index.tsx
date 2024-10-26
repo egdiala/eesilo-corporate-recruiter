@@ -16,8 +16,8 @@ export const NotificationsPage: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const  { data: notifications, isFetching } = useGetNotifications<FetchedNotification[]>({ page: page.toString(), item_per_page: itemsPerPage.toString() })
-    const { isFetching: fetchingCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const  { data: notifications, isLoading } = useGetNotifications<FetchedNotification[]>({ page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { isLoading: fetchingCount } = useGetNotifications<NotificationCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString() })
     const { mutate } = useReadNotifications()
 
 
@@ -59,7 +59,7 @@ export const NotificationsPage: React.FC = () => {
                     </RenderIf>
                 </div>
             </RenderIf>
-            <RenderIf condition={(isFetching || fetchingCount) && notifications === undefined}>
+            <RenderIf condition={(isLoading || fetchingCount) && notifications === undefined}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </motion.div>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { tabVariants } from "@/constants/animateVariants";
 import { useFormikWrapper } from "@/hooks/useFormikWrapper";
@@ -24,7 +24,7 @@ export const OrganizationInformation: React.FC = () => {
         return numbers ? numbers.join("") : "";
     }
     
-    const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
+    const { errors, handleBlur, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
             name: "",
             phone_number: "",
@@ -64,7 +64,7 @@ export const OrganizationInformation: React.FC = () => {
         },
     })
 
-    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
+    const { data: countries, isLoading: fetchingCountries } = useGetCountries()
     const fetchedCountries = query.country === ""
         ? countries
         : countries?.filter((country) => {
@@ -75,7 +75,7 @@ export const OrganizationInformation: React.FC = () => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
-    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
+    const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
         ? states
         : states?.filter((state) => {
@@ -86,12 +86,28 @@ export const OrganizationInformation: React.FC = () => {
         return states?.filter((item) => item?.name === values?.state)?.at(0)
     },[states, values?.state])
 
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
+    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
     const fetchedCities = query.city === ""
         ? cities
         : cities?.filter((city) => {
             return city.name.toLowerCase().includes(query.city.toLowerCase())
-            })
+        })
+    
+    const defaultCountry = {
+        "id": 233,
+        "name": "United States",
+        "iso2": "US",
+        "iso3": "USA",
+        "phonecode": "1",
+        "capital": "Washington",
+        "currency": "USD",
+        "native": "United States",
+        "emoji": "🇺🇸"
+    }
+
+    useEffect(() => {
+        setFieldValue("country", defaultCountry?.name, false)
+    },[])
 
     return (
         <motion.form onSubmit={handleSubmit} initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
@@ -117,6 +133,8 @@ export const OrganizationInformation: React.FC = () => {
                         ...prev,
                         country: value,
                     }))} 
+                    onBlur={handleBlur}
+                    defaultValue={defaultCountry}
                     displayValue={(item) => item?.name}
                     optionLabel={(option) => option?.name} 
                     setSelected={(value) => setFieldValue("country", value?.name)}

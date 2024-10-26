@@ -13,7 +13,7 @@ export const ViewJobPage: React.FC = () => {
     const { id: jobId } = useParams()
     const navigate = useNavigate()
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const { data: job, isFetching } = useGetJob(jobId as string)
+    const { data: job, isLoading } = useGetJob(jobId as string)
     const tabs = useMemo(() => {
         return [
             {
@@ -37,7 +37,7 @@ export const ViewJobPage: React.FC = () => {
 
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial}>
                     <div className="flex flex-col gap-0 view-page-container overflow-hidden">
                         <div className="flex items-center gap-2.5 py-3 md:py-5 px-4 md:px-8 border-b border-b-gray-200 bg-white">
@@ -78,7 +78,7 @@ export const ViewJobPage: React.FC = () => {
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

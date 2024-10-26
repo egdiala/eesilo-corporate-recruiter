@@ -48,9 +48,9 @@ export const EditJobPage: React.FC = () => {
         },
     })
 
-    const { data: fetchedRequirements, isFetching: fetchingRequirements } = useGetJobRequirements({ q: query.requirements })
+    const { data: fetchedRequirements, isLoading: fetchingRequirements } = useGetJobRequirements({ q: query.requirements })
 
-    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
+    const { data: countries, isLoading: fetchingCountries } = useGetCountries()
     const fetchedCountries = query.country === ""
         ? countries
         : countries?.filter((country) => {
@@ -61,7 +61,7 @@ export const EditJobPage: React.FC = () => {
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
-    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
+    const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
         ? states
         : states?.filter((state) => {
@@ -72,7 +72,7 @@ export const EditJobPage: React.FC = () => {
         return states?.filter((item) => item?.name === values?.state)?.at(0)
     },[states, values?.state])
 
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
+    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
     const fetchedCities = query.city === ""
         ? cities
         : cities?.filter((city) => {

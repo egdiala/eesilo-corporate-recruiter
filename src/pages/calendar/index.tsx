@@ -39,7 +39,7 @@ export const CalendarPage: React.FC = () => {
         "col-start-6",
         "col-start-7",
     ]
-    const { data: events, isFetching: isFetchingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+    const { data: events, isLoading: isLoadingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
 
     let [eventsToView, setEventsToView] = useState<FetchedCalendarEvent[]>([])
 
@@ -60,7 +60,7 @@ export const CalendarPage: React.FC = () => {
                 </header>
                 <AnimatePresence mode="popLayout">
                     {
-                        !isFetchingEvents && (
+                        !isLoadingEvents && (
                             <motion.div variants={routeVariants} initial='initial' animate='final' exit={routeVariants.initial} className="lg:flex lg:h-full lg:flex-col border-t border-l border-y-gray-200 rounded-lg overflow-hidden">
                                 <div className="lg:flex lg:flex-auto lg:flex-col">
                                     <div className="grid grid-cols-7 border-b border-gray-200 text-left text-base font-medium text-gray-600 lg:flex-none">
@@ -189,7 +189,7 @@ export const CalendarPage: React.FC = () => {
                 </AnimatePresence>
                 <AnimatePresence mode="popLayout">
                     {
-                        isFetchingEvents && (
+                        isLoadingEvents && (
                             <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                         )
                     }

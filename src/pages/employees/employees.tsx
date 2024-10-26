@@ -20,8 +20,8 @@ export const EmployeesPage: React.FC = () => {
     const { value, onChangeHandler } = useDebounce(500)
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedEmployeeCount>({ component: "count", offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: candidates, isLoading } = useGetShortlisted<FetchedEmployee[]>({ offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
+    const { data: count, isLoading: fetchingCount } = useGetShortlisted<FetchedEmployeeCount>({ component: "count", offer_status: "1", ...filters, q: value, page: page.toString(), item_per_page: itemsPerPage.toString() })
 
     const handlePageChange = (page: number) => {
         // in a real page, this function would paginate the data from the backend
@@ -65,7 +65,7 @@ export const EmployeesPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <RenderIf condition={!isFetching && !fetchingCount}>
+                    <RenderIf condition={!isLoading && !fetchingCount}>
                         <RenderIf condition={candidates?.length! > 0}>
                             <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -94,7 +94,7 @@ export const EmployeesPage: React.FC = () => {
                             </motion.div>
                         </RenderIf>
                     </RenderIf>
-                    <RenderIf condition={isFetching || fetchingCount}>
+                    <RenderIf condition={isLoading || fetchingCount}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                     </RenderIf>
                 </div>

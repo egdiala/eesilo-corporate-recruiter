@@ -19,8 +19,8 @@ export const TalentSearchPage: React.FC = () => {
     const [itemsPerPage] = useState(10)
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, page: page.toString(), item_per_page: itemsPerPage.toString(), ...filters })
-    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString(), keyword, ...filters })
+    const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({ keyword, page: page.toString(), item_per_page: itemsPerPage.toString(), ...filters })
+    const { data: count, isLoading: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", page: page.toString(), item_per_page: itemsPerPage.toString(), keyword, ...filters })
 
     const handlePageChange = (page: number) => {
         // in a real page, this function would paginate the data from the backend
@@ -65,7 +65,7 @@ export const TalentSearchPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <RenderIf condition={!isFetching && !fetchingCount}>
+                    <RenderIf condition={!isLoading && !fetchingCount}>
                         <RenderIf condition={candidates?.length! > 0}>
                             <motion.div initial={routeVariants.initial} animate={routeVariants.final} exit={routeVariants.initial} className="grid gap-5">
                                 <div className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 grid">
@@ -96,7 +96,7 @@ export const TalentSearchPage: React.FC = () => {
                             </motion.div>
                         </RenderIf>
                     </RenderIf>
-                    <RenderIf condition={isFetching || fetchingCount}>
+                    <RenderIf condition={isLoading || fetchingCount}>
                         <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                     </RenderIf>
                 </div>

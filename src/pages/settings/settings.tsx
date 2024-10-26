@@ -10,7 +10,7 @@ import { Loader } from "@/components/core/Button/Loader";
 export const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { isFetching } = useGetAccount()
+    const { isLoading } = useGetAccount()
     const tabs = useMemo(() => {
         return [
             {
@@ -51,14 +51,14 @@ export const SettingsPage: React.FC = () => {
                     }
                     </div>
                 </div>
-                <RenderIf condition={!isFetching}>
+                <RenderIf condition={!isLoading}>
                     <div className="max-w-xl w-full flex-1">
                         <AnimatePresence mode="popLayout">
                             <Outlet />
                         </AnimatePresence>
                     </div>
                 </RenderIf>
-                <RenderIf condition={isFetching}>
+                <RenderIf condition={isLoading}>
                     <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
                 </RenderIf>
             </div>

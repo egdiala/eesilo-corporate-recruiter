@@ -14,7 +14,7 @@ import type { DocumentData, FetchedApplicantDocument, RequestDocumentParams } fr
 
 export const EmployeeDocumentsPage: React.FC = () => {
     const { id: talentId } = useParams()
-    const { data: talentDocuments, isFetching } = useGetApplicantDocument<FetchedApplicantDocument[]>({ user_id: talentId as string })
+    const { data: talentDocuments, isLoading } = useGetApplicantDocument<FetchedApplicantDocument[]>({ user_id: talentId as string })
     const [toggleModals, setToggleModals] = useState({
         openSendRequest: false,
         openRequestSent: false,
@@ -77,7 +77,7 @@ export const EmployeeDocumentsPage: React.FC = () => {
     ];
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
                     <div className="grid gap-2">
                         <h1 className="font-medium text-lg text-gray-900">Documents</h1>
@@ -120,7 +120,7 @@ export const EmployeeDocumentsPage: React.FC = () => {
                 }} />
                 <DocumentRequestSendModal isOpen={toggleModals.openRequestSent} onClose={toggleRequestSent} />
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

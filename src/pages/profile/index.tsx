@@ -8,7 +8,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react"
 import { OrganizationInformation, ContactPerson, Verification } from "@/components/pages/profile"
 
 export const ProfilePage: React.FC = () => {
-    const { data: account, isFetching } = useGetAccount()
+    const { data: account, isLoading } = useGetAccount()
     const [selectedIndex, setSelectedIndex] = useState(0)
     const tabs = useMemo(() => {
         return [
@@ -28,7 +28,7 @@ export const ProfilePage: React.FC = () => {
     },[])
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-10 view-page-container overflow-y-scroll">
                     <TabGroup as="section" className="grid md:flex flex-col md:flex-row gap-5 bg-white rounded-2xl p-4 lg:p-8" selectedIndex={selectedIndex} onChange={setSelectedIndex}>
                         <TabList className="flex flex-col h-fit gap-2 p-2.5 overflow-hidden border border-gray-200 rounded-2xl md:max-w-72 w-full">
@@ -55,7 +55,7 @@ export const ProfilePage: React.FC = () => {
                     </TabGroup>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

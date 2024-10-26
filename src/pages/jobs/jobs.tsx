@@ -20,8 +20,8 @@ export const JobsPage: React.FC = () => {
     const [gridView, setGridView] = useState(true)
     const { value, onChangeHandler } = useDebounce(500)
     const [searchParams, setSearchParams] = useSearchParams();
-    const { data: jobs, isFetching: fetchingJobs } = useGetJobs<FetchedJob[]>({ page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
-    const { data: count, isFetching: fetchingCount } = useGetJobs<FetchedJobCount>({ page: page.toString(), item_per_page: itemsPerPage.toString(), component: "count" })
+    const { data: jobs, isLoading: fetchingJobs } = useGetJobs<FetchedJob[]>({ page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
+    const { data: count, isLoading: fetchingCount } = useGetJobs<FetchedJobCount>({ page: page.toString(), item_per_page: itemsPerPage.toString(), component: "count" })
 
     const columns = [
         {

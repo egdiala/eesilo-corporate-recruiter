@@ -5,11 +5,19 @@ import { useFormikWrapper } from "@/hooks/useFormikWrapper";
 import { Button, InputField, PhoneInput } from "@/components/core";
 import { onboardContactPersonSchema } from "@/validations/onboarding";
 import { useUpdateAccount } from "@/services/hooks/mutations/useAccount";
-import { formatPhoneNumber, parsePhoneNumber } from "react-phone-number-input";
+import { parsePhoneNumber } from "react-phone-number-input";
 
 
 export const ContactPerson: React.FC = () => {
     const { mutate, isPending } = useUpdateAccount("Contact person info added successfully")
+
+    const extractNumbers = (str: string) => {
+        // Use a regular expression to match all digits (\d)
+        const numbers = str.match(/\d+/g);
+
+        // Join the array of numbers into a single string
+        return numbers ? numbers.join("") : "";
+    }
     
     const { errors, handleSubmit, isValid, register, setFieldValue, values } = useFormikWrapper({
         initialValues: {
@@ -20,14 +28,14 @@ export const ContactPerson: React.FC = () => {
         },
         validationSchema: onboardContactPersonSchema,
         onSubmit: () => {
-            const formattedPhoneNumber = formatPhoneNumber(values.phone_number).split(" ").join("")
+            const formattedPhoneNumber = extractNumbers(values.phone_number)
             const parsedPhoneNumber = parsePhoneNumber(values.phone_number)
             const contact_person = {
                 email: values.email,
                 phone_prefix: parsedPhoneNumber?.countryCallingCode,
                 name: values.name,
                 job_title: values.job_title,
-                phone_number: formattedPhoneNumber,
+                phone_number: formattedPhoneNumber?.startsWith(parsedPhoneNumber?.countryCallingCode as string) ? formattedPhoneNumber?.replace(parsedPhoneNumber?.countryCallingCode as string, "") : formattedPhoneNumber,
             }
             mutate({ contact_person })
         },

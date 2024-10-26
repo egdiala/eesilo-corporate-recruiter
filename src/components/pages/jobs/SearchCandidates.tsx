@@ -25,8 +25,8 @@ export const SearchCandidates: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { value: keyword, onChangeHandler } = useDebounce(500)
     const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
-    const { data: candidates, isFetching } = useGetTalents<FetchedTalent[]>({ keyword, year_exp, job_id: jobId })
-    const { data: count, isFetching: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp, job_id: jobId })
+    const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({ keyword, year_exp, job_id: jobId })
+    const { data: count, isLoading: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp, job_id: jobId })
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -109,7 +109,7 @@ export const SearchCandidates: React.FC = () => {
                 <InputField type="text" placeholder="Years of experience" onChange={handleYearExp} />
                 <InputField type="text" placeholder="Salary expectation" />
             </div>
-            <RenderIf condition={!isFetching && !fetchingCount}>
+            <RenderIf condition={!isLoading && !fetchingCount}>
                 <Table
                     columns={columns}
                     data={candidates ?? []}
@@ -121,7 +121,7 @@ export const SearchCandidates: React.FC = () => {
                     onClick={({ original }) => navigate(`/jobs/${original?.job_id}/view`)}
                 />
             </RenderIf>
-            <RenderIf condition={isFetching || fetchingCount}>
+            <RenderIf condition={isLoading || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
             <AddToShortlist isOpen={toggleModals.openShortlistCandidate} onClose={toggleShortlistCandidate} talent={activeTalent!} />

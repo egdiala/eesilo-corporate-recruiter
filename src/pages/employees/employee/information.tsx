@@ -18,8 +18,8 @@ import { useGetCountries, useGetJobs, useGetShortlistedCandidate, useGetTalent }
 
 export const EmployeeInformationPage: React.FC = () => {
     const { id } = useParams()
-    const { data: candidate, isFetching: isFetchingCandidate } = useGetTalent<SingleTalent>("")
-    const { data: talent, refetch, isFetching } = useGetShortlistedCandidate<ActiveJobRole>({ talentId: id as string })
+    const { data: candidate, isLoading: isLoadingCandidate } = useGetTalent<SingleTalent>("")
+    const { data: talent, refetch, isLoading } = useGetShortlistedCandidate<ActiveJobRole>({ talentId: id as string })
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
         openInvitedModal: false,
@@ -78,7 +78,7 @@ export const EmployeeInformationPage: React.FC = () => {
     },[talent?.user_data?.avatar])
     return (
         <Fragment>
-            <RenderIf condition={!isFetching && !isFetchingCandidate}>
+            <RenderIf condition={!isLoading && !isLoadingCandidate}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="bg-primary-25 w-full h-32 rounded-lg"></div>
@@ -254,7 +254,7 @@ export const EmployeeInformationPage: React.FC = () => {
                     </Dialog>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching || isFetchingCandidate}>
+            <RenderIf condition={isLoading || isLoadingCandidate}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>

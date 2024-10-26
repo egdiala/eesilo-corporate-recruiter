@@ -23,7 +23,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         city: ""
     })
 
-    const { data: countries, isFetching: fetchingCountries } = useGetCountries()
+    const { data: countries, isLoading: fetchingCountries } = useGetCountries()
 
     const phoneNumber = useMemo(() => {
         if (account?.phone_number) {
@@ -95,7 +95,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         return countries?.filter((item) => item?.name === values?.country)?.at(0)
     },[countries, values?.country])
 
-    const { data: states, isFetching: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
+    const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
         ? states
         : states?.filter((state) => {
@@ -106,7 +106,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         return states?.filter((item) => item?.name === values?.state)?.at(0)
     },[states, values?.state])
 
-    const { data: cities, isFetching: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
+    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
     const fetchedCities = query.city === ""
         ? cities
         : cities?.filter((city) => {

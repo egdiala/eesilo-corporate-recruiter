@@ -19,8 +19,8 @@ export const ShortlistedCandidates: React.FC = () => {
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const { value, onChangeHandler } = useDebounce(500)
-    const { data: candidates, isFetching } = useGetShortlisted<FetchedShortlistedCandidate[]>({ job_id: id as string, q: value }) // invite_status: "0",
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", job_id: id as string, q: value }) // invite_status: "0",
+    const { data: candidates, isLoading } = useGetShortlisted<FetchedShortlistedCandidate[]>({ job_id: id as string, q: value }) // invite_status: "0",
+    const { data: count, isLoading: fetchingCount } = useGetShortlisted<FetchedTalentCount>({ component: "count", job_id: id as string, q: value }) // invite_status: "0",
     const [searchParams, setSearchParams] = useSearchParams();
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
@@ -168,7 +168,7 @@ export const ShortlistedCandidates: React.FC = () => {
 
     return (
         <Fragment>
-            <RenderIf condition={!isFetching && !fetchingCount}>
+            <RenderIf condition={!isLoading && !fetchingCount}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-5">
                     <div className="grid w-full gap-5 lg:gap-0 lg:flex lg:items-center lg:justify-between">
                         <h2 className="font-medium text-gray-900 text-base">Shortlisted</h2>
@@ -191,7 +191,7 @@ export const ShortlistedCandidates: React.FC = () => {
                     />
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching || fetchingCount}>
+            <RenderIf condition={isLoading || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
             <DeleteShortlist isOpen={toggleModals.openShortlistCandidate} onClose={toggleShortlistCandidate} talent={activeTalent!} />

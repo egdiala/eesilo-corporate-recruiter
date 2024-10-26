@@ -19,8 +19,8 @@ export const Hired: React.FC = () => {
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const { value, onChangeHandler } = useDebounce(500)
-    const { data: candidates, isFetching } = useGetShortlisted<HiredCandidate[]>({ offer_status: "1", job_id: jobId, page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
-    const { data: count, isFetching: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId, q: value })
+    const { data: candidates, isLoading } = useGetShortlisted<HiredCandidate[]>({ offer_status: "1", job_id: jobId, page: page.toString(), item_per_page: itemsPerPage.toString(), q: value })
+    const { data: count, isLoading: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId, q: value })
     const [searchParams, setSearchParams] = useSearchParams();
 
     const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
@@ -86,7 +86,7 @@ export const Hired: React.FC = () => {
                     </Button>
                 </div>
             </div>
-            <RenderIf condition={!isFetching && !fetchingCount}>
+            <RenderIf condition={!isLoading && !fetchingCount}>
                 <Table
                     columns={columns}
                     data={candidates ?? []}
@@ -98,7 +98,7 @@ export const Hired: React.FC = () => {
                     onClick={({ original }) => navigate(`/employees/view/${original?.user_id}/information`)}
                 />
             </RenderIf>
-            <RenderIf condition={isFetching || fetchingCount}>
+            <RenderIf condition={isLoading || fetchingCount}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </motion.div>

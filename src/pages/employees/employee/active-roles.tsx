@@ -12,11 +12,11 @@ import { useParams } from "react-router-dom";
 
 export const EmployeeActiveRolesPage: React.FC = () => {
     const { id } = useParams()
-    const { data: activeJobs, isFetching } = useGetShortlistedCandidate<ActiveJobRole[]>({ offer_status: "1", talentId: id as string })
+    const { data: activeJobs, isLoading } = useGetShortlistedCandidate<ActiveJobRole[]>({ offer_status: "1", talentId: id as string })
 
     return (
         <Fragment>
-            <RenderIf condition={!isFetching}>
+            <RenderIf condition={!isLoading}>
                 <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
                     <div className="flex flex-col border border-gray-200 rounded-xl gap-4 p-4">
                         <div className="flex items-center gap-4 pb-4 border-b border-b-[#E2E4E9]">
@@ -36,7 +36,7 @@ export const EmployeeActiveRolesPage: React.FC = () => {
                     </div>
                 </motion.div>
             </RenderIf>
-            <RenderIf condition={isFetching}>
+            <RenderIf condition={isLoading}>
                 <div className="flex w-full h-96 items-center justify-center"><Loader className="spinner size-6 text-primary-500" /></div>
             </RenderIf>
         </Fragment>
