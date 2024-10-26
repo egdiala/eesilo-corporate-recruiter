@@ -18,12 +18,13 @@ export const LoginPage: React.FC = () => {
     const [otpError, setOtpError] = useState("")
     const newPass = getItem<string>("newPass")
     const [otp, setOtp] = useState<string>("")
-    const [countdown, setCountdown] = useState<number>(30)
+    const [countdown, setCountdown] = useState<number>(300)
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
     const { mutate: twoFaLogin, isPending: isAuthenticating, error, isError } = use2FaLogin((data) => handleSuccessfulLogin(data as User))
     const { mutateAsync: login, isPending } = useLogin((data) => {
         handleSuccessfulLogin(data as User)
         if ((data as TwoFaLogin)?.action) {
+            setCountdown(300)
             setChannel((data as TwoFaLogin)?.channel[0])
             setStep("2fa")
         }
@@ -58,7 +59,7 @@ export const LoginPage: React.FC = () => {
         if (countdown <= 0) {
           clearInterval(countdown);
           setIsButtonDisabled(false);
-          setCountdown(60); // Reset countdown (optional if button is not disabled again)
+          setCountdown(300); // Reset countdown (optional if button is not disabled again)
         }
     }, [countdown]);
 
@@ -76,13 +77,14 @@ export const LoginPage: React.FC = () => {
     const handleResendClick = () => {
         login(loginForm.values).then(() => {
             setIsButtonDisabled(true);
-            setCountdown(30); // Reset the timer
+            setCountdown(300); // Reset the timer
         })
     };
 
     const formatCountdown = (countdown: number) => {
+        const minutes = Math.floor(countdown / 60).toString().padStart(2, "0");
         const seconds = (countdown % 60).toString().padStart(2, "0");
-        return `${seconds}s`;
+        return `${minutes}m ${seconds}s`;
     };
 
     useEffect(() => {
@@ -100,7 +102,7 @@ export const LoginPage: React.FC = () => {
 
     const proceed = () => {
         removeItem("newPass")
-        setCountdown(30)
+        setCountdown(300)
         setStep("2fa")
     }
 

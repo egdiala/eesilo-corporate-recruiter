@@ -37,6 +37,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
 
     if (!isLoggedIn) {
         localStorage.clear();
+        sessionStorage.clear();
         return <Navigate to="/auth/login" replace />;
     }
     

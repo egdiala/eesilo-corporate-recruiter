@@ -29,8 +29,9 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
     
     const logOut = () => {
         removeItem(APP_TOKEN_STORAGE_KEY);
-        removeItem(APP_USERDATA_STORAGE_KEY)
-        location.reload()
+        removeItem(APP_USERDATA_STORAGE_KEY);
+        sessionStorage.clear();
+        window.location.href = "/auth/login";
     }
 
     const eventsCount = useMemo(() => {
