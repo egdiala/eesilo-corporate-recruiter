@@ -74,7 +74,7 @@ export const EmployeeInformationPage: React.FC = () => {
     },[refetch, talent])
 
     const imageUrl = useMemo(() => {
-        return `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.user_data?.avatar}`
+        return `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${talent?.user_data?.avatar}`
     },[talent?.user_data?.avatar])
     return (
         <Fragment>

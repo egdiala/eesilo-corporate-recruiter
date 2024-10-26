@@ -25,7 +25,7 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
         }
     },[events?.length])
 
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/`
     
     return (
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={onClose}>

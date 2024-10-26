@@ -23,7 +23,7 @@ export const TalentCard: React.FC<TalentCardProps> = ({ as, className, activeRol
         ].filter((item) => (item !== false) && (item !== 0))
     },[activeRoles, talent?.specialty_data?.specialty_main, talent?.specialty_data?.specialty_sub, talent?.specialty_data?.year_exp])
 
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${talent?.avatar}`
     return (
         <Component className={cn("border border-gray-200 bg-gray-25 rounded-xl overflow-hidden", className)} {...props}>
             <div className="grid gap-3.5">

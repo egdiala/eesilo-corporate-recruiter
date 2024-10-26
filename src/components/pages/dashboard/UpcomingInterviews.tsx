@@ -12,7 +12,7 @@ interface UpcomingInterviewsProps {
 }
 
 export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ interviews }) => {
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/`
     return (
         <div className="flex flex-col gap-4 p-4 border border-gray-200 rounded-xl">
             <div className="flex items-center justify-between">

@@ -128,7 +128,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         ]
     }, [account?.address_data?.address, account?.address_data?.city, account?.address_data?.country, account?.address_data?.state, account?.address_data?.zip_code, account?.name, account?.phone_number, account?.website])
     
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${account?.avatar}`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${account?.avatar}`
     return (
         <Fragment>
             <RenderIf condition={editMode}>

@@ -23,7 +23,7 @@ export const Hired: React.FC = () => {
     const { data: count, isLoading: fetchingCount } = useGetShortlisted<FetchedJobCount>({ component: "count", offer_status: "1", job_id: jobId, q: value })
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/`
 
     const columns = [
         {

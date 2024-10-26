@@ -4,7 +4,7 @@ import { EmailSchema } from "./auth";
 export const onboardOrganizationInfoSchema = Yup.object().shape({
     name: Yup.string().trim().required("Organization name is required"),
     phone_number: Yup.string().trim().required("Telephone number is required"),
-    website: Yup.string().trim().required("Company website is required"),
+    // website: Yup.string().trim().required("Company website is required"),
     country: Yup.string().trim().required("Select a country"),
     state: Yup.string().trim().required("Select a state"),
     city: Yup.string().trim().required("Select a city"),

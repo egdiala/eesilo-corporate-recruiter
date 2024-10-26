@@ -33,7 +33,7 @@ export const ShortlistedCandidates: React.FC = () => {
       }))
     },[toggleModals.openShortlistCandidate])
 
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/`
     const columns = [
         {
             header: () => "Name",

@@ -50,7 +50,7 @@ const SidebarContent: React.FC<SidebarProps> = ({ admin, close, notificationCoun
         return otherRoutes.map((item) => item.name === "Notifications" ? ({ to: item.to, name: item.name, icon: item.icon, count: notificationCount }) : item)
     }, [notificationCount])
     
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${admin?.avatar}`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${admin?.avatar}`
     return (
         <Fragment>
             <div className="grid gap-6">

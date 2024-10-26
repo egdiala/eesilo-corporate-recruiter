@@ -66,7 +66,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
         setSelected(null)
     }
 
-    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/user/fnviewers/${talent?.avatar}`
+    const imageUrl = `${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${talent?.avatar}`
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">
             <div className="flex flex-col">
