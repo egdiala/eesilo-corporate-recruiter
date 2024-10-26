@@ -29,7 +29,7 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <h2 className="font-medium text-gray-900 text-xl">Health Worker</h2>
+                <h2 className="font-medium text-gray-900 text-xl">{job?.title}</h2>
                 <Button type="button" theme="primary" variant="lighter" size="36" onClick={() => navigate(`/jobs/${job?.job_id}/edit`)}>
                     <Icon icon="ri:edit-2-line" className="size-5" />
                     Edit Job
