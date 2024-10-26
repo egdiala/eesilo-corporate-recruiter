@@ -37,3 +37,8 @@ export interface TwoFaLogin {
     channel: string[];
     code: string;
 }
+
+export type ResendOTPType = {
+    request_type: "update-email" | "update-phone" | "update-password" | "2fa-login"
+    email: string
+}

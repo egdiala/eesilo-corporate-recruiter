@@ -16,7 +16,8 @@ interface ContactPersonProps {
 }
 
 export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
-    const { mutate, isPending } = useUpdateAccount("Contact person info edited successfully")
+    const [editMode, setEditMode] = useState(false)
+    const { mutate, isPending } = useUpdateAccount("Contact person info edited successfully", () => setEditMode(false))
 
     const { data: countries } = useGetCountries()
 
@@ -56,7 +57,6 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
             mutate({ contact_person })
         },
     })
-    const [editMode, setEditMode] = useState(false)
     const information = useMemo(() => {
         return [
             { label: "Name", value: account?.contact_person?.name },
@@ -88,7 +88,9 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
                     <InputField label="Job Title" placeholder="Job title" size="40" type="text" {...register("job_title")} required />
                     <PhoneInput label="Phone Number" placeholder="(555) 000-0000" size="40" type="text" defaultCountry={phoneNumber?.country?.iso2} value={values.phone_number} onChange={(v) => setFieldValue("phone_number", v, true)} error={errors.phone_number} required />
                     <InputField label="Email" placeholder="Email" size="40" type="text" {...register("email")} required />
-                    <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid || !dirty}>Save Changes</Button>
+                    <div className="w-32">
+                        <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !isValid || !dirty} block>Save Changes</Button>
+                    </div>
                 </motion.form>
             </RenderIf>
             <RenderIf condition={!editMode}>

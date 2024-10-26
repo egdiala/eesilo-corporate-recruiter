@@ -15,7 +15,8 @@ interface OrganizationInformationProps {
 }
 
 export const OrganizationInformation: React.FC<OrganizationInformationProps> = ({ account }) => {
-    const { mutate, isPending } = useUpdateAccount("Organization information edited successfully")
+    const [editMode, setEditMode] = useState(false)
+    const { mutate, isPending } = useUpdateAccount("Organization information edited successfully", () => setEditMode(false))
     const { mutateAsync: uploadLogo, isPending: isUploading } = useUploadLogo()
     const [query, setQuery] = useState({
         country: "",
@@ -114,7 +115,6 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             })
 
     
-    const [editMode, setEditMode] = useState(false)
     const information = useMemo(() => {
         return [
             { label: "Organisations name", value: account?.name },
@@ -218,7 +218,9 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                         <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
                     </div>
                     <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
-                    <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending || isUploading} disabled={isPending || isUploading || !isValid || !dirty}>Save Changes</Button>
+                    <div className="w-32">
+                        <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending || isUploading} disabled={isPending || isUploading || !isValid || !dirty} block>Save Changes</Button>
+                    </div>
                 </motion.form>
             </RenderIf>
             <RenderIf condition={!editMode}>
