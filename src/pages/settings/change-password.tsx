@@ -12,8 +12,8 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 
 export const ChangePasswordPage: React.FC = () => {
     const navigate = useNavigate()
-    const [isAuth, setIsAuth] = useState(true)
-    const changePassword = getItem<string>("change-password")
+    const [isAuth, setIsAuth] = useState(false)
+        const changePassword = getItem<string>("change-password")
 
     const { mutate: confirmUpdate, isPending: isConfirming } = useConfirmUpdatePassword(() => {
         setIsAuth(true)
@@ -34,6 +34,7 @@ export const ChangePasswordPage: React.FC = () => {
     })
 
     useEffect(() => {
+
         if (!changePassword) {
             navigate("/settings/security")
         }
@@ -75,7 +76,7 @@ export const ChangePasswordPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <Dialog open={isAuth} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsAuth(true)}>
+            <Dialog open={isAuth} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsAuth(false)}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                     <div className="flex min-h-full items-end md:items-center justify-center p-4">
                         <DialogPanel transition className="w-full max-w-[24.5rem] border border-gray-200 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">

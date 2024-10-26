@@ -4,8 +4,7 @@ export type LoginType = {
 }
 
 export type TwoFaLoginType = {
-    email_otp?: string;
-    phone_otp?: string;
+    code: string;
 }
 
 export interface User {

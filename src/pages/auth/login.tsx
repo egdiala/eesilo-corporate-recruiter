@@ -13,7 +13,8 @@ import type { TwoFaLogin, User } from "@/types/auth"
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate()
     const [step, setStep] = useState("login")
-    const [channel, setChannel] = useState("login")
+    // eslint-disable-next-line no-unused-vars
+    const [_, setChannel] = useState("login")
     const [otpError, setOtpError] = useState("")
     const newPass = getItem<string>("newPass")
     const [otp, setOtp] = useState<string>("")
@@ -104,12 +105,7 @@ export const LoginPage: React.FC = () => {
     }
 
     const handle2Fa = () => {
-        if (channel === "email") {
-            twoFaLogin({ email_otp: otp })
-        } else {
-            twoFaLogin({ phone_otp: otp })
-        }
-        
+        twoFaLogin({ code: otp })
     }
 
     return (
