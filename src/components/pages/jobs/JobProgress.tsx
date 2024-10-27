@@ -74,7 +74,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
         return [
             {
                 id: 1,
-                text: talent?.invite_status === 0 ? "You can send a job invitation to this employee" : "You have sent a job invitation to this employee",
+                text: talent?.invite_status === 0 ? "You can send a job invitation to this employee" : `You sent a job invitation to this employee on ${format(talent?.timestamp_data?.invite_sent_at ?? talent?.timestamp_data?.shortlisted_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.invite_sent_at ?? talent?.timestamp_data?.shortlisted_at, "hh:mm bbb")}`,
                 title: talent?.invite_status === 0 ? "Send Job Invitation" : "Job Invitation Sent",
                 content: <RenderIf condition={talent?.invite_status === 0}>
                     <div className="w-32">
@@ -85,14 +85,21 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
             },
             (((talent?.invite_status === 3) || (talent?.invite_status === 2)) && ({
                 id: 1,
-                text: talent?.invite_status === 2 ? "Job invitation has been declined by this candidate" : "Wait for candidate to accept or decline your invite",
+                text: talent?.invite_status === 2 ? `Job invitation has been declined by this candidate on ${format(talent?.timestamp_data?.invite_accepted_rejected_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.invite_accepted_rejected_at, "hh:mm bbb")}` : "Wait for candidate to accept or decline your invite",
                 title: talent?.invite_status === 2 ? "Declined Invitation" : "Pending Acceptance",
                 content: <Fragment />,
                 failed: talent?.invite_status === 2
             })),
+            ((talent?.invite_status === 1) && ({
+                id: 1,
+                text: `Job invitation was accepted by this candidate on ${format(talent?.timestamp_data?.invite_accepted_rejected_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.invite_accepted_rejected_at, "hh:mm bbb")}`,
+                title: "Accepted Invitation",
+                content: <Fragment />,
+                done: talent?.invite_status === 1
+            })),
             {
                 id: 2,
-                text: (talent?.invite_status <= 1) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : "You have scheduled an interview with this employee",
+                text: (talent?.invite_status <= 1) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : `You scheduled an interview with this employee on ${format(talent?.timestamp_data?.interview_sent_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.interview_sent_at, "hh:mm bbb")}`,
                 title: "Schedule Interview",
                 content: <div>
                     <RenderIf condition={(talent?.invite_status == 1) && (talent?.interview_status === 0)}>
@@ -117,7 +124,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
             },
             {
                 id: 3,
-                text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : <>You have made a job offer. <a href={talent?.offer_letter_link} target="_blank" className="font-medium text-primary-500">Click here</a> to view.</>,
+                text: talent?.offer_status === 0 ? "Make an offer to this shortlisted candidate" : <>You made a job offer on {format(talent?.timestamp_data?.offer_made_at, "ccc do, MMM. yyyy")} at {format(talent?.timestamp_data?.offer_made_at, "hh:mm bbb")}. <a href={talent?.offer_letter_link} target="_blank" className="font-medium text-primary-500">Click here</a> to view.</>,
                 title: talent?.offer_status === 0 ? "Make Job Offer" : "Offer Made",
                 content: <Fragment>
                         <RenderIf condition={talent?.offer_status === 3}>
@@ -143,7 +150,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
                 done: talent?.offer_status === 1
             },
         ].filter((item) => item !== false)
-    }, [interviewData, isPending, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status, talent?.offer_status])
+    }, [interviewData, isPending, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status, talent?.offer_letter_link, talent?.offer_status, talent?.timestamp_data?.interview_sent_at, talent?.timestamp_data?.invite_accepted_rejected_at, talent?.timestamp_data?.invite_sent_at, talent?.timestamp_data?.offer_made_at, talent?.timestamp_data?.shortlisted_at])
     
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">

@@ -204,7 +204,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             </div>
                             <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
                                 <Button type="button" theme="neutral" variant="stroke" size="40" block onClick={() => closeModal()}>Dismiss</Button>
-                                <Button type="button" theme="primary" variant="filled" size="40" loading={isShortlisting} disabled={isShortlisting || !selected?.job_id} onClick={() => shortlist({ job_id: selected?.job_id as string, user_id: talent?.user_id, invite_status: "0" })} block>Yes, Send Invitation</Button>
+                                <Button type="button" theme="primary" variant="filled" size="40" loading={isShortlisting} disabled={isShortlisting || !selected?.job_id} onClick={() => shortlist({ job_id: selected?.job_id as string, user_id: talent?.user_id, invite_status: "0" })} block>Yes, Shortlist</Button>
                             </div>
                         </DialogPanel>
                     </div>

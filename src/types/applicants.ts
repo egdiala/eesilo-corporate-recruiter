@@ -98,6 +98,7 @@ export interface FetchedShortlistedCandidate {
         invite_sent_at: Date | string;
         invite_accepted_rejected_at: Date | string;
         interview_sent_at: Date | string;
+        offer_made_at: Date | string;
     };
     interview_data?: {
         i_date: Date | string;
