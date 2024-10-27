@@ -30,6 +30,24 @@ export const CalendarPage: React.FC = () => {
         setCurrentMonth(format(firstDayPreviousMonth, "MMM-yyyy"))
     }
 
+    function transformDate(dateString: string): string {
+        const [monthStr, yearStr] = dateString.split("-");
+        
+        const months: { [key: string]: string } = {
+            Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+            Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+        };
+        
+        const month = months[monthStr];
+        const year = yearStr;
+
+        if (!month || !year) {
+            throw new Error("Invalid date format. Expected 'MMM-yyyy'.");
+        }
+
+        return `${year}-${month}`;
+    }
+
     let colStartClasses = [
         "",
         "col-start-2",
@@ -39,7 +57,7 @@ export const CalendarPage: React.FC = () => {
         "col-start-6",
         "col-start-7",
     ]
-    const { data: events, isLoading: isLoadingEvents } = useGetEventCalendar({ year_month: format(currentMonth, "yyyy-MM") })
+    const { data: events, isLoading: isLoadingEvents } = useGetEventCalendar({ year_month: transformDate(currentMonth) })
 
     let [eventsToView, setEventsToView] = useState<FetchedCalendarEvent[]>([])
 
