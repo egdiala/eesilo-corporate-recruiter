@@ -31,7 +31,7 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
         <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={onClose}>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                 <div className="flex min-h-full items-end md:items-center justify-center p-4">
-                    <DialogPanel transition className="flex flex-col gap-6 w-full lg:w-auto lg:min-w-[45.9375rem] lg:max-w-[69rem] p-4 lg:p-8 rounded-2xl bg-white backdrop-blur-2xl duration-300 ease-out transform data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
+                    <DialogPanel transition className="flex flex-col gap-6 w-full lg:w-auto lg:min-w-[45.9375rem] lg:max-w-[69rem] p-4 lg:p-8 rounded-2xl bg-white backdrop-blur-2xl duration-200 ease-out transform data-[closed]:duration-150 data-[closed]:translate-y-full md:data-[closed]:translate-y-6 data-[closed]:opacity-0">
                         <div className="flex items-center gap-4 justify-between">
                             <DialogTitle as="h1" className="flex-1 text-lg font-medium text-gray-900">
                                 Upcoming Interviews
