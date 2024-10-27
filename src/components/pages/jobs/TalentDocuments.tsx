@@ -1,5 +1,4 @@
 import React, { Fragment, useCallback, useState } from "react";
-import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import emptyState from "@/assets/empty_state.webp";
@@ -41,35 +40,32 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
         {
             header: "Document Name",
             accessorKey: "docname",
-        },
-        {
-            header: "Date",
-            accessorKey: "createdAt",
             cell: ({ row }: { row: any; }) => {
                 const item = row?.original as DocumentData
                 return (
-                    <div className="whitespace-nowrap">{format(item?.createdAt, "iii. dd. MMM. yy")}</div>
+                    <div className="whitespace-nowrap">{item?.docname}</div>
                 )
             }
         },
         {
-            accessorKey: "year_awarded",
-            header: "Grade",
-        },
-        {
-            accessorKey: "not_expired",
-            header: "Status",
-            cell: () => <div>Status</div>
-        },
-        {
+            header: "Description",
             accessorKey: "description",
+            cell: ({ row }: { row: any; }) => {
+                const item = row?.original as DocumentData
+                return (
+                    <div className="whitespace-nowrap">{item?.description}</div>
+                )
+            }
+        },
+        {
             header: "Action",
+            accessorKey: "action",
             cell: ({ parentData }: { row: any; parentData?: { has_permission: boolean } }) => {
                 // const item = row.original as DocumentData;
                 const hasPermission = parentData?.has_permission;
 
                 return (
-                    <button type="button" disabled={!hasPermission} className="text-xs text-gray-500 disabled:text-gray-300">
+                    <button type="button" disabled={!hasPermission} className="text-xs text-blue-600 disabled:text-gray-400 disabled:cursor-not-allowed">
                         View
                     </button>
                 );

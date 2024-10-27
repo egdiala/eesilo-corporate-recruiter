@@ -16,7 +16,7 @@ export const createJobSchema = Yup.object().shape({
 export const scheduleInterviewSchema = Yup.object().shape({
     time: Yup.string().trim().required("Select a time for the interview"),
     date: Yup.string().trim().required("Select an interview date"),
-    meeting_link: Yup.string().trim().required("Enter a meeting link"),
+    // meeting_link: Yup.string().trim().required("Enter a meeting link"),
 });
 
 export const uploadJobOfferSchema = Yup.object().shape({

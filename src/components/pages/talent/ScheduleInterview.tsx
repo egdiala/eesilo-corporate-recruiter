@@ -86,7 +86,7 @@ export const ScheduleInterview: React.FC<ScheduleInterviewProps> = ({ isOpen, cl
                                 />
                             </div>
                             <InputField
-                                required
+                                optional
                                 size="40"
                                 type="text"
                                 label="Meeting Link"
