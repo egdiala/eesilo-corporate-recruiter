@@ -116,19 +116,19 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ yearData }) 
                     <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Invited</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Invited</span>
                             <h4 className="font-semibold text-3xl text-blue-500">{totalSums?.total_invited}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Accepted</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Accepted</span>
                             <h4 className="font-semibold text-3xl text-success-500">{totalSums?.total_accepted}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Rejected</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Rejected</span>
                             <h4 className="font-semibold text-3xl text-[#EF4444]">{totalSums?.total_rejected}</h4>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <span className="font-medium text-sm text-[#475569]">Total Hired</span>
+                            <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Hired</span>
                             <h4 className="font-semibold text-3xl text-warning-500">{totalSums?.total_offer}</h4>
                         </div>
                     </div>

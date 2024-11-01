@@ -47,7 +47,7 @@ export const ReportsPage: React.FC = () => {
                             }
                         </div>
                         <PerformanceStats yearData={yearlyDataCount ?? []} />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-3 md:p-6">
                             <JobsPerformance />
                             <JobsPerformance />
                         </div>

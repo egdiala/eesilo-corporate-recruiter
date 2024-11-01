@@ -76,9 +76,7 @@ export const DashboardPage: React.FC = () => {
                             }
                             </div>
                         </div>
-                        {/* <div className="grid"> */}
-                            <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
-                        {/* </div> */}
+                        <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
                         
                         <hr className="border-gray-200" />
                         <div className="grid gap-6">
@@ -86,7 +84,7 @@ export const DashboardPage: React.FC = () => {
                                 <h4 className="uppercase font-medium text-xs text-[#868C98] py-1 px-2">POPULAR posted jobs</h4>
                                 <Link to="/jobs" className="py-1 px-2 text-right font-medium uppercase text-xs text-primary-500">see all jobs</Link>
                             </div>
-                            <div className="flex items-center overflow-x-scroll gap-5">
+                            <div className="grid lg:flex md:items-center md:overflow-x-scroll gap-5">
                             {
                                 jobs?.map((job, index) =>
                                     <JobCard key={index} job={job} as={Link} to={`/jobs/${job?.job_id}/view`} />

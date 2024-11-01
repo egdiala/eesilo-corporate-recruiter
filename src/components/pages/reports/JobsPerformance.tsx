@@ -83,8 +83,8 @@ export const JobsPerformance: React.FC = () => {
                     </MenuItems>
                 </Menu>
             </div>
-            <ChartContainer config={chartConfig} className="mx-auto aspect-square h-96">
-                <PieChart>
+            <ChartContainer config={chartConfig} className="md:mx-auto md:aspect-square h-96">
+                <PieChart margin={{ left: 0 }}>
                     <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" hideLabel />} />
                     <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={100}>
                         <LabelList
