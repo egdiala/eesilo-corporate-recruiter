@@ -203,6 +203,7 @@ export type GetDocumentQuery = {
 export interface RequestDocumentParams {
     docat_id: string;
     user_id: string;
+    code?: string;
 }
 
 export interface DocumentData {
@@ -222,6 +223,6 @@ export interface DocumentData {
 export interface FetchedApplicantDocument {
     user_id: string;
     data: DocumentData[];
-    has_permission: boolean;
+    has_permission: -1 | 0 | 1 | 2 | 3; // -1=no request made, 0=request made, 1=access successful, 2=user declined, 3=user approve,proceed to enter code
     group_name: string;
 }

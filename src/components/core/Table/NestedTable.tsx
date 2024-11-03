@@ -112,7 +112,7 @@ export const NestedTable = <T,>({
                                 <motion.tr transition={{ duration: 0.2, delay: 0.2 * id }} key={row.id}>
                                     {row.getVisibleCells().map((cell, idx) => (
                                         <td key={cell.id} {...(idx === 0 ? expandedProps : {})} className="text-left py-2.5 pl-3 pr-5 text-gray-900 text-sm font-normal">
-                                            {renderRow ? renderRow(cell.getContext(), parentData) : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {renderRow ? renderRow(cell.getContext(), parentData) : flexRender(cell.column.columnDef.cell, { ...cell.getContext(), parentData })}
                                         </td>
                                     ))}
                                 </motion.tr>

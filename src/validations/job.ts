@@ -27,3 +27,7 @@ export const uploadJobOfferSchema = Yup.object().shape({
       return false;
     }),
 })
+
+export const accessDocumentSchema = Yup.object().shape({
+    code: Yup.string().trim().required("Code is requireid"),
+});

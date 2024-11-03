@@ -6,7 +6,7 @@ import { Loader } from "@/components/core/Button/Loader";
 import { NestedTable, RenderIf } from "@/components/core";
 import { tabVariants } from "@/constants/animateVariants";
 import { useGetApplicantDocument } from "@/services/hooks/queries";
-import { DocumentAccessModal, DocumentRequestSendModal } from "../employees";
+import { AccessDocumentCode, DocumentAccessModal, DocumentRequestSendModal } from "../employees";
 import type { DocumentData, FetchedApplicantDocument, FetchedShortlistedCandidate, RequestDocumentParams } from "@/types/applicants";
 
 interface TalentDocumentsProps {
@@ -18,6 +18,7 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
     const [toggleModals, setToggleModals] = useState({
         openSendRequest: false,
         openRequestSent: false,
+        openCodeModal: false,
         item: null as RequestDocumentParams | null
     })
 
@@ -35,6 +36,14 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
             openRequestSent: !toggleModals.openRequestSent,
         }))
     },[toggleModals.openRequestSent])
+
+    const toggleCodeModal = useCallback((item: RequestDocumentParams | null = null) => {
+        setToggleModals((prev) => ({
+            ...prev,
+            item: item,
+            openCodeModal: !toggleModals.openCodeModal,
+        }))
+    },[toggleModals.openCodeModal])
 
     const columns = [
         {
@@ -60,12 +69,12 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
         {
             header: "Action",
             accessorKey: "action",
-            cell: ({ parentData }: { row: any; parentData?: { has_permission: boolean } }) => {
-                // const item = row.original as DocumentData;
-                const hasPermission = parentData?.has_permission;
+            cell: ({ ...rest }: any) => {
+
+                const hasPermission = rest.parentData?.has_permission === 1;
 
                 return (
-                    <button type="button" disabled={!hasPermission} className="text-xs text-blue-600 disabled:text-gray-400 disabled:cursor-not-allowed">
+                    <button type="button" disabled={!hasPermission} className="text-xs text-blue-600 disabled:text-gray-300 disabled:cursor-not-allowed">
                         View
                     </button>
                 );
@@ -87,15 +96,43 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                                 columns={columns}
                                 dataAccessor={(item) => item.data}
                                 groupAccessor={(item) => item.group_name}
-                                checkPermission={(groupItem) => groupItem.has_permission}
+                                checkPermission={(groupItem) => groupItem.has_permission === 1}
                                 parentAccessor={(item) => ({ has_permission: item.has_permission })}
                                 renderHeader={(groupItem) => {
                                     const item = groupItem.data[0];
                                     return (
-                                        <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleSendRequest({ docat_id: item?.docat_id, user_id: item?.user_id })}>
-                                            <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
-                                            <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
-                                        </button>
+                                        <Fragment>
+                                            <RenderIf condition={groupItem?.has_permission === -1}>
+                                                <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleSendRequest({ docat_id: item?.docat_id, user_id: item?.user_id })}>
+                                                    <Icon icon="ri:lock-2-line" className="size-4 text-warning-500" />
+                                                    <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Access</span>
+                                                </button>
+                                            </RenderIf>
+                                            <RenderIf condition={groupItem?.has_permission === 0}>
+                                                <div className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200">
+                                                    <Icon icon="ri:send-plane-line" className="size-4 text-blue-500" />
+                                                    <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Request Sent</span>
+                                                </div>
+                                            </RenderIf>
+                                            <RenderIf condition={groupItem?.has_permission === 1}>
+                                                <div className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200">
+                                                    <Icon icon="ri:lock-unlock-line" className="size-4 text-success-500" />
+                                                    <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Access Granted</span>
+                                                </div>
+                                            </RenderIf>
+                                            <RenderIf condition={groupItem?.has_permission === 2}>
+                                                <div className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200">
+                                                    <Icon icon="ri:lock-2-line" className="size-4 text-error-600" />
+                                                    <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Access Denied</span>
+                                                </div>
+                                            </RenderIf>
+                                            <RenderIf condition={groupItem?.has_permission === 3}>
+                                                <button type="button" className="flex py-1 pr-2 pl-1 items-end gap-1 bg-white rounded-md border border-gray-200" onClick={() => toggleCodeModal({ docat_id: item?.docat_id, user_id: item?.user_id })}>
+                                                    <Icon icon="ri:lock-password-line" className="size-4 text-warning-600" />
+                                                    <span className="text-xs font-medium text-gray-600 whitespace-nowrap">Enter Code</span>
+                                                </button>
+                                            </RenderIf>
+                                        </Fragment>
                                     )
                                 }}
                             />
@@ -111,6 +148,7 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                         </div>
                     </RenderIf>
                 </motion.div>
+                <AccessDocumentCode isOpen={toggleModals.openCodeModal} onClose={toggleCodeModal} params={toggleModals.item as RequestDocumentParams} onSuccess={() => toggleCodeModal(null)} />
                 <DocumentAccessModal isOpen={toggleModals.openSendRequest} onClose={toggleSendRequest} params={toggleModals.item as RequestDocumentParams} onSuccess={() => {
                     toggleSendRequest(null);
                     toggleRequestSent()
