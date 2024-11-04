@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import emptyState from "@/assets/empty_state.webp";
@@ -14,7 +14,18 @@ interface TalentDocumentsProps {
 }
 
 export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
+    const [documentFilters, setDocumentFilters] = useState({
+        user_id: ""
+    })
     const { data: talentDocuments, isLoading } = useGetApplicantDocument<FetchedApplicantDocument[]>({ user_id: talent?.user_id })
+    const { data: viewDoc, isSuccess } = useGetApplicantDocument<{ link: string; }>({ ...documentFilters })
+
+    useEffect(() => {
+        if (isSuccess) {
+            window.open(`${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${viewDoc?.link}`, "_blank")
+        }
+    }, [isSuccess, viewDoc?.link])
+    
     const [toggleModals, setToggleModals] = useState({
         openSendRequest: false,
         openRequestSent: false,
@@ -74,7 +85,17 @@ export const TalentDocuments: React.FC<TalentDocumentsProps> = ({ talent }) => {
                 const hasPermission = rest.parentData?.has_permission === 1;
 
                 return (
-                    <button type="button" disabled={!hasPermission} className="text-xs text-blue-600 disabled:text-gray-300 disabled:cursor-not-allowed">
+                    <button
+                        type="button"
+                        disabled={!hasPermission}
+                        className="text-xs text-blue-600 disabled:text-gray-300 disabled:cursor-not-allowed"
+                        onClick={() => setDocumentFilters((prev) => ({
+                            ...prev,
+                            user_id: talent?.user_id,
+                            document_id: rest?.row?.original?.document_id,
+                            component: "view"
+                        }))}
+                    >
                         View
                     </button>
                 );
