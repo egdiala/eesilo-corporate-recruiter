@@ -82,8 +82,18 @@ export const CreateJobPage: React.FC = () => {
     ]
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            setFieldValue("requirement", [...values.requirement, query.requirements], true)
+        if (query.requirements.trim() !== "") {
+            if (e.key === "Enter") {
+                setFieldValue("requirement", [...values.requirement, ...query.requirements.split(",").filter((item) => item.trim() !== "")], true)
+            }
+            if (e.key === ",") {
+                setFieldValue("requirement", [...values.requirement, ...query.requirements.split(",").filter((item) => item.trim() !== "")], true).then(() => 
+                    setQuery((prev) => ({
+                        ...prev,
+                        requirements: "",
+                    }))
+                )
+            }   
         }
     }
     const defaultCountry = {
@@ -221,7 +231,7 @@ export const CreateJobPage: React.FC = () => {
                                                     ...prev,
                                                     requirements: "",
                                                 }))}>
-                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} onKeyDown={(e) => handleKeyDown(e)} />
+                                            <ComboboxInput aria-label="Requirements" placeholder="Nursing Assistant" className={cn("neesilo-input peer px-2", "neesilo-input--40", errors.requirement ? "neesilo-input--border-error" : "neesilo-input--border")} value={query.requirements} onChange={(event) => setQuery((prev) => ({ ...prev, requirements: event.target.value }))} onKeyDown={(e) => handleKeyDown(e)} />
                                             <ComboboxOptions
                                                 anchor="bottom"
                                                 portal={false}

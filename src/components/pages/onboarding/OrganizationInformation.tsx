@@ -5,7 +5,7 @@ import { useFormikWrapper } from "@/hooks/useFormikWrapper";
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding";
 import { useUpdateAccount, useUploadLogo } from "@/services/hooks/mutations/useAccount";
 import { Button, ComboBox, ImageUpload, InputField, PhoneInput } from "@/components/core";
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
+import { useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries";
 
 export const OrganizationInformation: React.FC = () => {
     const { mutate, isPending } = useUpdateAccount("Organization information added successfully")
@@ -81,17 +81,6 @@ export const OrganizationInformation: React.FC = () => {
         : states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
-
-    const selectedState = useMemo(() => {
-        return states?.filter((item) => item?.name === values?.state)?.at(0)
-    },[states, values?.state])
-
-    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
-    const fetchedCities = query.city === ""
-        ? cities
-        : cities?.filter((city) => {
-            return city.name.toLowerCase().includes(query.city.toLowerCase())
-        })
     
     const defaultCountry = {
         "id": 233,
@@ -164,32 +153,13 @@ export const OrganizationInformation: React.FC = () => {
                     size="40"
                     required
                 />
-                <ComboBox
-                    label="City"
-                    disabled={fetchingCities}
-                    onClose={() => setQuery((prev) => ({
-                        ...prev,
-                        city: "",
-                    }))}
-                    error={errors.city}
-                    options={fetchedCities ?? []} 
-                    onChange={(value) => setQuery((prev) => ({
-                        ...prev,
-                        city: value,
-                    }))} 
-                    displayValue={(item) => item?.name}
-                    optionLabel={(option) => option?.name} 
-                    setSelected={(value) => setFieldValue("city", value?.name)}
-                    placeholder="Select city"
-                    size="40"
-                    required
-                />
+                <InputField label="City" placeholder="City" size="40" type="text" {...register("city")} required />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField label="Address" placeholder="Address" size="40" type="text" {...register("address")} required />
                 <InputField label="Zip code" placeholder="Zip code" size="40" type="text" {...register("zip_code")} required />
             </div>
-            <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} required />
+            <InputField label="Company Website" placeholder="Website" size="40" type="text" {...register("website")} />
             <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending || isUploading} disabled={isUploading || isPending || !isValid} block>Save and continue</Button>
         </motion.form>
     )

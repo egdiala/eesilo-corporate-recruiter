@@ -16,8 +16,7 @@ export const SignUpPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [link, setLink] = useState("")
     const [step, setStep] = useState("")
-    const { mutate, isPending } = useRegister((v) => {
-        setLink(v.split("?l=")?.at(1) as string)
+    const { mutate, isPending } = useRegister(() => {
         setSearchParams({ step: "confirm-email" })
         setStep("confirm-email")
     })

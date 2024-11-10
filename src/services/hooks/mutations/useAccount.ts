@@ -10,8 +10,8 @@ export const useUpdateAccount = (msg?: string, fn?: () => void) => {
     mutationFn: updateAccount,
       onSuccess: async () => {
         successToast({ param: null, msg, size: "36" })
-        await queryClient.invalidateQueries({ queryKey: [GET_ACCOUNT] })
         fn?.()
+        await queryClient.invalidateQueries({ queryKey: [GET_ACCOUNT] })
     },
     onError: (err: any) => {
         errorToast({ param: err, variant: "light" })

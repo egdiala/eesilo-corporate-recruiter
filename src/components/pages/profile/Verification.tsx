@@ -19,7 +19,7 @@ export const Verification: React.FC<VerificationProps> = ({ account }) => {
             <div className="flex items-start md:items-center justify-between gap-3 py-3">
                 <span className="text-gray-500 text-sm">Employer Identification Number (EIN)</span>
                 <div className="flex items-center gap-2.5">
-                    <span className="text-gray-900 text-base font-medium">{account?.ein_id?.status === 0 ? "-" : account?.ein_id?.value}</span>
+                    <span className="text-gray-900 text-base font-medium">{account?.ein_id?.value === account?.email ? "-" : account?.ein_id?.value}</span>
                     <RenderIf condition={account?.ein_id?.status !== 0}>
                        <img src={topStatus} alt="top_status" /> 
                     </RenderIf>

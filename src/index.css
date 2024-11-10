@@ -12,6 +12,7 @@
   --viewport-height: 100vh; /* Set a CSS variable for viewport height */
   --header-height: 81px; /* Set a CSS variable for header height */
   --sub-header-height: 83px; /* Set a CSS variable for header height */
+  --onboarding-header-height: 114px;
 }
 
 body {
@@ -27,6 +28,12 @@ body {
 .view-subpage-container {
   height: calc(
     var(--viewport-height) - var(--header-height) - var(--sub-header-height)
+  ); /* Calculate dynamic height */
+}
+
+.view-onboarding-container {
+  height: calc(
+    var(--viewport-height) - var(--onboarding-header-height)
   ); /* Calculate dynamic height */
 }
 

@@ -7,9 +7,13 @@ export const onboardOrganizationInfoSchema = Yup.object().shape({
     // website: Yup.string().trim().required("Company website is required"),
     country: Yup.string().trim().required("Select a country"),
     state: Yup.string().trim().required("Select a state"),
-    city: Yup.string().trim().required("Select a city"),
+    city: Yup.string().trim().required("City is required"),
     address: Yup.string().trim().required("Address is required"),
     zip_code: Yup.string().trim().required("Zip code is required"),
+});
+
+export const verificationInfoSchema = Yup.object().shape({
+    ein_id: Yup.string().trim().required("EIN is required")
 });
 
 export const onboardContactPersonSchema = Yup.object().shape({
