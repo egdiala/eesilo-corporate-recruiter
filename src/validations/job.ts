@@ -6,7 +6,7 @@ export const createJobSchema = Yup.object().shape({
     year_exp: Yup.string().trim().required("Years of experience is required"),
     country: Yup.string().trim().required("Select a country"),
     state: Yup.string().trim().required("Select a state"),
-    city: Yup.string().trim().required("Select a city"),
+    city: Yup.string().trim().required("City is required"),
     requirement: Yup.array().of(Yup.string().trim().required("Requirements is required")).min(1, "At least one requirement"),
     required_travel: Yup.string().trim().required("Select an option"),
     required_relocation: Yup.string().trim().required("Select an option"),

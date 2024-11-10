@@ -8,7 +8,7 @@ import { useUpdateJob } from "@/services/hooks/mutations"
 import { pageVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, ComboBox, InputField, RenderIf, SelectInput, Tag, TextArea } from "@/components/core"
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetJob, useGetJobRequirements, useGetStatesByCountry } from "@/services/hooks/queries"
+import { useGetCountries, useGetJob, useGetJobRequirements, useGetStatesByCountry } from "@/services/hooks/queries"
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from "@headlessui/react"
 import { cn } from "@/libs/cn"
 import { Loader } from "@/components/core/Button/Loader"
@@ -68,25 +68,24 @@ export const EditJobPage: React.FC = () => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
 
-    const selectedState = useMemo(() => {
-        return states?.filter((item) => item?.name === values?.state)?.at(0)
-    },[states, values?.state])
-
-    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
-    const fetchedCities = query.city === ""
-        ? cities
-        : cities?.filter((city) => {
-            return city.name.toLowerCase().includes(query.city.toLowerCase())
-            })
-
     const booleanOptions = [
         { label: "Yes", value: "1" },
         { label: "No", value: "0" }
     ]
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            setFieldValue("requirement", [...values.requirement, query.requirements], true)
+        if (query.requirements.trim() !== "") {
+            if (e.key === "Enter") {
+                setFieldValue("requirement", [...values.requirement, ...query.requirements.split(",").filter((item) => item.trim() !== "")], true)
+            }
+            if (e.key === ",") {
+                setFieldValue("requirement", [...values.requirement, ...query.requirements.split(",").filter((item) => item.trim() !== "")], true).then(() => 
+                    setQuery((prev) => ({
+                        ...prev,
+                        requirements: "",
+                    }))
+                )
+            }   
         }
     }
 
@@ -163,27 +162,7 @@ export const EditJobPage: React.FC = () => {
                                     />
                                 </div>
                                 <div className="col-span-2 md:col-span-1">
-                                    <ComboBox
-                                        label="City"
-                                        disabled={fetchingCities}
-                                        onClose={() => setQuery((prev) => ({
-                                            ...prev,
-                                            city: "",
-                                        }))}
-                                        error={errors.city}
-                                        options={fetchedCities ?? []} 
-                                        onChange={(value) => setQuery((prev) => ({
-                                            ...prev,
-                                            city: value,
-                                        }))} 
-                                        defaultValue={cities?.filter((city) => city.name.toLowerCase() == job?.city?.toLowerCase())?.[0]}
-                                        displayValue={(item) => item?.name}
-                                        optionLabel={(option) => option?.name} 
-                                        setSelected={(value) => setFieldValue("city", value?.name)}
-                                        placeholder="Select city"
-                                        size="40"
-                                        required
-                                    />
+                                    <InputField type="text" label="City" placeholder="City" size="40" {...register("city")} required />
                                 </div>
                                 <div className="col-span-2 md:col-span-1">
                                     <InputField

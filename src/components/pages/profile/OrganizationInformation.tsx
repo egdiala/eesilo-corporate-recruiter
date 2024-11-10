@@ -8,7 +8,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js"
 import { onboardOrganizationInfoSchema } from "@/validations/onboarding"
 import { useUpdateAccount, useUploadLogo } from "@/services/hooks/mutations"
 import { Button, ComboBox, ImageUpload, InputField, PhoneInput, RenderIf } from "@/components/core"
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
+import { useGetCountries, useGetStatesByCountry } from "@/services/hooks/queries"
 
 interface OrganizationInformationProps {
     account: FetchedAccount;
@@ -102,18 +102,6 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         : states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
-
-    const selectedState = useMemo(() => {
-        return states?.filter((item) => item?.name === values?.state)?.at(0)
-    },[states, values?.state])
-
-    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ country: selectedCountry?.iso2 as string, state: selectedState?.iso2 as string })
-    const fetchedCities = query.city === ""
-        ? cities
-        : cities?.filter((city) => {
-            return city.name.toLowerCase().includes(query.city.toLowerCase())
-            })
-
     
     const information = useMemo(() => {
         return [
@@ -191,27 +179,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                             size="40"
                             required
                         />
-                        <ComboBox
-                            label="City"
-                            disabled={fetchingCities || !values.state}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                city: "",
-                            }))}
-                            error={errors.city}
-                            options={fetchedCities ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                city: value,
-                            }))} 
-                            defaultValue={cities?.filter((city) => city.name.toLowerCase() == account?.address_data?.city?.toLowerCase())?.[0]}
-                            displayValue={(item) => item?.name}
-                            optionLabel={(option) => option?.name} 
-                            setSelected={(value) => setFieldValue("city", value?.name)}
-                            placeholder="Select city"
-                            size="40"
-                            required
-                        />
+                        <InputField type="text" label="City" placeholder="City" size="40" {...register("city")} required />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <InputField label="Address" placeholder="Address" size="40" type="text" {...register("address")} required />

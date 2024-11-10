@@ -4,7 +4,7 @@ import { FetchedJob } from "@/types/jobs"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, CheckBox, ComboBox, InputField } from "@/components/core"
 import { CloseButton, Popover, PopoverButton, PopoverPanel } from "@headlessui/react"
-import { useGetCitiesByStateAndCountry, useGetCountries, useGetJobs, useGetStatesByCountry } from "@/services/hooks/queries"
+import { useGetCountries, useGetJobs, useGetStatesByCountry } from "@/services/hooks/queries"
 
 interface EmployeesFilterProps {
     // eslint-disable-next-line no-unused-vars
@@ -60,17 +60,6 @@ export const EmployeesFilter: React.FC<EmployeesFilterProps> = ({ setFilters, fi
         : states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
-
-    const selectedState = useMemo(() => {
-        return states?.filter((item) => item?.name === values?.state)?.at(0)
-    },[states, values?.state])
-
-    const { data: cities, isLoading: fetchingCities } = useGetCitiesByStateAndCountry({ state: selectedState?.iso2 as string, country: selectedCountry?.iso2 as string })
-    const fetchedCities = query.city === ""
-        ? cities
-        : cities?.filter((city) => {
-            return city.name.toLowerCase().includes(query.city.toLowerCase())
-        })
     
     const availability = [
         { label: "Willing to Travel", value: "travel" },
@@ -140,23 +129,7 @@ export const EmployeesFilter: React.FC<EmployeesFilterProps> = ({ setFilters, fi
                             placeholder="State"
                             label="State"
                         />
-                        <ComboBox
-                            disabled={fetchingCities}
-                            onClose={() => setQuery((prev) => ({
-                                ...prev,
-                                city: "",
-                            }))}
-                            options={fetchedCities ?? []} 
-                            onChange={(value) => setQuery((prev) => ({
-                                ...prev,
-                                city: value,
-                            }))} 
-                            displayValue={(item) => item?.name}
-                            optionLabel={(option) => option?.name} 
-                            setSelected={(value) => setFieldValue("city", value?.name)}
-                            placeholder="City"
-                            label="City"
-                        />
+                        <InputField type="text" label="City" placeholder="City" {...register("city")} />
                         <InputField type="text" label="Skills" placeholder="Skills" {...register("skills")} />
                         <InputField type="text" label="Years of experience" placeholder="Years of experience" {...register("year_exp")} />
                         <InputField type="text" label="Salary expectation" placeholder="Salary expectation" {...register("salary")} />
