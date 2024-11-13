@@ -14,6 +14,7 @@ export const axiosUserInstance: AxiosInstance = axios.create({
 export const useAxiosInterceptor = () => {
   const logoutMutation = useLogout(() => {
     localStorage.clear()
+    sessionStorage.clear();
     // Optionally, redirect user after logout
     window.location.href = "/auth/login";
   });
