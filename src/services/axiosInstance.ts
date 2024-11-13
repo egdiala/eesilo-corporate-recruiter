@@ -11,21 +11,6 @@ export const axiosUserInstance: AxiosInstance = axios.create({
   withCredentials: true
 });
 
-export const axiosJobInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_NEESILO_JOB_SERVICE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-export const axiosCountryInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_COUNTRY_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    "X-CSCAPI-KEY": import.meta.env.VITE_COUNTRY_API_KEY
-  },
-});
-
 export const useAxiosInterceptor = () => {
   const logoutMutation = useLogout(() => {
     // Optionally, redirect user after logout

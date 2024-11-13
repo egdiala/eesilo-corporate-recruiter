@@ -16,7 +16,6 @@ export const useRouteTitle = () => {
         "/report": "Reports",
         "/notifications": "Notifications",
         "/settings": "Settings",
-        "/help": "Help & Support",
         "/profile": "Profile"
     };
 

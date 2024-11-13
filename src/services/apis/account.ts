@@ -1,8 +1,8 @@
 import { axiosUserInstance } from "@/services/axiosInstance";
-import { CONFIRM_EMAIL_UPDATE_API, CONFIRM_PASSWORD_UPDATE_API, CONFIRM_PHONE_UPDATE_API, CREATE_STAFF_ADMIN_API, GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPDATE_EMAIL_API, UPDATE_PASSWORD_API, UPLOAD_LOGO_API } from "@/constants/api";
-import type { ConfirmPasswordUpdateParams, ConfirmPhoneType, CreateStaffParams, GetCalendarEventQuery, UpdateAccountParams, UpdatePasswordParams } from "@/types/account";
-import { createQueryString } from "@/utils/createQuery";
 import type { LoginType } from "@/types/auth";
+import { createQueryString } from "@/utils/createQuery";
+import type { ConfirmPasswordUpdateParams, ConfirmPhoneType, CreateStaffParams, GetCalendarEventQuery, UpdateAccountParams, UpdatePasswordParams } from "@/types/account";
+import { CONFIRM_EMAIL_UPDATE_API, CONFIRM_PASSWORD_UPDATE_API, CONFIRM_PHONE_UPDATE_API, CREATE_STAFF_ADMIN_API, GET_ACCOUNT_API, GET_EVENT_CALENDAR_API, UPDATE_EMAIL_API, UPDATE_PASSWORD_API, UPLOAD_LOGO_API } from "@/constants/api";
 
 export const updateAccount = async (data: UpdateAccountParams) => {
   const res = await axiosUserInstance.put(GET_ACCOUNT_API, data);

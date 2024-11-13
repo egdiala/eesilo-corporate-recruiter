@@ -11,5 +11,4 @@ export const appRoutes = [
 export const otherRoutes = [
     { to:"/notifications", name:"Notifications", icon:"uil:bell", count: 0 },
     { to:"/settings", name:"Settings", icon:"uil:setting" },
-    { to:"/help", name:"Help & Support", icon:"ri:headphone-line" },
 ]

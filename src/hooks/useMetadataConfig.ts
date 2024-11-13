@@ -113,18 +113,6 @@ export const useMetadataConfig = () => {
           type: "website",
         },
       },
-      "/help": {
-        title: "Help & Support",
-        description: "Get help with using Neesilo",
-        keywords: "Neesilo, recruiter, corporate, help, support",
-        openGraph: {
-          title: "Help & Support",
-          description: "Get help with using Neesilo",
-          url: "/jobs",
-          image: "https://neesilo-corporate-recruiter.vercel.app/og_image.png",
-          type: "website",
-        },
-      },
       "/profile": {
         title: "Profile",
         description: "View your profile page.",
