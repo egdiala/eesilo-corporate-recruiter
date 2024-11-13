@@ -91,7 +91,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                     <h1 className="font-medium text-xl text-gray-900 capitalize line-clamp-1">{talent?.user_data?.first_name} {talent?.user_data?.last_name}</h1>
                                     <p className="text-sm text-gray-400">{talent?.user_data?.specialty_data?.specialty_main} / {talent?.user_data?.specialty_data?.specialty_sub}</p>
                                     <div className="flex items-center gap-1.5">
-                                        <span className="text-lg">{country?.emoji}</span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
+                                        <span><img src={`https://flagsapi.com/${country?.iso2}/shiny/24.png`} /></span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.user_data?.address_data?.city}, {talent?.user_data?.address_data?.country}</span>
                                     </div>
                                 </div>
                             </div>
