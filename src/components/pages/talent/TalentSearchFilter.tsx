@@ -46,8 +46,8 @@ export const TalentSearchFilter: React.FC<TalentSearchFilterProps> = ({ setFilte
 
     const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
+        ? states?.states
+        : states?.states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
     

@@ -1,24 +1,33 @@
 export interface FetchedCountries {
-    id: number;
     name: string;
-    iso2: string;
     iso3: string;
-    phonecode: string;
+    iso2: string;
+    numeric_code: string;
+    phone_code: string;
     capital: string;
-    currency: string;
-    native: string;
-    emoji: string;
+    states: {
+        id: number;
+        name: string;
+        state_code: string;
+        latitude: string;
+        longitude: string;
+        type: null | string;
+    }[]
 }
 
 export interface FetchedStatesByCounty {
-    id: number;
     name: string;
+    iso3: string;
     iso2: string;
-}
-
-export interface FetchedCitiesByStateAndCountry {
-    id: number;
-    name: string;
-    latitude: string;
-    longitude: string;
+    numeric_code: string;
+    phone_code: string;
+    capital: string;
+    states: {
+        id: number;
+        name: string;
+        state_code: string;
+        latitude: string;
+        longitude: string;
+        type: null | string;
+    }[]
 }

@@ -30,7 +30,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
         if (account?.phone_number) {
             const phone_number = account?.phone_number as string
             const countryCallingCode = `${account?.phone_prefix as string}`
-            const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
+            const country = countries?.filter((country) => country?.phone_code === countryCallingCode)?.[0]
 
             const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
 
@@ -58,7 +58,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
             const { name, phone_number, website, file } = values
             const address_data = {
                 country: values.country,
-                country_code: selectedCountry?.phonecode,
+                country_code: selectedCountry?.phone_code,
                 state: values.state,
                 city: values.city,
                 address: values.address,
@@ -71,17 +71,17 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                 uploadLogo(formData).then(() => mutate({
                     address_data,
                     ...(account?.status !== 1 && { name: name }),
-                    phone_number: phone_number.replace(`+${selectedCountry?.phonecode}`, ""),
+                    phone_number: phone_number.replace(`+${selectedCountry?.phone_code}`, ""),
                     website,
-                    phone_prefix: selectedCountry?.phonecode
+                    phone_prefix: selectedCountry?.phone_code
                 }))
             } else {
                 mutate({
                     address_data,
                     ...(account?.status !== 1 && { name: name }),
-                    phone_number: phone_number.replace(`+${selectedCountry?.phonecode}`, ""),
+                    phone_number: phone_number.replace(`+${selectedCountry?.phone_code}`, ""),
                     website,
-                    phone_prefix: selectedCountry?.phonecode
+                    phone_prefix: selectedCountry?.phone_code
                 })
             }
         },
@@ -98,8 +98,8 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
 
     const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
+        ? states?.states
+        : states?.states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
     
@@ -171,7 +171,7 @@ export const OrganizationInformation: React.FC<OrganizationInformationProps> = (
                                 ...prev,
                                 state: value,
                             }))} 
-                            defaultValue={states?.filter((state) => state.name.toLowerCase() == account?.address_data?.state?.toLowerCase())?.[0]}
+                            defaultValue={states?.states?.filter((state) => state.name.toLowerCase() == account?.address_data?.state?.toLowerCase())?.[0]}
                             displayValue={(item) => item?.name}
                             optionLabel={(option) => option?.name} 
                             setSelected={(value) => setFieldValue("state", value?.name)}

@@ -60,8 +60,8 @@ export const CreateJobPage: React.FC = () => {
 
     const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
+        ? states?.states
+        : states?.states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
 
@@ -87,17 +87,13 @@ export const CreateJobPage: React.FC = () => {
         }
     }
     const defaultCountry = {
-        "id": 233,
-        "name": "United States",
-        "iso2": "US",
-        "iso3": "USA",
-        "phonecode": "1",
-        "capital": "Washington",
-        "currency": "USD",
-        "native": "United States",
-        "emoji": "🇺🇸"
+        capital : "Washington",
+        iso2 : "US",
+        iso3 : "USA",
+        name : "United States",
+        numeric_code : "840",
+        phone_code: "1",
     }
-
     useEffect(() => {
         setFieldValue("country", defaultCountry?.name, false)
     },[])

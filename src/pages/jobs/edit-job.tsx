@@ -63,8 +63,8 @@ export const EditJobPage: React.FC = () => {
 
     const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
+        ? states?.states
+        : states?.states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
 
@@ -152,7 +152,7 @@ export const EditJobPage: React.FC = () => {
                                             ...prev,
                                             state: value,
                                         }))} 
-                                        defaultValue={states?.filter((state) => state.name.toLowerCase() == job?.state?.toLowerCase())?.[0]}
+                                        defaultValue={states?.states?.filter((state) => state.name.toLowerCase() == job?.state?.toLowerCase())?.[0]}
                                         displayValue={(item) => item?.name}
                                         optionLabel={(option) => option?.name} 
                                         setSelected={(value) => setFieldValue("state", value?.name)}

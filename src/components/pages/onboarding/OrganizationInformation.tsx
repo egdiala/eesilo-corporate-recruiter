@@ -41,7 +41,7 @@ export const OrganizationInformation: React.FC = () => {
             const { name, phone_number, website, file } = values
             const address_data = {
                 country: values.country,
-                country_code: selectedCountry?.phonecode,
+                country_code: selectedCountry?.phone_code,
                 state: values.state,
                 city: values.city,
                 address: values.address,
@@ -53,12 +53,12 @@ export const OrganizationInformation: React.FC = () => {
                 uploadLogo(formData).then(() => mutate({
                     address_data,
                     name,
-                    phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""),
+                    phone_number: extractNumbers(phone_number).replace(selectedCountry?.phone_code as string, ""),
                     website,
-                    phone_prefix: selectedCountry?.phonecode
+                    phone_prefix: selectedCountry?.phone_code
                 }))
             } else {
-                mutate({ address_data, name, phone_number: extractNumbers(phone_number).replace(selectedCountry?.phonecode as string, ""), website, phone_prefix: selectedCountry?.phonecode })
+                mutate({ address_data, name, phone_number: extractNumbers(phone_number).replace(selectedCountry?.phone_code as string, ""), website, phone_prefix: selectedCountry?.phone_code })
             }
             
         },
@@ -77,21 +77,18 @@ export const OrganizationInformation: React.FC = () => {
 
     const { data: states, isLoading: fetchingStates } = useGetStatesByCountry(selectedCountry?.iso2 as string)
     const fetchedStates = query.state === ""
-        ? states
-        : states?.filter((state) => {
+        ? states?.states
+        : states?.states?.filter((state) => {
             return state.name.toLowerCase().includes(query.state.toLowerCase())
             })
     
     const defaultCountry = {
-        "id": 233,
-        "name": "United States",
-        "iso2": "US",
-        "iso3": "USA",
-        "phonecode": "1",
-        "capital": "Washington",
-        "currency": "USD",
-        "native": "United States",
-        "emoji": "🇺🇸"
+        capital : "Washington",
+        iso2 : "US",
+        iso3 : "USA",
+        name : "United States",
+        numeric_code : "840",
+        phone_code: "1",
     }
 
     useEffect(() => {

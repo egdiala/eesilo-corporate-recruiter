@@ -26,7 +26,7 @@ export const GET_APPLICANT_DOCUMENT_API = "business/applicants/document"
 export const UPLOAD_OFFER_LETTER_API = "business/applicants/shortlisted"
 
 // Country
-export const COUNTRY_API = "countries"
+export const COUNTRY_API = "user/auths/country-states"
 
 // Dashboard
 export const GET_DASHBOARD_STATS_API = "business/jobs/dashboard-stat"

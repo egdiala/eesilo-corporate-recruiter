@@ -26,6 +26,15 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
             { label: "Annual Salary Expectation?", value: `$${job?.expected_salary.toLocaleString("en-US")}` },
         ]
     },[job?.city, job?.country, job?.expected_salary])
+
+    const formatTextWithLineBreaks = (text: string) => {
+        return text.split("\n").map((str, index) => (
+            <React.Fragment key={index}>
+                {str}
+                <br />
+            </React.Fragment>
+        ));
+    };
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
@@ -37,7 +46,7 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
             </div>
             <ContentDivider />
             <h3 className="font-medium text-gray-900 text-sm">Description</h3>
-            <p className="text-gray-700 text-sm font-normal">{job?.description}</p>
+            <p className="text-gray-700 text-sm font-normal">{formatTextWithLineBreaks(job?.description ?? "")}</p>
             <ContentDivider />
             <div className="flex items-center flex-wrap gap-6">
                 {

@@ -25,7 +25,7 @@ export const ContactPerson: React.FC<ContactPersonProps> = ({ account }) => {
         if (account?.phone_number) {
             const phone_number = account?.phone_number as string
             const countryCallingCode = `${account?.phone_prefix as string}`
-            const country = countries?.filter((country) => country?.phonecode === countryCallingCode)?.[0]
+            const country = countries?.filter((country) => country?.phone_code === countryCallingCode)?.[0]
 
             const parsedPhoneNumber = parsePhoneNumberFromString(phone_number, country?.iso2 as any)?.format("E.164")
 
