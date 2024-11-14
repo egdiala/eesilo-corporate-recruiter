@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/utils/createToast";
-import { GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE, GET_TALENT } from "@/constants/queryKeys";
+import { GET_APPLICANT_DOCUMENT, GET_SHORTLISTED, GET_SHORTLISTED_CANDIDATE, GET_TALENT } from "@/constants/queryKeys";
 import { removeShortlisted, requestDocumentAccess, shortlistCandidate, uploadOfferLetter } from "@/services/apis/applicants";
 import { Dispatch, SetStateAction } from "react";
 
@@ -60,6 +60,7 @@ export const useRequestDocumentAccess = (msg?: string, fn?: () => void) => {
   return useMutation({
     mutationFn: requestDocumentAccess,
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [GET_APPLICANT_DOCUMENT] })
         queryClient.invalidateQueries({ queryKey: [GET_TALENT] })
         queryClient.invalidateQueries({ queryKey: [GET_SHORTLISTED_CANDIDATE] })
         successToast({ param: null, msg, size: "36" })

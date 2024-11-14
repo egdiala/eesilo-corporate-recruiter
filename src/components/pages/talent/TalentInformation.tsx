@@ -92,7 +92,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:graduation-cap-line" className="size-6 text-primary-500" />
                     <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                 </div>
-                <RenderIf condition={!!talent?.education_data}>
+                <RenderIf condition={!!talent?.education_data || (talent?.education_data?.length > 0)}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.education_data?.map((education) =>
@@ -111,7 +111,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.education_data}>
+                <RenderIf condition={!talent?.education_data || (talent?.education_data?.length === 0)}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
@@ -126,7 +126,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                     <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                     <h2 className="font-medium text-base text-gray-900">Job History</h2>
                 </div>
-                <RenderIf condition={!!talent?.workexp_data}>
+                <RenderIf condition={!!talent?.workexp_data || (talent?.workexp_data?.length > 0)}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {
                             talent?.workexp_data?.map((work) =>
@@ -139,7 +139,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={!talent?.education_data}>
+                <RenderIf condition={!talent?.workexp_data || (talent?.workexp_data?.length === 0)}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
@@ -180,7 +180,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <div className="flex flex-col gap-4 px-5 pb-5">
                                 <InputField type="text" placeholder="Search job roles" iconRight="ri:search-2-line" onChange={(event) => setQuery((event.target as HTMLInputElement).value)} />
                                 <RenderIf condition={filteredJobs !== undefined && filteredJobs?.length > 0}>
-                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="max-h-64 overflow-y-scroll px-px space-y-2.5">
+                                    <RadioGroup by={"title" as any} value={selected} onChange={setSelected} aria-label="Job" className="max-h-64 overflow-y-scroll px-px space-y-2.5 pb-px">
                                         {
                                             filteredJobs?.map((job) => (
                                             <Radio
