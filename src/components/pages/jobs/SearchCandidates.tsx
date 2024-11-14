@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Icon } from "@iconify/react";
-import { Loader } from "@/components/core/Button/Loader";
-import { tabVariants } from "@/constants/animateVariants";
-import { Avatar, Button, InputField, RenderIf, Table } from "@/components/core";
-import { useGetTalents } from "@/services/hooks/queries";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
-import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
 import { useDebounce } from "@/hooks/useDebounce";
 import { AddToShortlist } from "./AddToShortlist";
+import { Loader } from "@/components/core/Button/Loader";
+import { useGetTalents } from "@/services/hooks/queries";
+import { tabVariants } from "@/constants/animateVariants";
+import { SearchCandidatesFilter } from "./SearchCandidatesFilter";
+import { Avatar, InputField, RenderIf, Table } from "@/components/core";
+import type { FetchedTalent, FetchedTalentCount } from "@/types/applicants";
+import { getPaginationParams, setPaginationParams } from "@/hooks/usePaginationParams";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 
 export const SearchCandidates: React.FC = () => {
@@ -18,15 +18,15 @@ export const SearchCandidates: React.FC = () => {
     const location = useLocation();
     const [page, setPage] = useState(1)
     const [itemsPerPage] = useState(10)
+    const [filters, setFilters] = useState({})
     const [toggleModals, setToggleModals] = useState({
         openShortlistCandidate: false,
     })
     const [activeTalent, setActiveTalent] = useState<FetchedTalent | null>(null)
     const [searchParams, setSearchParams] = useSearchParams();
     const { value: keyword, onChangeHandler } = useDebounce(500)
-    const { value: year_exp, onChangeHandler: handleYearExp } = useDebounce(500)
-    const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({ keyword, year_exp, job_id: jobId })
-    const { data: count, isLoading: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, year_exp, job_id: jobId })
+    const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({ keyword, job_id: jobId })
+    const { data: count, isLoading: fetchingCount } = useGetTalents<FetchedTalentCount>({ component: "count", keyword, job_id: jobId })
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -98,16 +98,8 @@ export const SearchCandidates: React.FC = () => {
                 <h2 className="font-medium text-gray-900 text-base">Invite New Candidates</h2>
                 <div className="flex items-center gap-5 flex-1 lg:max-w-96">
                     <InputField type="text" placeholder="Search talents" iconRight="ri:search-2-line" onChange={onChangeHandler} />
-                    <Button theme="neutral" variant="stroke" size="36">
-                        <Icon icon="ri:filter-3-line" className="size-5" />
-                    </Button>
+                    <SearchCandidatesFilter setFilters={setFilters} filters={filters} />
                 </div>
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-                <InputField type="text" placeholder="Educational qualifications" />
-                <InputField type="text" placeholder="Skills" />
-                <InputField type="text" placeholder="Years of experience" onChange={handleYearExp} />
-                <InputField type="text" placeholder="Salary expectation" />
             </div>
             <RenderIf condition={!isLoading && !fetchingCount}>
                 <Table

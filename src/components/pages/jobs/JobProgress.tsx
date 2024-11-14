@@ -99,7 +99,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
             })),
             {
                 id: 2,
-                text: (talent?.invite_status <= 1) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : `You scheduled an interview with this employee on ${format(talent?.timestamp_data?.interview_sent_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.interview_sent_at, "hh:mm bbb")}`,
+                text: ((talent?.invite_status <= 1) || (talent?.invite_status === 3)) && (talent?.interview_status === 0) ? "You can schedule an interview with this employee" : `You scheduled an interview with this employee on ${format(talent?.timestamp_data?.interview_sent_at, "ccc do, MMM. yyyy")} at ${format(talent?.timestamp_data?.interview_sent_at, "hh:mm bbb")}`,
                 title: "Schedule Interview",
                 content: <div>
                     <RenderIf condition={(talent?.invite_status == 1) && (talent?.interview_status === 0)}>
@@ -150,7 +150,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({ job, switchTab, talent
                 done: talent?.offer_status === 1
             },
         ].filter((item) => item !== false)
-    }, [interviewData, isPending, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status, talent?.offer_letter_link, talent?.offer_status, talent?.timestamp_data?.interview_sent_at, talent?.timestamp_data?.invite_accepted_rejected_at, talent?.timestamp_data?.invite_sent_at, talent?.timestamp_data?.offer_made_at, talent?.timestamp_data?.shortlisted_at])
+    }, [interviewData, isPending, sendInvite, switchTab, talent?.interview_data?.i_schedule, talent?.interview_status, talent?.invite_status, talent?.offer_letter_link, talent?.offer_status, talent?.timestamp_data?.interview_sent_at, talent?.timestamp_data?.invite_accepted_rejected_at, talent?.timestamp_data?.invite_sent_at, talent?.timestamp_data?.offer_made_at, talent?.timestamp_data?.shortlisted_at, toggleJobOffer, toggleScheduleInvite])
     
     return (
         <motion.div initial={tabVariants.initial} animate={tabVariants.final} exit={tabVariants.initial} className="flex flex-col gap-6">

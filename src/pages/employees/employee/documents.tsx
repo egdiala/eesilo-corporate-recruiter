@@ -22,6 +22,9 @@ export const EmployeeDocumentsPage: React.FC = () => {
     useEffect(() => {
         if (isSuccess) {
             window.open(`${import.meta.env.VITE_NEESILO_USER_SERVICE_URL}/business/fnviewers/${viewDoc?.link}`, "_blank")
+            setDocumentFilters({
+                user_id: "",
+            })
         }
     },[isSuccess, viewDoc?.link])
 

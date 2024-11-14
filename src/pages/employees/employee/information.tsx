@@ -11,6 +11,7 @@ import { capitalizeWords } from "@/utils/capitalize";
 import type { ActiveJobRole } from "@/types/employee";
 import { Loader } from "@/components/core/Button/Loader";
 import { tabVariants } from "@/constants/animateVariants";
+import { useShortlistApplicant } from "@/services/hooks/mutations";
 import { Avatar, Button, InputField, RenderIf } from "@/components/core";
 import { Dialog, DialogPanel, DialogTitle, Radio, RadioGroup } from "@headlessui/react";
 import { useGetCountries, useGetJobs, useGetShortlistedCandidate, useGetTalent } from "@/services/hooks/queries";
@@ -37,8 +38,8 @@ export const EmployeeInformationPage: React.FC = () => {
         })
     
     const country = useMemo(() => {
-        return countries?.find((item) => item.iso2.toLowerCase() === (talent?.user_data?.address_data?.country_code || "+1")?.toLowerCase())
-    }, [countries, talent?.user_data?.address_data?.country_code])
+        return countries?.find((item) => item.name.toLowerCase() === talent?.user_data?.address_data?.country?.toLowerCase())
+    }, [countries, talent?.user_data?.address_data?.country])
 
     const toggleShortlistCandidate = useCallback(() => {
       setToggleModals((prev) => ({
@@ -53,6 +54,16 @@ export const EmployeeInformationPage: React.FC = () => {
         openInvitedModal: !toggleModals.openInvitedModal,
       }))
     },[toggleModals.openInvitedModal])
+    const { mutate, isPending } = useShortlistApplicant("Candidate shortlisted successfully!", () => toggleInvitedModal())
+
+    const shortlistCandidate = () => {
+        const payload = {
+            job_id: selected?.job_id as string,
+            user_id: talent?.user_id as string,
+            invite_status: "0" as "2" | "1" | "0" | "3" | "4",
+        }
+        mutate({ ...payload })
+    }
 
     const closeModal = () => {
         toggleShortlistCandidate()
@@ -175,7 +186,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                 <p className="text-xs text-gray-900 capitalize">{talent?.user_data?.relocation_data?.ready_to_relocate ? "Yes" : "No"}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     <Dialog open={toggleModals.openShortlistCandidate} as="div" className="relative z-10 focus:outline-none" onClose={toggleShortlistCandidate}>
                         <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-gray-300/30">
                             <div className="flex min-h-full items-end md:items-center justify-center p-4">
@@ -214,8 +225,8 @@ export const EmployeeInformationPage: React.FC = () => {
                                         </RenderIf>
                                     </div>
                                     <div className="flex items-center gap-3 py-4 px-5 border-t border-t-gray-200">
-                                        <Button type="button" theme="neutral" variant="stroke" size="40" block onClick={() => closeModal()}>Dismiss</Button>
-                                        <Button type="button" theme="primary" variant="filled" size="40" disabled={!selected?.job_id} onClick={toggleInvitedModal} block>Yes, Send Invitation</Button>
+                                        <Button type="button" theme="neutral" variant="stroke" size="40" disabled={isPending} onClick={() => closeModal()} block>Dismiss</Button>
+                                        <Button type="button" theme="primary" variant="filled" size="40" disabled={isPending || !selected?.job_id} onClick={shortlistCandidate} block>Yes, Send Invitation</Button>
                                     </div>
                                 </DialogPanel>
                             </div>
