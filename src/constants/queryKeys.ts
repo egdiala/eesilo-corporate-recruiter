@@ -29,3 +29,4 @@ export const GET_APPLICANT_DOCUMENT = "get-applicant-document"
 
 // Subscription
 export const GET_SUBSCRIPTION = "get-subscription"
+export const GET_SAVED_CARDS = "get-saved-cards"

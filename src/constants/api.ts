@@ -40,3 +40,4 @@ export const GET_JOB_REQUIREMENTS_API = "business/jobs/requirement"
 
 // Subscription
 export const GET_SUBSCRIPTION_API = "business/accounts/subscription"
+export const CARDS_API = "business/accounts/card"
