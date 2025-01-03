@@ -1,13 +1,13 @@
 import React, { useMemo } from "react";
 import { Icon } from "@iconify/react";
-import { format, getYear, startOfYear } from "date-fns";
 import DatePicker from "react-datepicker";
-import { JobYearlyCountType } from "@/types/dashboard";
+import { AnimatePresence, motion } from "framer-motion";
+import { format, getYear, startOfYear } from "date-fns";
+import { Loader } from "@/components/core/Button/Loader";
+import { pageVariants } from "@/constants/animateVariants";
+import type { JobYearlyCountType } from "@/types/dashboard";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Loader } from "@/components/core/Button/Loader";
-import { AnimatePresence, motion } from "framer-motion";
-import { pageVariants } from "@/constants/animateVariants";
 
 const chartData = [
   { month: "January", invited: 0, accepted: 0, rejected: 0, hired: 0 },
@@ -125,7 +125,7 @@ export const PerformanceStats: React.FC<PerformanceStatsProps> = ({ filters, loa
             </div>
             <div className="flex flex-col xl:flex-row xl:items-center gap-5 xl:gap-0">
                 <div className="flex flex-col md:p-5 gap-5">
-                    <span className="font-medium text-sm text-[#475569]">From Jan 2024 to July 2024</span>
+                    <span className="font-medium text-sm text-[#475569]">From Jan {filters?.year} to Dec {filters?.year}</span>
                     <div className="grid grid-cols-4 xl:grid-cols-1 gap-4">
                         <div className="flex flex-col gap-3">
                             <span className="font-medium text-sm text-[#475569]"><span className="sr-only md:not-sr-only">Total</span> Invited</span>

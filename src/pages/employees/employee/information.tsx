@@ -114,7 +114,7 @@ export const EmployeeInformationPage: React.FC = () => {
                             <Icon icon="ri:graduation-cap-line" className="size-6 text-primary-500" />
                             <h2 className="font-medium text-base text-gray-900">Educational Qualification</h2>
                         </div>
-                        <RenderIf condition={!!talent?.education_data}>
+                        <RenderIf condition={talent?.education_data! && (talent?.education_data?.length > 0)}>
                             <div className="grid grid-cols-2 gap-4">
                                 {
                                     talent?.education_data?.map((education) =>
@@ -133,7 +133,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                 }
                             </div>
                         </RenderIf>
-                        <RenderIf condition={!talent?.education_data}>
+                        <RenderIf condition={!talent?.education_data?.length}>
                             <div className="flex flex-col items-center gap-2 py-7 max-auto">
                                 <img src={emptyState} alt="emptyState" className="size-24" />
                                 <div className="grid gap-1 text-center">
@@ -148,7 +148,7 @@ export const EmployeeInformationPage: React.FC = () => {
                             <Icon icon="ri:briefcase-4-line" className="size-6 text-warning-500" />
                             <h2 className="font-medium text-base text-gray-900">Job History</h2>
                         </div>
-                        <RenderIf condition={!!talent?.workexp_data}>
+                        <RenderIf condition={!!talent?.workexp_data?.length}>
                             <div className="grid grid-cols-2 gap-4">
                                 {
                                     talent?.workexp_data?.map((work) =>
@@ -161,7 +161,7 @@ export const EmployeeInformationPage: React.FC = () => {
                                 }
                             </div>
                         </RenderIf>
-                        <RenderIf condition={!talent?.education_data}>
+                        <RenderIf condition={!talent?.workexp_data?.length}>
                             <div className="flex flex-col items-center gap-2 py-7 max-auto">
                                 <img src={emptyState} alt="emptyState" className="size-24" />
                                 <div className="grid gap-1 text-center">

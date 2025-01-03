@@ -1,5 +1,5 @@
 export type GetDashboardStatsQuery = {
-    component: "job-data-count" | "job-yearly-count" | "job-interview-count"
+    component: "job-data-count" | "job-yearly-count" | "job-interview-count" | "report-jobstat-count" | "report-jobyearly-count" | "report-joblocation-count" | "report-jobhired-count"
 }
 
 export interface JobDataCountType {
@@ -15,6 +15,25 @@ export interface JobYearlyCountType {
     total_rejected: number;
     total_offer: number;
     month: string;
+}
+
+export interface ReportJobStatCount {
+    _id: null;
+    total_job: number;
+    total_invite: number;
+    total_hired: number;
+}
+
+export interface ReportJobHiredCount {
+    _id: string;
+    total_hired: number;
+    job_title: string;
+}
+
+export interface ReportJobLocationCount {
+    _id: string;
+    state: string;
+    total: number
 }
 
 export interface InterviewDataCountType {

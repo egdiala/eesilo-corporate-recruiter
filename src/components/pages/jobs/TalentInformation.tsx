@@ -118,7 +118,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={talent?.user_data?.education_data?.length === 0}>
+                <RenderIf condition={!talent?.education_data?.length || (talent?.user_data?.education_data?.length === 0)}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">
@@ -146,7 +146,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                         }
                     </div>
                 </RenderIf>
-                <RenderIf condition={talent?.user_data?.education_data?.length === 0}>
+                <RenderIf condition={talent?.workexp_data?.length === 0}>
                     <div className="flex flex-col items-center gap-2 py-7 max-auto">
                         <img src={emptyState} alt="emptyState" className="size-24" />
                         <div className="grid gap-1 text-center">

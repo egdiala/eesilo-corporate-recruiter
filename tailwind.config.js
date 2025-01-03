@@ -129,8 +129,8 @@ export default {
   			lg: "var(--radius)",
   			md: "calc(var(--radius) - 2px)",
   			sm: "calc(var(--radius) - 4px)"
-  		}
-  	}
+  		},
+  	},
   },
   // eslint-disable-next-line no-undef
   plugins: [require("@tailwindcss/forms"), require("tailwindcss-animate")],
