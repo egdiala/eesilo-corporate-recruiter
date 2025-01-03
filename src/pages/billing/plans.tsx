@@ -37,7 +37,7 @@ export const BillingPlansPage: React.FC = () => {
     return (
         <AnimatePresence>
             {
-                (!fetchingPlans || !fetchingSubHistoryPlans) ? (
+                (!fetchingPlans || !fetchingSubHistoryPlans || !fetchingSubHistoryPlans) ? (
                     <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="">
                         <div className="flex flex-col gap-6 bg-white rounded-2xl">
                             <div className="grid gap-2">
