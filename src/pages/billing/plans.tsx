@@ -8,12 +8,10 @@ import { pageVariants } from "@/constants/animateVariants";
 import { useGetSubscription } from "@/services/hooks/queries";
 import { useInitSubscription } from "@/services/hooks/mutations";
 import { Button, CheckBox, ContentDivider, RenderIf, Toggle } from "@/components/core";
-import { useNavigate } from "react-router-dom";
 import { format, isPast } from "date-fns";
 import { capitalizeWords } from "@/utils/capitalize";
 
 export const BillingPlansPage: React.FC = () => {
-    const navigate = useNavigate()
     const [isYearly, setIsYearly] = useState(false)
     const [selectedPlan, setSelectedPlan] = useState<FetchedPlan | null>(null)
     const { data: plans, isLoading: fetchingPlans } = useGetSubscription<FetchedPlan[]>({ component: "subplan" })
@@ -21,13 +19,13 @@ export const BillingPlansPage: React.FC = () => {
 
     const currentPlan = useMemo(() => {
         if (subHistory && subHistory?.length > 0) {
-            return subHistory.find((plan) => !isPast(plan.end_date))
+            return subHistory.find((plan) => !isPast(plan.end_date)) as FetchedSubscriptionHistory
         }
         return null
     }, [subHistory])
     
     const { mutate, isPending } = useInitSubscription((value) => {
-        navigate(`/billings/checkout?price=${value?.amount}&plan=${selectedPlan?.plan_name}`)
+        window.open(`/billings/checkout?price=${value?.amount}&plan=${selectedPlan?.plan_name}`, "_blank")
     })
 
     const subscribe = (plan: FetchedPlan) => {
@@ -52,8 +50,8 @@ export const BillingPlansPage: React.FC = () => {
                                         <img src={money} alt="money" className="h-12 w-14" />
                                         <div className="grid">
                                             <h3 className="font-medium text-base text-black">${currentPlan?.sub_amount}/{currentPlan?.sub_duration === 1 ? "month" : "year"}</h3>
-                                            <p className="text-xs/5 text-gray-500">{capitalizeWords(currentPlan?.plan_name as string)} plan</p>
-                                            <p className="text-xs/5 text-gray-500">Expires on the {format(currentPlan?.end_date as string, "do MMMM, yyyy")}</p>
+                                            <p className="text-xs/5 text-gray-500">{capitalizeWords(currentPlan?.plan_name || "")} plan</p>
+                                            <p className="text-xs/5 text-gray-500">Expires on the {format(currentPlan?.end_date || new Date(), "do MMMM, yyyy")}</p>
                                         </div>
                                     </div>
                                 </div>
