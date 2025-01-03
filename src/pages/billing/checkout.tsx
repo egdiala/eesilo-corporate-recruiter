@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCompleteSubscription } from "@/services/hooks/mutations";
 import { loadStripe, type StripeCardElement } from "@stripe/stripe-js";
 import { Elements, useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
+import { getAdminData } from "@/utils/authUtil";
 
 interface BillingData {
     appSecret: string;
@@ -24,6 +25,7 @@ interface CheckoutFormProps {
 
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, transactionRef, plan }) => {
     const navigate = useNavigate()
+    const user = getAdminData()
     const stripe = useStripe();
     const elements = useElements();
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -48,7 +50,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, transactionRe
             payment_method: {
                 card: elements.getElement(CardElement) as StripeCardElement,
                 billing_details: {
-                    name: "Customer Name", // Replace with dynamic name if needed
+                    name: user?.name, // Replace with dynamic name if needed
                 },
             }
         });
