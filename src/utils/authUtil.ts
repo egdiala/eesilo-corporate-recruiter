@@ -1,7 +1,7 @@
 import { FetchedAccount } from "@/types/account";
 
 export const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user");
   if (!token) {
     return false;
   }
