@@ -5,7 +5,7 @@ import type { GetSavedCardQuery, GetSubscriptionQuery } from "@/types/subscripti
 
 export const useGetSubscription = <T>(query: GetSubscriptionQuery) => {
     return useQuery({
-        queryKey: [GET_SUBSCRIPTION],
+        queryKey: [GET_SUBSCRIPTION, query],
         queryFn: () => getSubscription(query),
         refetchOnWindowFocus: false,
         select: (res) => res?.data as T,
@@ -15,7 +15,7 @@ export const useGetSubscription = <T>(query: GetSubscriptionQuery) => {
 
 export const useGetSavedCard = <T>(query: GetSavedCardQuery) => {
     return useQuery({
-        queryKey: [GET_SAVED_CARDS],
+        queryKey: [GET_SAVED_CARDS, query],
         queryFn: () => getSavedCard(query),
         refetchOnWindowFocus: false,
         select: (res) => res?.data as T,

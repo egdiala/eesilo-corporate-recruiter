@@ -1,12 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import money from "@/assets/money.png";
-import { ContentDivider } from "@/components/core";
+import { ContentDivider, RenderIf } from "@/components/core";
 import { pageVariants } from "@/constants/animateVariants";
 import { Label, Radio, RadioGroup } from "@headlessui/react";
 import { AddPaymentMethodModal } from "@/components/pages/billing";
-import { useGetSavedCard } from "@/services/hooks/queries";
+import { useGetSavedCard, useGetSubscription } from "@/services/hooks/queries";
+import { FetchedSubscriptionHistory } from "@/types/subscription";
+import { format, isPast } from "date-fns";
+import { capitalizeWords } from "@/utils/capitalize";
 
 const plans = ["Startup", "Business"]
 
@@ -14,6 +17,14 @@ export const BillingsMethodPage: React.FC = () => {
     let [selected, setSelected] = useState(plans[0])
     const [openPaymentMethodModal, setOpenPaymentModal] = useState(false)
     useGetSavedCard({ component: "app-secret" })
+    const { data: subHistory } = useGetSubscription<FetchedSubscriptionHistory[]>({ })
+
+    const currentPlan = useMemo(() => {
+        if (subHistory && subHistory?.length > 0) {
+            return subHistory.find((plan) => !isPast(plan.end_date))
+        }
+        return null
+    },[subHistory])
 
     const togglePaymentMethod = useCallback(() => {
         setOpenPaymentModal(!openPaymentMethodModal)
@@ -26,17 +37,19 @@ export const BillingsMethodPage: React.FC = () => {
                     <p className="text-base text-gray-400">Edit and change payment method for subscriptions and payments</p>
                 </div>
                 <ContentDivider />
-                <div className="border border-gray-200 rounded-xl p-4 flex flex-col gap-4">
-                    <h2 className="font-medium text-base text-gray-900">Current Plan</h2>
-                    <div className="flex-1 bg-gray-100 p-2 flex items-start gap-2 rounded-lg" style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}>
-                        <img src={money} alt="money" className="h-12 w-14" />
-                        <div className="grid">
-                            <h3 className="font-medium text-base text-black">$50/month</h3>
-                            <p className="text-xs/5 text-gray-500">Intermediate plan</p>
-                            <p className="text-xs/5 text-gray-500">Expires on the 9th August</p>
+                <RenderIf condition={!!currentPlan?.plan_id}>
+                    <div className="border border-gray-200 rounded-xl p-4 flex flex-col gap-4">
+                        <h2 className="font-medium text-base text-gray-900">Current Plan</h2>
+                        <div className="flex-1 bg-gray-100 p-2 flex items-start gap-2 rounded-lg" style={{ boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)" }}>
+                            <img src={money} alt="money" className="h-12 w-14" />
+                            <div className="grid">
+                                <h3 className="font-medium text-base text-black">${currentPlan?.sub_amount}/{currentPlan?.sub_duration === 1 ? "month" : "year"}</h3>
+                                <p className="text-xs/5 text-gray-500">{capitalizeWords(currentPlan?.plan_name as string)} plan</p>
+                                <p className="text-xs/5 text-gray-500">Expires on the {format(currentPlan?.end_date as string, "do MMMM, yyyy")}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </RenderIf>
                 <div className="border border-gray-200 rounded-xl p-4 flex flex-col gap-4">
                     <h2 className="font-medium text-base text-gray-900">Saved Payment Methods</h2>
                     <RadioGroup value={selected} onChange={setSelected} aria-label="Server size" className="flex flex-col gap-4">

@@ -24,6 +24,6 @@ export const initSaveCard = async (payload: InitSaveCardParams) => {
 };
 
 export const getSavedCard = async (query: GetSavedCardQuery) => {
-  const res = await axiosUserInstance.get(`${GET_SUBSCRIPTION_API}${createQueryString(query)}`);
+  const res = await axiosUserInstance.get(`${CARDS_API}${createQueryString(query)}`);
   return res.data;
 };

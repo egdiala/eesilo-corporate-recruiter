@@ -22,3 +22,35 @@ export type InitSaveCardParams = {
 export type GetSavedCardQuery = {
     component: "app-secret";
 }
+
+export interface FetchedPlan {
+    plan_name: string;
+    monthly_cost: number;
+    yearly_cost: number;
+    is_default: number;
+    createdAt: Date | string;
+    updatedAt: Date | string;
+    plan_id: string;
+}
+
+export interface FetchedSubscriptionHistory {
+    user_id: string;
+    plan_id: string;
+    sub_amount: number;
+    sub_duration: number;
+    start_date: Date | string;
+    end_date: Date | string;
+    status: number;
+    intent_id: string;
+    createdAt: Date | string;
+    updatedAt: Date | string;
+    __v: number;
+    plan_name: string;
+}
+
+export interface InitSubscriptionResponse {
+    client_secret: string;
+    amount: number;
+    app_secret: string;
+    transaction_ref: string;
+}

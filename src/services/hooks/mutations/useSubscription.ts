@@ -2,14 +2,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { errorToast } from "@/utils/createToast";
 import { GET_SAVED_CARDS, GET_SUBSCRIPTION } from "@/constants/queryKeys";
 import { completeSubscription, initSaveCard, initSubscription } from "@/services/apis/subscription";
+import type { InitSubscriptionResponse } from "@/types/subscription";
+import { setItem } from "@/utils/localStorage";
 
-export const useInitSubscription = (fn?: () => void) => {
+// eslint-disable-next-line no-unused-vars
+export const useInitSubscription = (fn?: (value: InitSubscriptionResponse) => void) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: initSubscription,
-      onSuccess: () => {
+    onSuccess: (response) => {
+      setItem("billing_data", JSON.stringify({
+        appSecret: response?.data?.app_secret,
+        clientSecret: response?.data?.client_secret,
+        transactionRef: response?.data?.transaction_ref,
+      }))
         queryClient.invalidateQueries({ queryKey: [GET_SUBSCRIPTION] })
-        fn?.()
+        fn?.(response?.data)
     },
     onError: (err: any) => {
         errorToast({ param: err, variant: "light" })
