@@ -58,7 +58,8 @@ export const ReportsPage: React.FC = () => {
                                 )
                             }
                         </div>
-                        <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} />
+                        <PerformanceStats loading={fetchingYearlyCount} yearData={yearlyDataCount ?? []} setFilters={setPerformanceFilters} filters={performanceFilters} /> 
+                        
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-3 md:p-6">
                             <JobsHiredPerformance jobData={reportJobHired ?? []} />
                             <JobsLocation jobLocation={reportJobLocation ?? []} />
