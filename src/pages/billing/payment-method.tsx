@@ -6,12 +6,14 @@ import { ContentDivider } from "@/components/core";
 import { pageVariants } from "@/constants/animateVariants";
 import { Label, Radio, RadioGroup } from "@headlessui/react";
 import { AddPaymentMethodModal } from "@/components/pages/billing";
+import { useGetSavedCard } from "@/services/hooks/queries";
 
 const plans = ["Startup", "Business"]
 
 export const BillingsMethodPage: React.FC = () => {
     let [selected, setSelected] = useState(plans[0])
     const [openPaymentMethodModal, setOpenPaymentModal] = useState(false)
+    useGetSavedCard({ component: "app-secret" })
 
     const togglePaymentMethod = useCallback(() => {
         setOpenPaymentModal(!openPaymentMethodModal)
