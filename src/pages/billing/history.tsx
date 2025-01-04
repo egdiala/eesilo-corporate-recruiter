@@ -88,7 +88,7 @@ export const BillingsHistoryPage: React.FC = () => {
                                         <div className="grid">
                                             <h3 className="font-medium text-base text-black">${currentPlan?.sub_amount}/{currentPlan?.sub_duration === 1 ? "month" : "year"}</h3>
                                             <p className="text-xs/5 text-gray-500">{capitalizeWords(currentPlan?.plan_name as string)} plan</p>
-                                            <p className="text-xs/5 text-gray-500">Expires on the {format(currentPlan?.end_date as string, "do MMMM, yyyy")}</p>
+                                            <p className="text-xs/5 text-gray-500">Expires on the {format(currentPlan?.end_date || new Date(), "do MMMM, yyyy")}</p>
                                         </div>
                                     </div>
                                 </div>
