@@ -20,7 +20,7 @@ export type InitSaveCardParams = {
 }
 
 export type GetSavedCardQuery = {
-    component: "app-secret";
+    component?: "add-card";
 }
 
 export interface FetchedPlan {
@@ -53,4 +53,12 @@ export interface InitSubscriptionResponse {
     amount: number;
     app_secret: string;
     transaction_ref: string;
+}
+
+export interface FetchedCard {
+    card_id: string;
+    brand: "visa" | "mastercard" | "verve";
+    pan: string;
+    exp_month: number;
+    exp_year: number
 }

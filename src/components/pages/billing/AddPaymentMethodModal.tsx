@@ -1,72 +1,56 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useStripe, useElements, PaymentElement, Elements } from "@stripe/react-stripe-js";
+import { useStripe, useElements, Elements, CardElement } from "@stripe/react-stripe-js";
 import { Button, ContentDivider } from "@/components/core";
-import { loadStripe, type StripeElements } from "@stripe/stripe-js";
-import { getItem } from "@/utils/localStorage";
+import { loadStripe, type StripeCardElement } from "@stripe/stripe-js";
+import { getItem, removeItem } from "@/utils/localStorage";
 import { errorToast } from "@/utils/createToast";
+import type { InitSubscriptionResponse } from "@/types/subscription";
+import { getAdminData } from "@/utils/authUtil";
 
 interface AddPaymentMethodModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
-const appSecret = getItem("appSecret") as string
-const stripePromise = loadStripe(appSecret);
+const cardSecretDetails = getItem("cardSecret") as string
+const cardSecret = JSON.parse(cardSecretDetails) as Omit<InitSubscriptionResponse, "transaction_ref">
+const stripePromise = loadStripe(cardSecret?.app_secret);
 
 const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClose }) => {
-    const stripe = useStripe();
-    const elements = useElements();
+    const stripe = useStripe()
+    const user = getAdminData()
+    const elements = useElements()
 
-    const [loading, setLoading] = useState(false);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        // We don't want to let default form submission happen here,
-        // which would refresh the page.
+        setIsSubmitting(true)
         event.preventDefault();
 
-        if (!stripe) {
-            // Stripe.js hasn't yet loaded.
-            // Make sure to disable form submission until Stripe.js has loaded.
+        if (!stripe || !elements) {
+            setIsSubmitting(false)
+            errorToast({ param: { message: "Stripe is not loaded yet." }, variant: "light" })
             return;
         }
-
-        setLoading(true);
-
-        // Trigger form validation and wallet collection
-        const {error: submitError} = await (elements as StripeElements).submit();
-        if (submitError) {
-            setLoading(false);
-            errorToast({ param: submitError, variant: "light" })
-            return;
-        }
-
-        // Create the SetupIntent and obtain clientSecret
-        const res = await fetch("/create-intent", {
-            method: "POST",
+        // Confirm payment with the client secret
+        const result = await stripe.confirmCardPayment(cardSecret?.client_secret, {
+            payment_method: {
+                card: elements.getElement(CardElement) as StripeCardElement,
+                billing_details: {
+                    name: user?.name, // Replace with dynamic name if needed
+                },
+            }
         });
 
-        const {client_secret: clientSecret} = await res.json();
-
-        // Confirm the SetupIntent using the details collected by the Payment Element
-        const {error} = await stripe.confirmSetup({
-            elements: elements as StripeElements,
-            clientSecret,
-            confirmParams: {
-                return_url: "https://example.com/complete",
-            },
-        });
-
-        if (error) {
-            // This point is only reached if there's an immediate error when
-            // confirming the setup. Show the error to your customer (for example, payment details incomplete)
-            setLoading(false);
-            errorToast({ param: error, variant: "light" })
-        } else {
-            setLoading(false);
-            // Your customer is redirected to your `return_url`. For some payment
-            // methods like iDEAL, your customer is redirected to an intermediate
-            // site first to authorize the payment, then redirected to the `return_url`.
+        if (result.error) {
+            setIsSubmitting(false)
+            errorToast({ param: { message: `Payment failed: ${result.error.message}` }, variant: "light" })
+        } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+            removeItem("cardSecret")
+            setIsSubmitting(false)
+            onClose()
         }
     };
 
@@ -89,11 +73,11 @@ const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClos
                         <div className="flex flex-col p-4 gap-4 border border-gray-200 rounded-xl">
                             <h2 className="font-medium text-base text-gray-900">Card Details</h2>
                             <ContentDivider />
-                            <PaymentElement />
+                            <CardElement className="neesilo-input neesilo-input--40 neesilo-input--border" />
                         </div>
                         <div className="flex items-center gap-6">
                             <Button type="button" theme="neutral" variant="stroke" size="40" onClick={onClose} block>Cancel</Button>
-                            <Button type="submit" theme="primary" variant="filled" size="40" disabled={!stripe || loading} loading={loading} block>Done</Button>
+                            <Button type="submit" theme="primary" variant="filled" size="40" disabled={!stripe || isSubmitting} loading={isSubmitting} block>Done</Button>
                         </div>
                     </DialogPanel>
                 </div>
@@ -103,10 +87,10 @@ const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClos
 }
 
 export const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClose }) => {
+
     return (
         <Elements stripe={stripePromise} options={{
-            mode: "setup",
-            currency: "usd",
+            clientSecret: cardSecret?.client_secret as string,
             appearance: {
                 theme: "stripe",
                 variables: {
