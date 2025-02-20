@@ -62,7 +62,7 @@ const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClos
                         <div className="flex flex-col gap-1 lg:p-4 justify-between">
                             <div className="flex items-center">
                                 <DialogTitle as="h1" className="flex-1 text-lg font-medium text-gray-900">
-                                    Upcoming Interviews
+                                    New Payment Method
                                 </DialogTitle>
                                 <button type="button" className="p-0.5 rounded-md hover:bg-gray-100 transition duration-500 ease-out" onClick={onClose}>
                                     <Icon icon="ri:close-line" className="size-5 text-gray-500" />
