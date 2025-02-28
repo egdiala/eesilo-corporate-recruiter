@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { AnimatePresence, motion } from "framer-motion";
 import money from "@/assets/money.png";
@@ -7,17 +7,15 @@ import { pageVariants } from "@/constants/animateVariants";
 import { Label, Radio, RadioGroup } from "@headlessui/react";
 import { AddPaymentMethodModal } from "@/components/pages/billing";
 import { useGetSavedCard, useGetSubscription } from "@/services/hooks/queries";
-import { FetchedCard, FetchedSubscriptionHistory, InitSubscriptionResponse } from "@/types/subscription";
+import { FetchedCard, FetchedSubscriptionHistory } from "@/types/subscription";
 import { format, isPast } from "date-fns";
 import { capitalizeWords } from "@/utils/capitalize";
-import { removeItem, setItem } from "@/utils/localStorage";
 import { Loader } from "@/components/core/Button/Loader";
 
 
 export const BillingsMethodPage: React.FC = () => {
     const [openPaymentMethodModal, setOpenPaymentModal] = useState(false)
     const { data: cards, isLoading: fetchingCards } = useGetSavedCard<FetchedCard[]>({})
-    const { data: details, isLoading } = useGetSavedCard<Omit<InitSubscriptionResponse, "transaction_ref">>({ component: "add-card" })
     const { data: subHistory } = useGetSubscription<FetchedSubscriptionHistory[]>({ })
     let [selected, setSelected] = useState(cards?.[0])
 
@@ -27,23 +25,14 @@ export const BillingsMethodPage: React.FC = () => {
         }
         return null
     }, [subHistory])
-    
-    useEffect(() => {
-        if (!isLoading && !!details?.app_secret) {
-            setItem("cardSecret", JSON.stringify(details))
-        }
-    },[details, details?.app_secret, isLoading])
 
     const togglePaymentMethod = useCallback(() => {
-        if (openPaymentMethodModal) {
-            removeItem("cardSecret")
-        }
         setOpenPaymentModal(!openPaymentMethodModal)
     },[openPaymentMethodModal])
     return (
         <AnimatePresence>
             {
-                (!isLoading && !fetchingCards) ? (
+                (!fetchingCards) ? (
                     <motion.div variants={pageVariants} initial='initial' animate='final' exit={pageVariants.initial} className="w-full max-w-[33.75rem]">
                         <div className="flex flex-col gap-6 bg-white rounded-2xl">
                             <div className="grid gap-2">

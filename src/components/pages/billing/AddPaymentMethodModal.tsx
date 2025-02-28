@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useStripe, useElements, Elements, CardElement } from "@stripe/react-stripe-js";
-import { Button, ContentDivider } from "@/components/core";
+import { Button, ContentDivider, RenderIf } from "@/components/core";
 import { loadStripe, type StripeCardElement } from "@stripe/stripe-js";
 import { getItem, removeItem } from "@/utils/localStorage";
 import { errorToast } from "@/utils/createToast";
 import type { InitSubscriptionResponse } from "@/types/subscription";
 import { getAdminData } from "@/utils/authUtil";
+import { useGetSavedCard } from "@/services/hooks/queries";
+import { Loader } from "@/components/core/Button/Loader";
 
 interface AddPaymentMethodModalProps {
     isOpen: boolean;
@@ -15,7 +17,7 @@ interface AddPaymentMethodModalProps {
 }
 const cardSecretDetails = getItem("cardSecret") as string
 const cardSecret = JSON.parse(cardSecretDetails) as Omit<InitSubscriptionResponse, "transaction_ref">
-const stripePromise = loadStripe(cardSecret?.app_secret);
+// const stripePromise = loadStripe(cardSecret?.app_secret);
 
 const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClose }) => {
     const stripe = useStripe()
@@ -87,20 +89,30 @@ const AddPaymentMethod: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClos
 }
 
 export const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({ isOpen, onClose }) => {
-
+    const { data: details, isLoading } = useGetSavedCard<Omit<InitSubscriptionResponse, "transaction_ref">>({ component: "add-card" })
+    const stripePromise = loadStripe(details?.app_secret || "");
     return (
-        <Elements stripe={stripePromise} options={{
-            clientSecret: cardSecret?.client_secret as string,
-            appearance: {
-                theme: "stripe",
-                variables: {
-                    colorPrimary: "#00B75B",
-                    fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
-                    colorDanger: "#F04438"
-                }
-            }
-        }}>
-            <AddPaymentMethod isOpen={isOpen} onClose={onClose} />
-        </Elements>
+        <Fragment>
+            <RenderIf condition={!isLoading}>
+                <Elements stripe={stripePromise} options={{
+                    clientSecret: cardSecret?.client_secret as string,
+                    appearance: {
+                        theme: "stripe",
+                        variables: {
+                            colorPrimary: "#00B75B",
+                            fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+                            colorDanger: "#F04438"
+                        }
+                    }
+                }}>
+                    <AddPaymentMethod isOpen={isOpen} onClose={onClose} />
+                </Elements>
+            </RenderIf>
+            <RenderIf condition={isLoading}>
+                <div className="flex w-full h-96 items-center justify-center">
+                    <Loader className="spinner size-6 text-primary-500" />
+                </div>  
+            </RenderIf>
+        </Fragment>
     )
 }
