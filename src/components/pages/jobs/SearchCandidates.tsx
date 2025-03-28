@@ -44,7 +44,7 @@ export const SearchCandidates: React.FC = () => {
                 return (
                     <div className="flex items-center gap-3">
                         <Avatar size="40" image="" alt={`${item?.first_name}_${item?.last_name}`} />
-                        <div className="whitespace-nowrap capitalize">{item?.first_name} {item?.last_name}</div>
+                        <div className="whitespace-nowrap capitalize">{item?.first_name}</div>
                     </div>
                 )
             }

@@ -34,7 +34,7 @@ export const Hired: React.FC = () => {
                 return (
                     <div className="flex items-center gap-3">
                         <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}_${item?.user_data?.last_name}`} />
-                        <div className="whitespace-nowrap capitalize">{item?.user_data?.first_name} {item?.user_data?.last_name}</div>
+                        <div className="whitespace-nowrap capitalize">{item?.user_data?.first_name}</div>
                     </div>
                 )
             }
