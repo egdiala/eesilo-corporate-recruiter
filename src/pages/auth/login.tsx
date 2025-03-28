@@ -132,7 +132,7 @@ export const LoginPage: React.FC = () => {
                         </div>
                         <div className="grid gap-4">
                             <Button type="submit" theme="primary" variant="filled" size="40" loading={isPending} disabled={isPending || !loginForm.isValid} block>Login</Button>
-                            <Button type="button" theme="primary" variant="ghost" size="40" onClick={() => navigate("/auth/sign-up")} block>Sign up</Button>
+                            <Button type="button" theme="primary" variant="stroke" size="40" onClick={() => navigate("/auth/sign-up")} block>Sign up</Button>
                         </div>
                     </motion.form>
                     )
