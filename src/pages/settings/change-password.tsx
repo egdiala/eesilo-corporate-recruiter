@@ -7,8 +7,9 @@ import { getItem, removeItem } from "@/utils/localStorage"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { confirmUpdatePasswordSchema } from "@/validations/settings"
 import { useConfirmUpdatePassword } from "@/services/hooks/mutations"
-import { Button, ContentDivider, InputField } from "@/components/core"
+import { Button, ContentDivider } from "@/components/core"
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { PasswordInput } from "@/components/core/Input/PasswordInput"
 
 export const ChangePasswordPage: React.FC = () => {
     const navigate = useNavigate()
@@ -59,7 +60,7 @@ export const ChangePasswordPage: React.FC = () => {
                                     <p className="text-base text-gray-400">Provide the code sent to your {changePassword}</p>
                                 </div>
                                 <div className="flex flex-col py-4 gap-4">
-                                    <InputField type="password" label="Code" placeholder="• • • • • • • • • •" size="40" {...register("code")} required />
+                                    <PasswordInput size="40" label="Code" placeholder="• • • • • • • • • •" {...register("code")} required />
                                 </div>
                                 <ContentDivider />
                                 <div className="grid gap-2">
@@ -67,8 +68,8 @@ export const ChangePasswordPage: React.FC = () => {
                                     <p className="text-base text-gray-400">You can now create new password to secure your account</p>
                                 </div>
                                 <div className="flex flex-col py-4 gap-4">
-                                    <InputField type="password" label="New Password" placeholder="• • • • • • • • • •" size="40" {...register("password")} required />
-                                    <InputField type="password" label="Confirm Password" placeholder="• • • • • • • • • •" size="40" {...register("confirm_password")} required />
+                                    <PasswordInput size="40" label="New Password" placeholder="• • • • • • • • • •" {...register("password")} required />
+                                    <PasswordInput size="40" label="Confirm Password" placeholder="• • • • • • • • • •" {...register("confirm_password")} required />
                                 </div>
                                 <Button type="submit" theme="primary" variant="filled" size="40" disabled={!isPasswordValid || isConfirming} loading={isConfirming} block>Continue</Button>
                             </motion.form>
