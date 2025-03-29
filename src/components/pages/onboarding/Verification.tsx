@@ -9,13 +9,13 @@ import { verificationInfoSchema } from "@/validations/onboarding";
 import { FetchedAccount } from "@/types/account";
 export const Verification: React.FC<{
   onClick: () => void;
-  data: Partial<FetchedAccount>;
+  data: Partial<FetchedAccount> | undefined;
 }> = ({
   onClick,
   data,
 }: {
   onClick: () => void;
-  data: Partial<FetchedAccount>;
+  data: Partial<FetchedAccount> | undefined;
 }) => {
   const navigate = useNavigate();
   const { mutate, isPending } = useUpdateAccount(

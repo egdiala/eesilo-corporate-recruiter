@@ -10,13 +10,13 @@ import { FetchedAccount } from "@/types/account";
 
 export const ContactPerson: React.FC<{
   onClick: () => void;
-  data: Partial<FetchedAccount>;
+  data: Partial<FetchedAccount> | undefined;
 }> = ({
   onClick,
   data,
 }: {
   onClick: () => void;
-  data: Partial<FetchedAccount>;
+  data: Partial<FetchedAccount> | undefined;
 }) => {
   const { mutate, isPending } = useUpdateAccount(
     "Contact person info added successfully"

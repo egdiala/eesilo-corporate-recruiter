@@ -22,13 +22,13 @@ import { FetchedAccount } from "@/types/account";
 
 export const OrganizationInformation: React.FC<{
     onClick: () => void;
-    data: Partial<FetchedAccount>
+    data: Partial<FetchedAccount> | undefined
   }> = ({
   onClick,
   data
 }: {
   onClick: () => void;
-  data: Partial<FetchedAccount>
+  data: Partial<FetchedAccount>| undefined
 }) => {
   const { mutate, isPending } = useUpdateAccount(
     "Organization information added successfully"
