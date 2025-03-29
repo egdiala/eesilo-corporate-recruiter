@@ -9,6 +9,7 @@ import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { loginSchema } from "@/validations/auth"
 import { use2FaLogin, useLogin } from "@/services/hooks/mutations"
 import type { TwoFaLogin, User } from "@/types/auth"
+import { PasswordInput } from "@/components/core/Input/PasswordInput"
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate()
@@ -124,7 +125,7 @@ export const LoginPage: React.FC = () => {
                         <div className="grid gap-4 w-full">
                             <InputField label="Email Address" type="text" size="40" placeholder="Enter your email address" {...loginForm.register("email")} />
                             <div className="grid gap-1">
-                                <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...loginForm.register("password")} />
+                                <PasswordInput label="Password"  size="40" placeholder="Enter your password"  {...loginForm.register("password")} />
                                 <div className="flex items-center justify-end py-0.5">
                                     <Link to="/auth/forgot-password" className="font-medium text-xs text-primary-500">Forgot Password</Link>
                                 </div>
