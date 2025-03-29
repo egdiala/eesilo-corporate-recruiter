@@ -5,7 +5,9 @@ export type CreateJobParams = {
     country: string;
     state: string;
     city: string;
-    requirement: string[];
+    job_req: string,
+    about_job: string,
+    job_keyword: string[];
     required_travel: "0" | "1"; // 0=no travel | 1=required travel
     required_relocation: "0" | "1"; // 0=no relocation | 1=required relocation
     expected_salary: string;
