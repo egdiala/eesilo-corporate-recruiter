@@ -10,6 +10,7 @@ import { routeVariants } from "@/constants/animateVariants"
 import { useFormikWrapper } from "@/hooks/useFormikWrapper"
 import { Button, CheckBox, InputField } from "@/components/core"
 import { changePasswordSchema, registerSchema } from "@/validations/auth"
+import { PasswordInput } from "@/components/core/Input/PasswordInput"
 
 export const SignUpPage: React.FC = () => {
     const navigate = useNavigate()
@@ -124,10 +125,10 @@ export const SignUpPage: React.FC = () => {
                         </div>
                         <div className="grid gap-5">
                             <div className="grid gap-2">
-                                <InputField label="Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("password")} />
+                                <PasswordInput label="Password" size="40" placeholder="Enter your password" {...register("password")} />
                                 <PasswordStrength value={values.password} />
                             </div>
-                            <InputField label="Confirm Password" type="password" size="40" placeholder="Enter your password" iconRight="ri:key-line" {...register("confirm_password")} />
+                            <PasswordInput label="Confirm Password" size="40" placeholder="Enter your password" {...register("confirm_password")} />
                         </div>
                         <Button type="submit" theme="primary" variant="filled" size="40" loading={isSettingPassword} disabled={isSettingPassword || !isValid} block>Create Password</Button>
                     </motion.form>

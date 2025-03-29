@@ -45,8 +45,12 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
                 </Button>
             </div>
             <ContentDivider />
-            <h3 className="font-medium text-gray-900 text-sm">Description</h3>
+            <h3 className="font-medium text-gray-900 text-sm">About Job</h3>
+            <p className="text-gray-700 text-sm font-normal">{formatTextWithLineBreaks(job?.job_about ?? "")}</p>
+            <h3 className="font-medium text-gray-900 text-sm">Job Description</h3>
             <p className="text-gray-700 text-sm font-normal">{formatTextWithLineBreaks(job?.description ?? "")}</p>
+            <h3 className="font-medium text-gray-900 text-sm">Requirements</h3>
+            <p className="text-gray-700 text-sm font-normal">{formatTextWithLineBreaks(job?.job_req ?? "")}</p>
             <ContentDivider />
             <div className="flex items-center flex-wrap gap-6">
                 {
@@ -70,10 +74,10 @@ export const JobInformation: React.FC<JobInformationProps> = ({ job }) => {
                 }
             </div>
             <ContentDivider />
-            <h3 className="font-medium text-gray-900 text-sm">Requirements</h3>
+            <h3 className="font-medium text-gray-900 text-sm">Keywords</h3>
             <div className="flex items-center flex-wrap gap-4">
                 {
-                    job?.requirement?.map((item) =>
+                    job?.job_keyword?.map((item) =>
                         <Tag key={item} theme="stroke" className="capitalize">{item}</Tag>
                     )
                 }

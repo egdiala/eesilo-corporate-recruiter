@@ -36,7 +36,7 @@ export const SearchCandidates: React.FC = () => {
   const { value: keyword, onChangeHandler } = useDebounce(500);
   const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({
     keyword,
-    job_id: jobId,
+    job_id: isEnabled ? jobId : "",
   });
   const { data: count, isLoading: fetchingCount } =
     useGetTalents<FetchedTalentCount>({

@@ -33,12 +33,11 @@ export const PasswordInput = React.forwardRef<
         <button
           type="button"
           onClick={toggleVisibility}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 p-1 rounded-full hover:bg-gray-100  focus:ring-opacity-50  z-30 "
           tabIndex={-1}
           aria-label={isVisible ? "Hide password" : "Show password"}
         >
           <Icon
-            icon={isVisible ? "mdi:eye-off-outline" : "mdi:eye-outline"}
+            icon={isVisible ? "ri:eye-off-line" : "ri:eye-line"}
             className="size-5 text-gray-500"
           />
         </button>
