@@ -37,7 +37,6 @@ export const EditJobPage: React.FC = () => {
   const navigate = useNavigate();
   const { id: jobId } = useParams();
   const { data: job } = useGetJob(jobId as string);
-  console.log(job, "JOB");
   const { mutate: edit, isPending } = useUpdateJob(
     "You have successfully edited a job post.",
     () => navigate(`/jobs/${jobId}/view`)

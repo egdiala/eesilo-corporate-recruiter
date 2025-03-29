@@ -39,8 +39,6 @@ export const OnboardingPage: React.FC = () => {
     );
   }, [account, stages]);
   const [selectedIndex, setSelectedIndex] = useState<string | number>("");
-
-  console.log(account, "AXXSJSJ");
   const tabs = useMemo(() => {
     return [
       {
