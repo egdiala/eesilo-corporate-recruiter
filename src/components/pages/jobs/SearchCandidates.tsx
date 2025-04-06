@@ -94,16 +94,23 @@ export const SearchCandidates: React.FC = () => {
       cell: ({ row }: { row: any }) => {
         const item = row?.original as FetchedTalent;
         return (
-          <button
-            type="button"
-            className="font-normal text-xs text-warning-600 whitespace-nowrap"
-            onClick={() => {
-              setActiveTalent(item);
-              toggleShortlistCandidate();
-            }}
-          >
-            Add to Shortlist
-          </button>
+          <>
+          <RenderIf condition={!item?.is_shortlisted}>
+            <button
+              type="button"
+              className="font-normal text-xs text-warning-600 whitespace-nowrap"
+              onClick={() => {
+                setActiveTalent(item);
+                toggleShortlistCandidate();
+              }}
+            >
+              Add to Shortlist
+            </button>
+          </RenderIf>
+          <RenderIf condition={!!item?.is_shortlisted}>
+            <div className="whitespace-nowrap font-normal text-xs text-success-500">Shortlisted</div>
+          </RenderIf>
+          </>
         );
       },
     },

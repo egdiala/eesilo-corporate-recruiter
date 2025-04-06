@@ -77,6 +77,7 @@ export interface FetchedTalent {
         year_exp: number;
     };
     user_id: string;
+    is_shortlisted?: boolean;
 }
 
 export interface FetchedTalentCount {
