@@ -37,12 +37,14 @@ export const SearchCandidates: React.FC = () => {
   const { data: candidates, isLoading } = useGetTalents<FetchedTalent[]>({
     keyword,
     job_id: isEnabled ? jobId : "",
+    job_idd: jobId
   });
   const { data: count, isLoading: fetchingCount } =
     useGetTalents<FetchedTalentCount>({
       component: "count",
       keyword,
       job_id: isEnabled ? jobId : "",
+      job_idd: jobId
     });
 
   const toggleShortlistCandidate = useCallback(() => {

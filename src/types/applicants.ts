@@ -24,6 +24,7 @@ export type GetTalentsQuery = {
     page?: string;
     item_per_page?: string;
     component?: "count";
+    job_idd?: string;
 }
 
 export interface RemoveShortlistedParams {
