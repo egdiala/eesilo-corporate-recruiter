@@ -45,9 +45,9 @@ export const UpcomingInterviews: React.FC<UpcomingInterviewsProps> = ({ events, 
                                         <div className="grid gap-5">
                                             <h2 className="font-semibold text-base text-gray-900">{item?.title}</h2>
                                             <div className="flex items-center gap-3">
-                                                <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name} ${item?.user_data?.last_name}`} />
+                                                <Avatar size="40" image={item?.user_data?.avatar ? `${imageUrl}${item?.user_data?.avatar}` : item?.user_data?.avatar} alt={`${item?.user_data?.first_name}`} />
                                                 <div className="grid gap-1">
-                                                    <h3 className="font-medium text-sm text-gray-900 capitalize">{item?.user_data?.first_name} {item?.user_data?.last_name}</h3>
+                                                    <h3 className="font-medium text-sm text-gray-900 capitalize">{item?.user_data?.first_name}</h3>
                                                     <p className="text-xs text-gray-600">{item?.user_data?.specialty_title}</p>
                                                 </div>
                                             </div>

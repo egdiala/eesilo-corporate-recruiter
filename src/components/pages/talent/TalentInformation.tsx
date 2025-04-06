@@ -77,7 +77,7 @@ export const TalentInformation: React.FC<TalentInformationProps> = ({ talent }) 
                             <Avatar size="80" alt={talent?.first_name} image={talent?.avatar ? imageUrl : talent?.avatar} />
                         </div>
                         <div className="grid gap-[3px]">
-                            <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name} {talent?.last_name}</h1>
+                            <h1 className="font-medium text-xl text-gray-900 capitalize">{talent?.first_name}</h1>
                             <p className="text-sm text-gray-400">{talent?.specialty_data?.specialty_main} / {talent?.specialty_data?.specialty_sub}</p>
                             <div className="flex items-center gap-1.5">
                                 <span><img src={`https://flagsapi.com/${country?.iso2}/shiny/24.png`} /></span> <span className="text-sm text-gray-600 capitalize line-clamp-1">{talent?.address_data?.city}, {talent?.address_data?.country}</span>
